@@ -603,7 +603,7 @@ const EventsSection = ({
 };
 
 // ─── RSVP Section ─────────────────────────────────────
-const RSVPSection = ({ accentColor }: { accentColor: string }) => {
+const RSVPSection = ({ accentColor, sectionBg }: { accentColor: string; sectionBg?: string }) => {
   const [submitted, setSubmitted] = useState(false);
   const [form, setForm] = useState({ name: "", guests: "1", attending: "yes", message: "" });
 
