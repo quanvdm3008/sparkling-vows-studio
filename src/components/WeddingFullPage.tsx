@@ -762,6 +762,7 @@ const WeddingFullPage = ({
       <StorySection accentColor={accentColor} />
       <GallerySection accentColor={accentColor} />
       <EventsSection date={date} time={time} venue={venue} address={address} accentColor={accentColor} />
+      <WishesWall accentColor={accentColor} />
       <RSVPSection accentColor={accentColor} />
       <WeddingFooter groomName={groomName} brideName={brideName} accentColor={accentColor} />
     </div>
