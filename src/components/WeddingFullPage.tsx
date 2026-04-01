@@ -1,8 +1,10 @@
 import { useState, useEffect } from "react";
 import { motion, useScroll, useTransform } from "framer-motion";
-import { Heart, Calendar, MapPin, Clock, Music, Camera, ChevronDown, Send } from "lucide-react";
+import { Heart, Calendar, MapPin, Clock, Music as MusicIcon, Camera, ChevronDown, Send } from "lucide-react";
 import FallingPetals from "@/components/FallingPetals";
 import WishesWall from "@/components/WishesWall";
+import MusicPlayer from "@/components/MusicPlayer";
+import { getTheme, type WeddingTheme } from "@/data/themes";
 
 import couple1 from "@/assets/couple-1.jpg";
 import couple2 from "@/assets/couple-2.jpg";
