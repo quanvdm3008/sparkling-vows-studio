@@ -417,22 +417,39 @@ const GallerySection = ({ accentColor }: { accentColor: string }) => {
             {galleryImages.map((img, i) => (
               <motion.div
                 key={i}
-                initial={{ opacity: 0, scale: 0.9 }}
-                whileInView={{ opacity: 1, scale: 1 }}
+                initial={{ opacity: 0, scale: 0.8, rotate: i % 2 === 0 ? -3 : 3 }}
+                whileInView={{ opacity: 1, scale: 1, rotate: 0 }}
                 viewport={{ once: true }}
-                transition={{ delay: i * 0.08 }}
-                whileHover={{ scale: 1.04, zIndex: 10 }}
-                className={`cursor-pointer rounded-2xl overflow-hidden shadow-md hover:shadow-2xl transition-shadow ${
+                transition={{ delay: i * 0.1, duration: 0.7, type: "spring", stiffness: 100 }}
+                whileHover={{
+                  scale: 1.08,
+                  zIndex: 10,
+                  rotate: i % 2 === 0 ? 2 : -2,
+                  boxShadow: "0 25px 50px -12px rgba(0,0,0,0.3)",
+                }}
+                className={`cursor-pointer rounded-2xl overflow-hidden shadow-md transition-shadow relative group ${
                   i === 0 || i === 5 ? "row-span-2" : ""
                 }`}
                 onClick={() => setSelectedImage(img)}
               >
-                <img
+                <motion.img
                   src={img}
                   alt={`Wedding photo ${i + 1}`}
                   loading="lazy"
                   className={`w-full object-cover ${i === 0 || i === 5 ? "h-full" : "h-48 md:h-64"}`}
+                  whileHover={{ scale: 1.15 }}
+                  transition={{ duration: 0.6 }}
                 />
+                {/* Shimmer overlay on hover */}
+                <div className="absolute inset-0 bg-gradient-to-tr from-transparent via-white/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
+                {/* Sparkle icon */}
+                <motion.div
+                  className="absolute top-3 right-3 opacity-0 group-hover:opacity-100 transition-opacity"
+                  animate={{ rotate: [0, 180, 360] }}
+                  transition={{ duration: 3, repeat: Infinity, ease: "linear" }}
+                >
+                  <Camera className="w-5 h-5 text-primary-foreground drop-shadow-lg" />
+                </motion.div>
               </motion.div>
             ))}
           </div>
