@@ -10,9 +10,13 @@ interface Petal {
   emoji: string;
 }
 
-const petalEmojis = ["🌸", "🌺", "💮", "🏵️", "✿"];
+const defaultEmojis = ["🌸", "🌺", "💮", "🏵️", "✿"];
 
-const FallingPetals = () => {
+interface FallingPetalsProps {
+  emojis?: string[];
+}
+
+const FallingPetals = ({ emojis = defaultEmojis }: FallingPetalsProps) => {
   const [petals, setPetals] = useState<Petal[]>([]);
 
   useEffect(() => {
@@ -23,17 +27,17 @@ const FallingPetals = () => {
       duration: 7 + Math.random() * 8,
       size: 8 + Math.random() * 16,
       opacity: 0.25 + Math.random() * 0.45,
-      emoji: petalEmojis[Math.floor(Math.random() * petalEmojis.length)],
+      emoji: emojis[Math.floor(Math.random() * emojis.length)],
     }));
     setPetals(generated);
-  }, []);
+  }, [emojis]);
 
   return (
     <div className="fixed inset-0 pointer-events-none z-0 overflow-hidden">
       {petals.map((petal) => (
         <div
           key={petal.id}
-          className="absolute text-primary"
+          className="absolute"
           style={{
             left: `${petal.left}%`,
             top: "-20px",
