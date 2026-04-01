@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { motion, useScroll, useTransform } from "framer-motion";
 import { Heart, Calendar, MapPin, Clock, Music, Camera, ChevronDown, Send } from "lucide-react";
 import FallingPetals from "@/components/FallingPetals";
+import WishesWall from "@/components/WishesWall";
 
 import couple1 from "@/assets/couple-1.jpg";
 import couple2 from "@/assets/couple-2.jpg";
