@@ -330,8 +330,8 @@ const storyEvents = [
   },
 ];
 
-const StorySection = ({ accentColor }: { accentColor: string }) => (
-  <section id="story" className="py-24 px-4 bg-secondary/20">
+const StorySection = ({ accentColor, sectionBg }: { accentColor: string; sectionBg?: string }) => (
+  <section id="story" className="py-24 px-4" style={{ backgroundColor: sectionBg || "hsl(var(--secondary) / 0.2)" }}>
     <div className="max-w-4xl mx-auto">
       <motion.div
         initial={{ opacity: 0, y: 20 }}
