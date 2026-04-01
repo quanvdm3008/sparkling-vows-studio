@@ -1,0 +1,167 @@
+// Theme configurations for each wedding template
+export interface WeddingTheme {
+  id: string;
+  // Background & colors
+  bgGradient: string;
+  sectionBg1: string;
+  sectionBg2: string;
+  cardBg: string;
+  textAccent: string;
+  // Decorative
+  petalEmojis: string[];
+  heroOverlay: string;
+  decorEmoji: string;
+  // Fonts feel
+  fontStyle: "classic" | "modern" | "playful" | "elegant" | "rustic";
+  // Section order variations
+  sectionVariant: "default" | "reversed" | "centered" | "asymmetric";
+  // Pattern overlay
+  patternClass: string;
+}
+
+export const themes: Record<string, WeddingTheme> = {
+  romantic: {
+    id: "romantic",
+    bgGradient: "linear-gradient(180deg, #FFF0F3 0%, #FFF5F7 30%, #FFFFFF 100%)",
+    sectionBg1: "rgba(232,180,184,0.08)",
+    sectionBg2: "rgba(163,177,138,0.06)",
+    cardBg: "rgba(255,240,243,0.9)",
+    textAccent: "#E8B4B8",
+    petalEmojis: ["🌹", "🌸", "💐", "🌷", "🥀"],
+    heroOverlay: "linear-gradient(to bottom, rgba(232,180,184,0.2), rgba(0,0,0,0.5))",
+    decorEmoji: "🌹",
+    fontStyle: "classic",
+    sectionVariant: "default",
+    patternClass: "pattern-roses",
+  },
+  modern: {
+    id: "modern",
+    bgGradient: "linear-gradient(180deg, #0F1724 0%, #1B2838 30%, #0D1520 100%)",
+    sectionBg1: "rgba(212,168,83,0.06)",
+    sectionBg2: "rgba(27,40,56,0.9)",
+    cardBg: "rgba(27,40,56,0.85)",
+    textAccent: "#D4A853",
+    petalEmojis: ["✦", "◆", "⬥", "❖", "✧"],
+    heroOverlay: "linear-gradient(to bottom, rgba(13,21,32,0.3), rgba(0,0,0,0.7))",
+    decorEmoji: "✦",
+    fontStyle: "modern",
+    sectionVariant: "centered",
+    patternClass: "pattern-geometric",
+  },
+  tropical: {
+    id: "tropical",
+    bgGradient: "linear-gradient(180deg, #FFF8F0 0%, #FEF3E2 30%, #FFFAF5 100%)",
+    sectionBg1: "rgba(199,91,57,0.06)",
+    sectionBg2: "rgba(45,80,22,0.05)",
+    cardBg: "rgba(255,248,240,0.9)",
+    textAccent: "#C75B39",
+    petalEmojis: ["🌺", "🌴", "🍃", "🌿", "🌻"],
+    heroOverlay: "linear-gradient(to bottom, rgba(199,91,57,0.15), rgba(0,0,0,0.5))",
+    decorEmoji: "🌺",
+    fontStyle: "playful",
+    sectionVariant: "asymmetric",
+    patternClass: "pattern-tropical",
+  },
+  rustic: {
+    id: "rustic",
+    bgGradient: "linear-gradient(180deg, #F5EDE3 0%, #EDE4D8 30%, #FAF6F1 100%)",
+    sectionBg1: "rgba(155,124,181,0.06)",
+    sectionBg2: "rgba(210,180,140,0.08)",
+    cardBg: "rgba(245,237,227,0.9)",
+    textAccent: "#9B7CB5",
+    petalEmojis: ["💜", "🌿", "🍂", "🌾", "🪻"],
+    heroOverlay: "linear-gradient(to bottom, rgba(155,124,181,0.15), rgba(0,0,0,0.5))",
+    decorEmoji: "🪻",
+    fontStyle: "rustic",
+    sectionVariant: "reversed",
+    patternClass: "pattern-kraft",
+  },
+  sakura: {
+    id: "sakura",
+    bgGradient: "linear-gradient(180deg, #FFF0F5 0%, #F8E8EE 30%, #FFF5F9 100%)",
+    sectionBg1: "rgba(255,183,197,0.08)",
+    sectionBg2: "rgba(248,232,238,0.5)",
+    cardBg: "rgba(255,240,245,0.9)",
+    textAccent: "#FFB7C5",
+    petalEmojis: ["🌸", "🎀", "🩷", "✿", "❀"],
+    heroOverlay: "linear-gradient(to bottom, rgba(255,183,197,0.2), rgba(0,0,0,0.4))",
+    decorEmoji: "🌸",
+    fontStyle: "elegant",
+    sectionVariant: "default",
+    patternClass: "pattern-sakura",
+  },
+  minimalist: {
+    id: "minimalist",
+    bgGradient: "linear-gradient(180deg, #FAFAF8 0%, #F5F0E8 30%, #FFFFFF 100%)",
+    sectionBg1: "rgba(201,169,110,0.04)",
+    sectionBg2: "rgba(245,240,232,0.3)",
+    cardBg: "rgba(250,250,248,0.95)",
+    textAccent: "#C9A96E",
+    petalEmojis: ["✧", "·", "◦", "○", "∘"],
+    heroOverlay: "linear-gradient(to bottom, rgba(0,0,0,0.1), rgba(0,0,0,0.5))",
+    decorEmoji: "✧",
+    fontStyle: "modern",
+    sectionVariant: "centered",
+    patternClass: "pattern-minimal",
+  },
+  vintage: {
+    id: "vintage",
+    bgGradient: "linear-gradient(180deg, #F5E6CC 0%, #EDDCC8 30%, #FAF3EA 100%)",
+    sectionBg1: "rgba(139,105,20,0.06)",
+    sectionBg2: "rgba(210,180,140,0.1)",
+    cardBg: "rgba(245,230,204,0.9)",
+    textAccent: "#8B6914",
+    petalEmojis: ["🥀", "🌿", "🍂", "📜", "🕊️"],
+    heroOverlay: "linear-gradient(to bottom, rgba(139,105,20,0.15), rgba(0,0,0,0.55))",
+    decorEmoji: "🥀",
+    fontStyle: "classic",
+    sectionVariant: "reversed",
+    patternClass: "pattern-vintage",
+  },
+  boho: {
+    id: "boho",
+    bgGradient: "linear-gradient(180deg, #F8EDE3 0%, #E8D5C4 30%, #FDF6F0 100%)",
+    sectionBg1: "rgba(198,123,92,0.06)",
+    sectionBg2: "rgba(232,213,196,0.3)",
+    cardBg: "rgba(248,237,227,0.9)",
+    textAccent: "#C67B5C",
+    petalEmojis: ["🌾", "☀️", "🪶", "🍃", "🌻"],
+    heroOverlay: "linear-gradient(to bottom, rgba(198,123,92,0.15), rgba(0,0,0,0.5))",
+    decorEmoji: "🌾",
+    fontStyle: "playful",
+    sectionVariant: "asymmetric",
+    patternClass: "pattern-boho",
+  },
+  royal: {
+    id: "royal",
+    bgGradient: "linear-gradient(180deg, #1A0A0A 0%, #2D0A0A 30%, #0D0505 100%)",
+    sectionBg1: "rgba(212,168,83,0.08)",
+    sectionBg2: "rgba(128,0,32,0.15)",
+    cardBg: "rgba(45,15,15,0.85)",
+    textAccent: "#D4A853",
+    petalEmojis: ["👑", "⚜️", "✦", "💎", "🏵️"],
+    heroOverlay: "linear-gradient(to bottom, rgba(128,0,32,0.3), rgba(0,0,0,0.7))",
+    decorEmoji: "👑",
+    fontStyle: "elegant",
+    sectionVariant: "centered",
+    patternClass: "pattern-royal",
+  },
+  garden: {
+    id: "garden",
+    bgGradient: "linear-gradient(180deg, #F0FFF0 0%, #F5F0FF 30%, #FFFFF5 100%)",
+    sectionBg1: "rgba(232,160,191,0.06)",
+    sectionBg2: "rgba(165,214,167,0.06)",
+    cardBg: "rgba(240,255,240,0.9)",
+    textAccent: "#E8A0BF",
+    petalEmojis: ["🦋", "🌷", "🌼", "🌻", "🐝"],
+    heroOverlay: "linear-gradient(to bottom, rgba(232,160,191,0.15), rgba(0,0,0,0.4))",
+    decorEmoji: "🦋",
+    fontStyle: "playful",
+    sectionVariant: "default",
+    patternClass: "pattern-garden",
+  },
+};
+
+export const getTheme = (templateId: string): WeddingTheme => {
+  return themes[templateId] || themes.romantic;
+};

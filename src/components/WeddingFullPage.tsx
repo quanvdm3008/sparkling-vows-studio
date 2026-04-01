@@ -1,8 +1,10 @@
 import { useState, useEffect } from "react";
 import { motion, useScroll, useTransform } from "framer-motion";
-import { Heart, Calendar, MapPin, Clock, Music, Camera, ChevronDown, Send } from "lucide-react";
+import { Heart, Calendar, MapPin, Clock, Music as MusicIcon, Camera, ChevronDown, Send } from "lucide-react";
 import FallingPetals from "@/components/FallingPetals";
 import WishesWall from "@/components/WishesWall";
+import MusicPlayer from "@/components/MusicPlayer";
+import { getTheme, type WeddingTheme } from "@/data/themes";
 
 import couple1 from "@/assets/couple-1.jpg";
 import couple2 from "@/assets/couple-2.jpg";
@@ -82,11 +84,13 @@ const HeroFullPage = ({
   brideName,
   date,
   accentColor,
+  heroOverlay,
 }: {
   groomName: string;
   brideName: string;
   date: string;
   accentColor: string;
+  heroOverlay?: string;
 }) => {
   const { scrollYProgress } = useScroll();
   const opacity = useTransform(scrollYProgress, [0, 0.15], [1, 0]);
@@ -96,7 +100,7 @@ const HeroFullPage = ({
     <section id="hero" className="relative h-screen flex items-center justify-center overflow-hidden">
       <motion.div className="absolute inset-0" style={{ scale }}>
         <img src={heroImg} alt="" className="w-full h-full object-cover" />
-        <div className="absolute inset-0 bg-gradient-to-b from-foreground/30 via-foreground/40 to-foreground/70" />
+        <div className="absolute inset-0" style={{ background: heroOverlay || "linear-gradient(to bottom, rgba(0,0,0,0.3), rgba(0,0,0,0.7))" }} />
       </motion.div>
 
       <motion.div style={{ opacity }} className="relative z-10 text-center px-4">
@@ -172,7 +176,7 @@ const HeroFullPage = ({
 };
 
 // ─── Countdown Section ────────────────────────────────
-const CountdownSection = ({ date, accentColor }: { date: string; accentColor: string }) => {
+const CountdownSection = ({ date, accentColor, sectionBg }: { date: string; accentColor: string; sectionBg?: string }) => {
   const countdown = useCountdown(date);
   const items = [
     { value: countdown.days, label: "Ngày" },
@@ -182,7 +186,7 @@ const CountdownSection = ({ date, accentColor }: { date: string; accentColor: st
   ];
 
   return (
-    <section className="py-20 px-4 bg-secondary/30">
+    <section className="py-20 px-4" style={{ backgroundColor: sectionBg || "hsl(var(--secondary) / 0.3)" }}>
       <div className="max-w-3xl mx-auto text-center">
         <motion.h2
           initial={{ opacity: 0, y: 20 }}
@@ -326,8 +330,8 @@ const storyEvents = [
   },
 ];
 
-const StorySection = ({ accentColor }: { accentColor: string }) => (
-  <section id="story" className="py-24 px-4 bg-secondary/20">
+const StorySection = ({ accentColor, sectionBg }: { accentColor: string; sectionBg?: string }) => (
+  <section id="story" className="py-24 px-4" style={{ backgroundColor: sectionBg || "hsl(var(--secondary) / 0.2)" }}>
     <div className="max-w-4xl mx-auto">
       <motion.div
         initial={{ opacity: 0, y: 20 }}
@@ -563,7 +567,7 @@ const EventsSection = ({
             className="bg-card/80 backdrop-blur-sm rounded-3xl p-8 md:p-10 shadow-xl border border-border text-center"
           >
             <div className="w-16 h-16 mx-auto mb-6 rounded-full flex items-center justify-center" style={{ backgroundColor: accentColor + "20" }}>
-              <Music className="w-7 h-7" style={{ color: accentColor }} />
+              <MusicIcon className="w-7 h-7" style={{ color: accentColor }} />
             </div>
             <h3 className="font-display text-2xl font-bold text-foreground mb-4">Tiệc Cưới</h3>
             <div className="space-y-3 text-muted-foreground font-body">
@@ -599,7 +603,7 @@ const EventsSection = ({
 };
 
 // ─── RSVP Section ─────────────────────────────────────
-const RSVPSection = ({ accentColor }: { accentColor: string }) => {
+const RSVPSection = ({ accentColor, sectionBg }: { accentColor: string; sectionBg?: string }) => {
   const [submitted, setSubmitted] = useState(false);
   const [form, setForm] = useState({ name: "", guests: "1", attending: "yes", message: "" });
 
@@ -609,7 +613,7 @@ const RSVPSection = ({ accentColor }: { accentColor: string }) => {
   };
 
   return (
-    <section id="rsvp" className="py-24 px-4 bg-secondary/30">
+    <section id="rsvp" className="py-24 px-4" style={{ backgroundColor: sectionBg || "hsl(var(--secondary) / 0.3)" }}>
       <div className="max-w-lg mx-auto">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -723,14 +727,14 @@ const RSVPSection = ({ accentColor }: { accentColor: string }) => {
 };
 
 // ─── Footer ───────────────────────────────────────────
-const WeddingFooter = ({ groomName, brideName, accentColor }: { groomName: string; brideName: string; accentColor: string }) => (
+const WeddingFooter = ({ groomName, brideName, accentColor, decorEmoji }: { groomName: string; brideName: string; accentColor: string; decorEmoji?: string }) => (
   <footer className="py-16 px-4 text-center border-t border-border">
     <motion.div
       initial={{ opacity: 0 }}
       whileInView={{ opacity: 1 }}
       viewport={{ once: true }}
     >
-      <Heart className="w-8 h-8 mx-auto mb-4" fill={accentColor} style={{ color: accentColor }} />
+      <div className="text-3xl mb-4">{decorEmoji || "❤️"}</div>
       <h3 className="font-display text-3xl font-bold text-foreground">
         {groomName} & {brideName}
       </h3>
@@ -751,6 +755,7 @@ interface WeddingPageProps {
   address?: string;
   message?: string;
   accentColor?: string;
+  templateId?: string;
 }
 
 const WeddingFullPage = ({
@@ -762,20 +767,28 @@ const WeddingFullPage = ({
   address = "123 Đường Nguyễn Huệ, Quận 1, TP.HCM",
   message = "",
   accentColor = "#E8B4B8",
+  templateId = "romantic",
 }: WeddingPageProps) => {
+  const theme = getTheme(templateId);
+  const isDark = templateId === "modern" || templateId === "royal";
+
   return (
-    <div className="min-h-screen bg-background relative overflow-x-hidden">
-      <FallingPetals />
+    <div
+      className={`min-h-screen relative overflow-x-hidden ${isDark ? "dark" : ""}`}
+      style={{ background: theme.bgGradient }}
+    >
+      <FallingPetals emojis={theme.petalEmojis} />
       <NavBar accentColor={accentColor} />
-      <HeroFullPage groomName={groomName} brideName={brideName} date={date} accentColor={accentColor} />
-      <CountdownSection date={date} accentColor={accentColor} />
+      <HeroFullPage groomName={groomName} brideName={brideName} date={date} accentColor={accentColor} heroOverlay={theme.heroOverlay} />
+      <CountdownSection date={date} accentColor={accentColor} sectionBg={theme.sectionBg1} />
       <CoupleSection groomName={groomName} brideName={brideName} accentColor={accentColor} />
-      <StorySection accentColor={accentColor} />
+      <StorySection accentColor={accentColor} sectionBg={theme.sectionBg2} />
       <GallerySection accentColor={accentColor} />
       <EventsSection date={date} time={time} venue={venue} address={address} accentColor={accentColor} />
       <WishesWall accentColor={accentColor} />
-      <RSVPSection accentColor={accentColor} />
-      <WeddingFooter groomName={groomName} brideName={brideName} accentColor={accentColor} />
+      <RSVPSection accentColor={accentColor} sectionBg={theme.sectionBg1} />
+      <WeddingFooter groomName={groomName} brideName={brideName} accentColor={accentColor} decorEmoji={theme.decorEmoji} />
+      <MusicPlayer accentColor={accentColor} />
     </div>
   );
 };
