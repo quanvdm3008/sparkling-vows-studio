@@ -76,6 +76,7 @@ const InvitationEditor = ({ template, onBack }: EditorProps) => {
           address={formData.address}
           message={formData.message}
           accentColor={formData.accentColor}
+          templateId={template.id}
         />
       </div>
     );
