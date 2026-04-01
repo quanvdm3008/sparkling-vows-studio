@@ -14,6 +14,7 @@ const InvitationView = () => {
       address={searchParams.get("address") || "123 Đường Nguyễn Huệ, Quận 1, TP.HCM"}
       message={searchParams.get("msg") || ""}
       accentColor={searchParams.get("color") || "#E8B4B8"}
+      templateId={searchParams.get("t") || "romantic"}
     />
   );
 };
