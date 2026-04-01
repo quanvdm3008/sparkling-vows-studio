@@ -372,13 +372,24 @@ const StorySection = ({ accentColor }: { accentColor: string }) => (
               <div className="w-4 h-4 rounded-full shadow-lg" style={{ backgroundColor: accentColor }} />
             </div>
 
-            {/* Image */}
             <div className="flex-1">
               <motion.div
-                whileHover={{ scale: 1.03, rotate: i % 2 === 0 ? 1 : -1 }}
-                className="rounded-2xl overflow-hidden shadow-xl"
+                whileHover={{ scale: 1.05, rotate: i % 2 === 0 ? 2 : -2 }}
+                initial={{ opacity: 0, scale: 0.85, x: i % 2 === 0 ? 50 : -50 }}
+                whileInView={{ opacity: 1, scale: 1, x: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.8, type: "spring" }}
+                className="rounded-2xl overflow-hidden shadow-xl relative group"
               >
-                <img src={event.image} alt={event.title} loading="lazy" className="w-full h-48 md:h-56 object-cover" />
+                <motion.img
+                  src={event.image}
+                  alt={event.title}
+                  loading="lazy"
+                  className="w-full h-48 md:h-56 object-cover"
+                  whileHover={{ scale: 1.1 }}
+                  transition={{ duration: 0.5 }}
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-foreground/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
               </motion.div>
             </div>
           </motion.div>
