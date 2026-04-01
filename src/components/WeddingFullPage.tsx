@@ -565,7 +565,7 @@ const EventsSection = ({
             className="bg-card/80 backdrop-blur-sm rounded-3xl p-8 md:p-10 shadow-xl border border-border text-center"
           >
             <div className="w-16 h-16 mx-auto mb-6 rounded-full flex items-center justify-center" style={{ backgroundColor: accentColor + "20" }}>
-              <Music className="w-7 h-7" style={{ color: accentColor }} />
+              <MusicIcon className="w-7 h-7" style={{ color: accentColor }} />
             </div>
             <h3 className="font-display text-2xl font-bold text-foreground mb-4">Tiệc Cưới</h3>
             <div className="space-y-3 text-muted-foreground font-body">
