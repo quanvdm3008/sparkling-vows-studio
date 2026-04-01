@@ -727,14 +727,14 @@ const RSVPSection = ({ accentColor, sectionBg }: { accentColor: string; sectionB
 };
 
 // ─── Footer ───────────────────────────────────────────
-const WeddingFooter = ({ groomName, brideName, accentColor }: { groomName: string; brideName: string; accentColor: string }) => (
+const WeddingFooter = ({ groomName, brideName, accentColor, decorEmoji }: { groomName: string; brideName: string; accentColor: string; decorEmoji?: string }) => (
   <footer className="py-16 px-4 text-center border-t border-border">
     <motion.div
       initial={{ opacity: 0 }}
       whileInView={{ opacity: 1 }}
       viewport={{ once: true }}
     >
-      <Heart className="w-8 h-8 mx-auto mb-4" fill={accentColor} style={{ color: accentColor }} />
+      <div className="text-3xl mb-4">{decorEmoji || "❤️"}</div>
       <h3 className="font-display text-3xl font-bold text-foreground">
         {groomName} & {brideName}
       </h3>
