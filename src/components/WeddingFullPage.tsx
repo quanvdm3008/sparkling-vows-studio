@@ -613,7 +613,7 @@ const RSVPSection = ({ accentColor, sectionBg }: { accentColor: string; sectionB
   };
 
   return (
-    <section id="rsvp" className="py-24 px-4 bg-secondary/30">
+    <section id="rsvp" className="py-24 px-4" style={{ backgroundColor: sectionBg || "hsl(var(--secondary) / 0.3)" }}>
       <div className="max-w-lg mx-auto">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
