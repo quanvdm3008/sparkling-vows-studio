@@ -100,7 +100,7 @@ const HeroFullPage = ({
     <section id="hero" className="relative h-screen flex items-center justify-center overflow-hidden">
       <motion.div className="absolute inset-0" style={{ scale }}>
         <img src={heroImg} alt="" className="w-full h-full object-cover" />
-        <div className="absolute inset-0 bg-gradient-to-b from-foreground/30 via-foreground/40 to-foreground/70" />
+        <div className="absolute inset-0" style={{ background: heroOverlay || "linear-gradient(to bottom, rgba(0,0,0,0.3), rgba(0,0,0,0.7))" }} />
       </motion.div>
 
       <motion.div style={{ opacity }} className="relative z-10 text-center px-4">
