@@ -84,11 +84,13 @@ const HeroFullPage = ({
   brideName,
   date,
   accentColor,
+  heroOverlay,
 }: {
   groomName: string;
   brideName: string;
   date: string;
   accentColor: string;
+  heroOverlay?: string;
 }) => {
   const { scrollYProgress } = useScroll();
   const opacity = useTransform(scrollYProgress, [0, 0.15], [1, 0]);
