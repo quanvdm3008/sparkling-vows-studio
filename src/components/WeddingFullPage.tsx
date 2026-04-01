@@ -753,6 +753,7 @@ interface WeddingPageProps {
   address?: string;
   message?: string;
   accentColor?: string;
+  templateId?: string;
 }
 
 const WeddingFullPage = ({
@@ -764,20 +765,28 @@ const WeddingFullPage = ({
   address = "123 Đường Nguyễn Huệ, Quận 1, TP.HCM",
   message = "",
   accentColor = "#E8B4B8",
+  templateId = "romantic",
 }: WeddingPageProps) => {
+  const theme = getTheme(templateId);
+  const isDark = templateId === "modern" || templateId === "royal";
+
   return (
-    <div className="min-h-screen bg-background relative overflow-x-hidden">
-      <FallingPetals />
+    <div
+      className={`min-h-screen relative overflow-x-hidden ${isDark ? "dark" : ""}`}
+      style={{ background: theme.bgGradient }}
+    >
+      <FallingPetals emojis={theme.petalEmojis} />
       <NavBar accentColor={accentColor} />
-      <HeroFullPage groomName={groomName} brideName={brideName} date={date} accentColor={accentColor} />
-      <CountdownSection date={date} accentColor={accentColor} />
+      <HeroFullPage groomName={groomName} brideName={brideName} date={date} accentColor={accentColor} heroOverlay={theme.heroOverlay} />
+      <CountdownSection date={date} accentColor={accentColor} sectionBg={theme.sectionBg1} />
       <CoupleSection groomName={groomName} brideName={brideName} accentColor={accentColor} />
-      <StorySection accentColor={accentColor} />
+      <StorySection accentColor={accentColor} sectionBg={theme.sectionBg2} />
       <GallerySection accentColor={accentColor} />
       <EventsSection date={date} time={time} venue={venue} address={address} accentColor={accentColor} />
       <WishesWall accentColor={accentColor} />
-      <RSVPSection accentColor={accentColor} />
-      <WeddingFooter groomName={groomName} brideName={brideName} accentColor={accentColor} />
+      <RSVPSection accentColor={accentColor} sectionBg={theme.sectionBg1} />
+      <WeddingFooter groomName={groomName} brideName={brideName} accentColor={accentColor} decorEmoji={theme.decorEmoji} />
+      <MusicPlayer accentColor={accentColor} />
     </div>
   );
 };
