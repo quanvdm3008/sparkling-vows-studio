@@ -7,19 +7,23 @@ interface Petal {
   duration: number;
   size: number;
   opacity: number;
+  emoji: string;
 }
+
+const petalEmojis = ["🌸", "🌺", "💮", "🏵️", "✿"];
 
 const FallingPetals = () => {
   const [petals, setPetals] = useState<Petal[]>([]);
 
   useEffect(() => {
-    const generated: Petal[] = Array.from({ length: 15 }, (_, i) => ({
+    const generated: Petal[] = Array.from({ length: 35 }, (_, i) => ({
       id: i,
       left: Math.random() * 100,
-      delay: Math.random() * 8,
-      duration: 8 + Math.random() * 6,
-      size: 8 + Math.random() * 14,
-      opacity: 0.3 + Math.random() * 0.4,
+      delay: Math.random() * 12,
+      duration: 7 + Math.random() * 8,
+      size: 8 + Math.random() * 16,
+      opacity: 0.25 + Math.random() * 0.45,
+      emoji: petalEmojis[Math.floor(Math.random() * petalEmojis.length)],
     }));
     setPetals(generated);
   }, []);
@@ -38,7 +42,7 @@ const FallingPetals = () => {
             animation: `petal-fall ${petal.duration}s linear ${petal.delay}s infinite`,
           }}
         >
-          🌸
+          {petal.emoji}
         </div>
       ))}
     </div>

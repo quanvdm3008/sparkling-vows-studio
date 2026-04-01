@@ -4,7 +4,7 @@ import { templates, type WeddingTemplate } from "@/data/templates";
 import TemplateCard from "./TemplateCard";
 import InvitationEditor from "./InvitationEditor";
 
-const categories = ["Tất cả", "Lãng mạn", "Hiện đại", "Nhiệt đới", "Cổ điển", "Nhật Bản"];
+const categories = ["Tất cả", "Lãng mạn", "Hiện đại", "Nhiệt đới", "Cổ điển", "Nhật Bản", "Tối giản", "Boho", "Hoàng gia", "Cổ tích"];
 
 const TemplateGallery = () => {
   const [activeCategory, setActiveCategory] = useState("Tất cả");

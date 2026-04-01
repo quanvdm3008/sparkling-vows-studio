@@ -8,14 +8,16 @@ interface TemplateCardProps {
   onSelect: (template: WeddingTemplate) => void;
 }
 
-const templateImages: Record<string, string> = {};
-
-// Lazy import images
 import romanticImg from "@/assets/template-romantic.jpg";
 import modernImg from "@/assets/template-modern.jpg";
 import tropicalImg from "@/assets/template-tropical.jpg";
 import rusticImg from "@/assets/template-rustic.jpg";
 import sakuraImg from "@/assets/template-sakura.jpg";
+import minimalistImg from "@/assets/template-minimalist.jpg";
+import vintageImg from "@/assets/template-vintage.jpg";
+import bohoImg from "@/assets/template-boho.jpg";
+import royalImg from "@/assets/template-royal.jpg";
+import gardenImg from "@/assets/template-garden.jpg";
 
 const imageMap: Record<string, string> = {
   romantic: romanticImg,
@@ -23,6 +25,11 @@ const imageMap: Record<string, string> = {
   tropical: tropicalImg,
   rustic: rusticImg,
   sakura: sakuraImg,
+  minimalist: minimalistImg,
+  vintage: vintageImg,
+  boho: bohoImg,
+  royal: royalImg,
+  garden: gardenImg,
 };
 
 const TemplateCard = ({ template, index, onSelect }: TemplateCardProps) => {

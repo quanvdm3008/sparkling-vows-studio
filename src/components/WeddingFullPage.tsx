@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { motion, useScroll, useTransform } from "framer-motion";
 import { Heart, Calendar, MapPin, Clock, Music, Camera, ChevronDown, Send } from "lucide-react";
 import FallingPetals from "@/components/FallingPetals";
+import WishesWall from "@/components/WishesWall";
 
 import couple1 from "@/assets/couple-1.jpg";
 import couple2 from "@/assets/couple-2.jpg";
@@ -371,13 +372,24 @@ const StorySection = ({ accentColor }: { accentColor: string }) => (
               <div className="w-4 h-4 rounded-full shadow-lg" style={{ backgroundColor: accentColor }} />
             </div>
 
-            {/* Image */}
             <div className="flex-1">
               <motion.div
-                whileHover={{ scale: 1.03, rotate: i % 2 === 0 ? 1 : -1 }}
-                className="rounded-2xl overflow-hidden shadow-xl"
+                whileHover={{ scale: 1.05, rotate: i % 2 === 0 ? 2 : -2 }}
+                initial={{ opacity: 0, scale: 0.85, x: i % 2 === 0 ? 50 : -50 }}
+                whileInView={{ opacity: 1, scale: 1, x: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.8, type: "spring" }}
+                className="rounded-2xl overflow-hidden shadow-xl relative group"
               >
-                <img src={event.image} alt={event.title} loading="lazy" className="w-full h-48 md:h-56 object-cover" />
+                <motion.img
+                  src={event.image}
+                  alt={event.title}
+                  loading="lazy"
+                  className="w-full h-48 md:h-56 object-cover"
+                  whileHover={{ scale: 1.1 }}
+                  transition={{ duration: 0.5 }}
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-foreground/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
               </motion.div>
             </div>
           </motion.div>
@@ -416,22 +428,39 @@ const GallerySection = ({ accentColor }: { accentColor: string }) => {
             {galleryImages.map((img, i) => (
               <motion.div
                 key={i}
-                initial={{ opacity: 0, scale: 0.9 }}
-                whileInView={{ opacity: 1, scale: 1 }}
+                initial={{ opacity: 0, scale: 0.8, rotate: i % 2 === 0 ? -3 : 3 }}
+                whileInView={{ opacity: 1, scale: 1, rotate: 0 }}
                 viewport={{ once: true }}
-                transition={{ delay: i * 0.08 }}
-                whileHover={{ scale: 1.04, zIndex: 10 }}
-                className={`cursor-pointer rounded-2xl overflow-hidden shadow-md hover:shadow-2xl transition-shadow ${
+                transition={{ delay: i * 0.1, duration: 0.7, type: "spring", stiffness: 100 }}
+                whileHover={{
+                  scale: 1.08,
+                  zIndex: 10,
+                  rotate: i % 2 === 0 ? 2 : -2,
+                  boxShadow: "0 25px 50px -12px rgba(0,0,0,0.3)",
+                }}
+                className={`cursor-pointer rounded-2xl overflow-hidden shadow-md transition-shadow relative group ${
                   i === 0 || i === 5 ? "row-span-2" : ""
                 }`}
                 onClick={() => setSelectedImage(img)}
               >
-                <img
+                <motion.img
                   src={img}
                   alt={`Wedding photo ${i + 1}`}
                   loading="lazy"
                   className={`w-full object-cover ${i === 0 || i === 5 ? "h-full" : "h-48 md:h-64"}`}
+                  whileHover={{ scale: 1.15 }}
+                  transition={{ duration: 0.6 }}
                 />
+                {/* Shimmer overlay on hover */}
+                <div className="absolute inset-0 bg-gradient-to-tr from-transparent via-white/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
+                {/* Sparkle icon */}
+                <motion.div
+                  className="absolute top-3 right-3 opacity-0 group-hover:opacity-100 transition-opacity"
+                  animate={{ rotate: [0, 180, 360] }}
+                  transition={{ duration: 3, repeat: Infinity, ease: "linear" }}
+                >
+                  <Camera className="w-5 h-5 text-primary-foreground drop-shadow-lg" />
+                </motion.div>
               </motion.div>
             ))}
           </div>
@@ -744,6 +773,7 @@ const WeddingFullPage = ({
       <StorySection accentColor={accentColor} />
       <GallerySection accentColor={accentColor} />
       <EventsSection date={date} time={time} venue={venue} address={address} accentColor={accentColor} />
+      <WishesWall accentColor={accentColor} />
       <RSVPSection accentColor={accentColor} />
       <WeddingFooter groomName={groomName} brideName={brideName} accentColor={accentColor} />
     </div>
