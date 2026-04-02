@@ -1,6 +1,7 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Heart, MessageCircleHeart, Sparkles, Send } from "lucide-react";
+import { emitWish } from "@/components/LiveWishToast";
 
 interface Wish {
   id: number;
@@ -77,6 +78,8 @@ const WishesWall = ({ accentColor }: { accentColor: string }) => {
     setWishes((prev) => [wish, ...prev]);
     setNewWish({ name: "", message: "" });
     setShowForm(false);
+    // Emit live notification
+    emitWish(wish);
   };
 
   return (

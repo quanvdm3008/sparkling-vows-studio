@@ -17,6 +17,17 @@ export interface WeddingTheme {
   sectionVariant: "default" | "reversed" | "centered" | "asymmetric";
   // Pattern overlay
   patternClass: string;
+  // Layout & animation config
+  heroStyle: "fullscreen" | "split" | "minimal" | "cinematic" | "elegant-frame";
+  timelineStyle: "alternating" | "left-aligned" | "center-cards" | "horizontal";
+  galleryStyle: "masonry" | "carousel" | "grid-overlap" | "polaroid";
+  countdownStyle: "cards" | "circles" | "flip" | "minimal-line";
+  animationIntensity: "subtle" | "moderate" | "dramatic";
+  sectionOrder: string[];
+  // Extra visual flair
+  borderStyle: string;
+  cardRadius: string;
+  specialEffect?: string;
 }
 
 export const themes: Record<string, WeddingTheme> = {
@@ -33,6 +44,14 @@ export const themes: Record<string, WeddingTheme> = {
     fontStyle: "classic",
     sectionVariant: "default",
     patternClass: "pattern-roses",
+    heroStyle: "fullscreen",
+    timelineStyle: "alternating",
+    galleryStyle: "masonry",
+    countdownStyle: "cards",
+    animationIntensity: "moderate",
+    sectionOrder: ["countdown", "couple", "story", "gallery", "events", "wishes", "rsvp"],
+    borderStyle: "border-pink-200/30",
+    cardRadius: "rounded-2xl",
   },
   modern: {
     id: "modern",
@@ -47,6 +66,15 @@ export const themes: Record<string, WeddingTheme> = {
     fontStyle: "modern",
     sectionVariant: "centered",
     patternClass: "pattern-geometric",
+    heroStyle: "cinematic",
+    timelineStyle: "center-cards",
+    galleryStyle: "grid-overlap",
+    countdownStyle: "flip",
+    animationIntensity: "dramatic",
+    sectionOrder: ["countdown", "couple", "story", "gallery", "events", "wishes", "rsvp"],
+    borderStyle: "border-yellow-600/20",
+    cardRadius: "rounded-none",
+    specialEffect: "geometric-lines",
   },
   tropical: {
     id: "tropical",
@@ -61,6 +89,15 @@ export const themes: Record<string, WeddingTheme> = {
     fontStyle: "playful",
     sectionVariant: "asymmetric",
     patternClass: "pattern-tropical",
+    heroStyle: "split",
+    timelineStyle: "left-aligned",
+    galleryStyle: "polaroid",
+    countdownStyle: "circles",
+    animationIntensity: "dramatic",
+    sectionOrder: ["couple", "countdown", "gallery", "story", "events", "wishes", "rsvp"],
+    borderStyle: "border-orange-300/30",
+    cardRadius: "rounded-3xl",
+    specialEffect: "tropical-leaves",
   },
   rustic: {
     id: "rustic",
@@ -75,6 +112,14 @@ export const themes: Record<string, WeddingTheme> = {
     fontStyle: "rustic",
     sectionVariant: "reversed",
     patternClass: "pattern-kraft",
+    heroStyle: "elegant-frame",
+    timelineStyle: "left-aligned",
+    galleryStyle: "polaroid",
+    countdownStyle: "minimal-line",
+    animationIntensity: "subtle",
+    sectionOrder: ["countdown", "story", "couple", "gallery", "events", "wishes", "rsvp"],
+    borderStyle: "border-purple-300/20",
+    cardRadius: "rounded-xl",
   },
   sakura: {
     id: "sakura",
@@ -89,6 +134,15 @@ export const themes: Record<string, WeddingTheme> = {
     fontStyle: "elegant",
     sectionVariant: "default",
     patternClass: "pattern-sakura",
+    heroStyle: "elegant-frame",
+    timelineStyle: "alternating",
+    galleryStyle: "masonry",
+    countdownStyle: "circles",
+    animationIntensity: "moderate",
+    sectionOrder: ["countdown", "couple", "story", "gallery", "wishes", "events", "rsvp"],
+    borderStyle: "border-pink-300/30",
+    cardRadius: "rounded-3xl",
+    specialEffect: "sakura-float",
   },
   minimalist: {
     id: "minimalist",
@@ -103,6 +157,14 @@ export const themes: Record<string, WeddingTheme> = {
     fontStyle: "modern",
     sectionVariant: "centered",
     patternClass: "pattern-minimal",
+    heroStyle: "minimal",
+    timelineStyle: "center-cards",
+    galleryStyle: "grid-overlap",
+    countdownStyle: "minimal-line",
+    animationIntensity: "subtle",
+    sectionOrder: ["countdown", "couple", "story", "gallery", "events", "wishes", "rsvp"],
+    borderStyle: "border-stone-200/50",
+    cardRadius: "rounded-lg",
   },
   vintage: {
     id: "vintage",
@@ -117,6 +179,15 @@ export const themes: Record<string, WeddingTheme> = {
     fontStyle: "classic",
     sectionVariant: "reversed",
     patternClass: "pattern-vintage",
+    heroStyle: "elegant-frame",
+    timelineStyle: "left-aligned",
+    galleryStyle: "polaroid",
+    countdownStyle: "flip",
+    animationIntensity: "subtle",
+    sectionOrder: ["couple", "countdown", "story", "gallery", "events", "wishes", "rsvp"],
+    borderStyle: "border-amber-700/20",
+    cardRadius: "rounded-sm",
+    specialEffect: "sepia-vignette",
   },
   boho: {
     id: "boho",
@@ -131,6 +202,15 @@ export const themes: Record<string, WeddingTheme> = {
     fontStyle: "playful",
     sectionVariant: "asymmetric",
     patternClass: "pattern-boho",
+    heroStyle: "split",
+    timelineStyle: "horizontal",
+    galleryStyle: "polaroid",
+    countdownStyle: "circles",
+    animationIntensity: "moderate",
+    sectionOrder: ["countdown", "couple", "gallery", "story", "wishes", "events", "rsvp"],
+    borderStyle: "border-orange-400/20",
+    cardRadius: "rounded-2xl",
+    specialEffect: "sun-rays",
   },
   royal: {
     id: "royal",
@@ -145,6 +225,15 @@ export const themes: Record<string, WeddingTheme> = {
     fontStyle: "elegant",
     sectionVariant: "centered",
     patternClass: "pattern-royal",
+    heroStyle: "cinematic",
+    timelineStyle: "center-cards",
+    galleryStyle: "grid-overlap",
+    countdownStyle: "flip",
+    animationIntensity: "dramatic",
+    sectionOrder: ["countdown", "couple", "story", "gallery", "events", "wishes", "rsvp"],
+    borderStyle: "border-yellow-600/30",
+    cardRadius: "rounded-none",
+    specialEffect: "gold-particles",
   },
   garden: {
     id: "garden",
@@ -159,6 +248,15 @@ export const themes: Record<string, WeddingTheme> = {
     fontStyle: "playful",
     sectionVariant: "default",
     patternClass: "pattern-garden",
+    heroStyle: "fullscreen",
+    timelineStyle: "alternating",
+    galleryStyle: "masonry",
+    countdownStyle: "cards",
+    animationIntensity: "moderate",
+    sectionOrder: ["couple", "countdown", "story", "gallery", "wishes", "events", "rsvp"],
+    borderStyle: "border-green-300/20",
+    cardRadius: "rounded-3xl",
+    specialEffect: "butterfly-trail",
   },
 };
 
