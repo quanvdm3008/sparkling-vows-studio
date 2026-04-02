@@ -78,6 +78,8 @@ const WishesWall = ({ accentColor }: { accentColor: string }) => {
     setWishes((prev) => [wish, ...prev]);
     setNewWish({ name: "", message: "" });
     setShowForm(false);
+    // Emit live notification
+    emitWish(wish);
   };
 
   return (
