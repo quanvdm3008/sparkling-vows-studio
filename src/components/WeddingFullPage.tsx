@@ -872,11 +872,16 @@ const WeddingFullPage = ({
   templateId = "romantic",
 }: WeddingPageProps) => {
   const theme = getTheme(templateId);
-  // Always use the theme's accent color so each template has its unique palette
   const accentColor = theme.textAccent;
   const isDark = templateId === "modern" || templateId === "royal";
+  const [introComplete, setIntroComplete] = useState(false);
 
-  // Build sections based on theme's section order
+  // Divider variants per theme style
+  const dividerVariant = theme.fontStyle === "modern" ? "line" as const
+    : theme.fontStyle === "playful" ? "dots" as const
+    : theme.fontStyle === "elegant" ? "wave" as const
+    : "ornament" as const;
+
   const sectionComponents: Record<string, JSX.Element> = {
     countdown: <CountdownSection key="countdown" date={date} accentColor={accentColor} sectionBg={theme.sectionBg1} theme={theme} />,
     couple: <CoupleSection key="couple" groomName={groomName} brideName={brideName} accentColor={accentColor} theme={theme} />,
@@ -887,17 +892,47 @@ const WeddingFullPage = ({
     rsvp: <RSVPSection key="rsvp" accentColor={accentColor} sectionBg={theme.sectionBg1} theme={theme} />,
   };
 
+  const orderedSections = theme.sectionOrder.map((key) => sectionComponents[key]);
+
   return (
-    <div className={`min-h-screen relative overflow-x-hidden ${isDark ? "dark" : ""}`} style={{ background: theme.bgGradient }}>
-      <SpecialEffects effect={theme.specialEffect} accentColor={accentColor} />
-      <FallingPetals emojis={theme.petalEmojis} />
-      <NavBar accentColor={accentColor} theme={theme} />
-      <LiveWishToast accentColor={accentColor} />
-      <HeroSection groomName={groomName} brideName={brideName} date={date} accentColor={accentColor} heroOverlay={theme.heroOverlay} style={theme.heroStyle} />
-      {theme.sectionOrder.map((key) => sectionComponents[key])}
-      <WeddingFooter groomName={groomName} brideName={brideName} accentColor={accentColor} decorEmoji={theme.decorEmoji} />
-      <MusicPlayer accentColor={accentColor} />
-    </div>
+    <>
+      {/* Envelope intro overlay */}
+      <AnimatePresence>
+        {!introComplete && (
+          <EnvelopeIntro
+            groomName={groomName}
+            brideName={brideName}
+            accentColor={accentColor}
+            decorEmoji={theme.decorEmoji}
+            onComplete={() => setIntroComplete(true)}
+          />
+        )}
+      </AnimatePresence>
+
+      <div className={`min-h-screen relative overflow-x-hidden ${isDark ? "dark" : ""}`} style={{ background: theme.bgGradient }}>
+        <ScrollProgress accentColor={accentColor} />
+        <SpecialEffects effect={theme.specialEffect} accentColor={accentColor} />
+        <FallingPetals emojis={theme.petalEmojis} />
+        <NavBar accentColor={accentColor} theme={theme} />
+        <LiveWishToast accentColor={accentColor} />
+        <HeroSection groomName={groomName} brideName={brideName} date={date} accentColor={accentColor} heroOverlay={theme.heroOverlay} style={theme.heroStyle} />
+
+        {/* Love quote after hero */}
+        <LoveQuote accentColor={accentColor} />
+
+        {/* Sections with dividers between them */}
+        {orderedSections.map((section, i) => (
+          <div key={i}>
+            {i > 0 && <SectionDivider accentColor={accentColor} variant={dividerVariant} />}
+            {section}
+          </div>
+        ))}
+
+        <WeddingFooter groomName={groomName} brideName={brideName} accentColor={accentColor} decorEmoji={theme.decorEmoji} date={date} />
+        <MusicPlayer accentColor={accentColor} />
+        <ScrollToTop accentColor={accentColor} />
+      </div>
+    </>
   );
 };
 
