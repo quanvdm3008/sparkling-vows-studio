@@ -788,12 +788,32 @@ const RSVPSection = ({ accentColor, sectionBg, theme }: { accentColor: string; s
 };
 
 // ─── Footer ───────────────────────────────────────────
-const WeddingFooter = ({ groomName, brideName, accentColor, decorEmoji }: { groomName: string; brideName: string; accentColor: string; decorEmoji?: string }) => (
-  <footer className="py-16 px-4 text-center border-t border-border">
-    <motion.div initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }}>
-      <div className="text-3xl mb-4">{decorEmoji || "❤️"}</div>
-      <h3 className="font-display text-3xl font-bold text-foreground">{groomName} & {brideName}</h3>
-      <p className="text-muted-foreground font-body text-sm mt-3">Cảm ơn bạn đã ghé thăm trang web cưới của chúng tôi 💕</p>
+const WeddingFooter = ({ groomName, brideName, accentColor, decorEmoji, date }: { groomName: string; brideName: string; accentColor: string; decorEmoji?: string; date?: string }) => (
+  <footer className="py-20 px-4 text-center relative overflow-hidden">
+    <div className="absolute inset-0" style={{ background: `linear-gradient(to top, ${accentColor}08, transparent)` }} />
+    <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="relative z-10">
+      <motion.div
+        className="text-5xl mb-6"
+        animate={{ scale: [1, 1.15, 1] }}
+        transition={{ duration: 2, repeat: Infinity }}
+      >
+        {decorEmoji || "❤️"}
+      </motion.div>
+      <p className="font-body text-xs tracking-[0.5em] uppercase text-muted-foreground mb-4">Forever & Always</p>
+      <h3 className="font-display text-4xl md:text-5xl font-bold text-foreground">{groomName} & {brideName}</h3>
+      <div className="flex items-center justify-center gap-4 my-6">
+        <div className="w-12 h-[1px]" style={{ backgroundColor: `${accentColor}40` }} />
+        <Heart className="w-4 h-4" fill={accentColor} style={{ color: accentColor }} />
+        <div className="w-12 h-[1px]" style={{ backgroundColor: `${accentColor}40` }} />
+      </div>
+      {date && (
+        <p className="font-body text-sm text-muted-foreground">
+          {new Date(date).toLocaleDateString("vi-VN", { year: "numeric", month: "long", day: "numeric" })}
+        </p>
+      )}
+      <p className="text-muted-foreground font-body text-xs mt-6 opacity-50">
+        Được tạo với 💕 bởi Wedding Cards Online
+      </p>
     </motion.div>
   </footer>
 );
