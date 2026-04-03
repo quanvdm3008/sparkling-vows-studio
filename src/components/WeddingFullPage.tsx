@@ -475,29 +475,70 @@ const TimelineCenterCards = ({ accentColor, theme }: { accentColor: string; them
   </div>
 );
 
-// Timeline: Horizontal
-const TimelineHorizontal = ({ accentColor, theme }: { accentColor: string; theme: WeddingTheme }) => (
-  <div className="overflow-x-auto pb-4">
-    <div className="flex gap-6 min-w-max px-4">
-      {storyEvents.map((event, i) => (
-        <motion.div key={event.title} initial={{ opacity: 0, x: 50 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} transition={{ delay: i * 0.15 }}
-          className={`w-72 flex-shrink-0 bg-card ${theme.cardRadius} overflow-hidden shadow-lg border border-border`}>
-          <img src={event.image} alt={event.title} loading="lazy" className="w-full h-40 object-cover" />
-          <div className="p-4">
-            <span className="font-body text-xs font-semibold uppercase" style={{ color: accentColor }}>{event.date}</span>
-            <h3 className="font-display text-lg font-bold text-foreground mt-1">{event.title}</h3>
-            <p className="text-muted-foreground font-body text-xs leading-relaxed mt-1">{event.desc}</p>
-          </div>
-        </motion.div>
-      ))}
+// Timeline: Horizontal Carousel (center big, sides small, auto-rotate)
+const TimelineHorizontal = ({ accentColor, theme }: { accentColor: string; theme: WeddingTheme }) => {
+  const [active, setActive] = useState(0);
+  const total = storyEvents.length;
+
+  useEffect(() => {
+    const timer = setInterval(() => setActive((p) => (p + 1) % total), 4000);
+    return () => clearInterval(timer);
+  }, [total]);
+
+  return (
+    <div className="relative">
+      <div className="flex items-center justify-center gap-4 md:gap-6 py-8" style={{ minHeight: 380 }}>
+        {storyEvents.map((event, i) => {
+          const offset = (i - active + total) % total;
+          const isCenter = offset === 0;
+          const isLeft = offset === total - 1;
+          const isRight = offset === 1;
+          const isVisible = isCenter || isLeft || isRight;
+
+          if (!isVisible) return null;
+
+          return (
+            <motion.div
+              key={event.title}
+              layout
+              animate={{
+                scale: isCenter ? 1 : 0.75,
+                opacity: isCenter ? 1 : 0.5,
+                zIndex: isCenter ? 10 : 1,
+                x: isLeft ? -40 : isRight ? 40 : 0,
+              }}
+              transition={{ type: "spring", damping: 25, stiffness: 200 }}
+              className={`cursor-pointer ${isCenter ? "w-80 md:w-[420px]" : "w-56 md:w-72"} flex-shrink-0 bg-card ${theme.cardRadius} overflow-hidden shadow-xl border border-border`}
+              onClick={() => setActive(i)}
+            >
+              <div className="relative">
+                <img src={event.image} alt={event.title} loading="lazy" className={`w-full object-cover ${isCenter ? "h-48 md:h-56" : "h-32 md:h-40"}`} />
+                {isCenter && (
+                  <motion.div
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent"
+                  />
+                )}
+              </div>
+              <div className={`p-4 ${isCenter ? "" : "hidden md:block"}`}>
+                <span className="font-body text-xs font-semibold uppercase" style={{ color: accentColor }}>{event.date}</span>
+                <h3 className={`font-display font-bold text-foreground mt-1 ${isCenter ? "text-lg" : "text-sm"}`}>{event.title}</h3>
+                {isCenter && <p className="text-muted-foreground font-body text-xs leading-relaxed mt-1">{event.desc}</p>}
+              </div>
+            </motion.div>
+          );
+        })}
+      </div>
+      {/* Dots */}
+      <div className="flex justify-center gap-2 mt-2">
+        {storyEvents.map((_, i) => (
+          <button key={i} onClick={() => setActive(i)} className="w-2.5 h-2.5 rounded-full transition-all duration-300" style={{ backgroundColor: i === active ? accentColor : `${accentColor}30`, transform: i === active ? "scale(1.3)" : "scale(1)" }} />
+        ))}
+      </div>
     </div>
-    <div className="flex justify-center mt-4 gap-2">
-      {storyEvents.map((_, i) => (
-        <div key={i} className="w-2 h-2 rounded-full" style={{ backgroundColor: i === 0 ? accentColor : `${accentColor}40` }} />
-      ))}
-    </div>
-  </div>
-);
+  );
+};
 
 const StorySection = ({ accentColor, sectionBg, theme }: { accentColor: string; sectionBg?: string; theme: WeddingTheme }) => {
   const renderTimeline = () => {
