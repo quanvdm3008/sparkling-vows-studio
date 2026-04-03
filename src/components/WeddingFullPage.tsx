@@ -785,10 +785,12 @@ const WeddingFullPage = ({
   venue = "White Palace Convention Center",
   address = "123 Đường Nguyễn Huệ, Quận 1, TP.HCM",
   message = "",
-  accentColor = "#E8B4B8",
+  accentColor: accentColorProp = "#E8B4B8",
   templateId = "romantic",
 }: WeddingPageProps) => {
   const theme = getTheme(templateId);
+  // Always use the theme's accent color so each template has its unique palette
+  const accentColor = theme.textAccent;
   const isDark = templateId === "modern" || templateId === "royal";
 
   // Build sections based on theme's section order
