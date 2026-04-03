@@ -704,6 +704,23 @@ const EventsSection = ({ date, time, venue, address, accentColor, theme }: { dat
             </div>
           </motion.div>
         </div>
+
+        {/* Add to Calendar */}
+        <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="mt-10 text-center">
+          <motion.a
+            href={`https://calendar.google.com/calendar/render?action=TEMPLATE&text=${encodeURIComponent(`Đám cưới tại ${venue}`)}&dates=${date.replace(/-/g, "")}T${time.replace(":", "")}00/${date.replace(/-/g, "")}T235900&location=${encodeURIComponent(address)}`}
+            target="_blank"
+            rel="noopener noreferrer"
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+            className="inline-flex items-center gap-2 px-6 py-3 rounded-full text-primary-foreground font-body font-semibold shadow-lg"
+            style={{ backgroundColor: accentColor }}
+          >
+            <CalendarPlus className="w-4 h-4" />
+            Thêm vào Lịch Google
+          </motion.a>
+        </motion.div>
+
         <motion.div initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className={`mt-12 ${theme.cardRadius} overflow-hidden shadow-2xl`}>
           <img src={venueImg} alt="Venue" loading="lazy" className="w-full h-64 md:h-80 object-cover" />
         </motion.div>
