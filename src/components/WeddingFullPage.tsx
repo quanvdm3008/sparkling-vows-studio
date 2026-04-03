@@ -1,10 +1,15 @@
 import { useState, useEffect } from "react";
 import { motion, useScroll, useTransform, AnimatePresence } from "framer-motion";
-import { Heart, Calendar, MapPin, Clock, Music as MusicIcon, Camera, ChevronDown, Send, Sparkles } from "lucide-react";
+import { Heart, Calendar, MapPin, Clock, Music as MusicIcon, Camera, ChevronDown, Send, Sparkles, CalendarPlus } from "lucide-react";
 import FallingPetals from "@/components/FallingPetals";
 import WishesWall from "@/components/WishesWall";
 import MusicPlayer from "@/components/MusicPlayer";
 import LiveWishToast from "@/components/LiveWishToast";
+import EnvelopeIntro from "@/components/EnvelopeIntro";
+import SectionDivider from "@/components/SectionDivider";
+import ScrollProgress from "@/components/ScrollProgress";
+import LoveQuote from "@/components/LoveQuote";
+import ScrollToTop from "@/components/ScrollToTop";
 import { getTheme, type WeddingTheme } from "@/data/themes";
 
 import couple1 from "@/assets/couple-1.jpg";
