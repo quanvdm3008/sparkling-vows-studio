@@ -1,10 +1,15 @@
 import { useState, useEffect } from "react";
 import { motion, useScroll, useTransform, AnimatePresence } from "framer-motion";
-import { Heart, Calendar, MapPin, Clock, Music as MusicIcon, Camera, ChevronDown, Send, Sparkles } from "lucide-react";
+import { Heart, Calendar, MapPin, Clock, Music as MusicIcon, Camera, ChevronDown, Send, Sparkles, CalendarPlus } from "lucide-react";
 import FallingPetals from "@/components/FallingPetals";
 import WishesWall from "@/components/WishesWall";
 import MusicPlayer from "@/components/MusicPlayer";
 import LiveWishToast from "@/components/LiveWishToast";
+import EnvelopeIntro from "@/components/EnvelopeIntro";
+import SectionDivider from "@/components/SectionDivider";
+import ScrollProgress from "@/components/ScrollProgress";
+import LoveQuote from "@/components/LoveQuote";
+import ScrollToTop from "@/components/ScrollToTop";
 import { getTheme, type WeddingTheme } from "@/data/themes";
 
 import couple1 from "@/assets/couple-1.jpg";
@@ -699,6 +704,23 @@ const EventsSection = ({ date, time, venue, address, accentColor, theme }: { dat
             </div>
           </motion.div>
         </div>
+
+        {/* Add to Calendar */}
+        <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="mt-10 text-center">
+          <motion.a
+            href={`https://calendar.google.com/calendar/render?action=TEMPLATE&text=${encodeURIComponent(`Đám cưới tại ${venue}`)}&dates=${date.replace(/-/g, "")}T${time.replace(":", "")}00/${date.replace(/-/g, "")}T235900&location=${encodeURIComponent(address)}`}
+            target="_blank"
+            rel="noopener noreferrer"
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+            className="inline-flex items-center gap-2 px-6 py-3 rounded-full text-primary-foreground font-body font-semibold shadow-lg"
+            style={{ backgroundColor: accentColor }}
+          >
+            <CalendarPlus className="w-4 h-4" />
+            Thêm vào Lịch Google
+          </motion.a>
+        </motion.div>
+
         <motion.div initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className={`mt-12 ${theme.cardRadius} overflow-hidden shadow-2xl`}>
           <img src={venueImg} alt="Venue" loading="lazy" className="w-full h-64 md:h-80 object-cover" />
         </motion.div>
@@ -766,12 +788,32 @@ const RSVPSection = ({ accentColor, sectionBg, theme }: { accentColor: string; s
 };
 
 // ─── Footer ───────────────────────────────────────────
-const WeddingFooter = ({ groomName, brideName, accentColor, decorEmoji }: { groomName: string; brideName: string; accentColor: string; decorEmoji?: string }) => (
-  <footer className="py-16 px-4 text-center border-t border-border">
-    <motion.div initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }}>
-      <div className="text-3xl mb-4">{decorEmoji || "❤️"}</div>
-      <h3 className="font-display text-3xl font-bold text-foreground">{groomName} & {brideName}</h3>
-      <p className="text-muted-foreground font-body text-sm mt-3">Cảm ơn bạn đã ghé thăm trang web cưới của chúng tôi 💕</p>
+const WeddingFooter = ({ groomName, brideName, accentColor, decorEmoji, date }: { groomName: string; brideName: string; accentColor: string; decorEmoji?: string; date?: string }) => (
+  <footer className="py-20 px-4 text-center relative overflow-hidden">
+    <div className="absolute inset-0" style={{ background: `linear-gradient(to top, ${accentColor}08, transparent)` }} />
+    <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="relative z-10">
+      <motion.div
+        className="text-5xl mb-6"
+        animate={{ scale: [1, 1.15, 1] }}
+        transition={{ duration: 2, repeat: Infinity }}
+      >
+        {decorEmoji || "❤️"}
+      </motion.div>
+      <p className="font-body text-xs tracking-[0.5em] uppercase text-muted-foreground mb-4">Forever & Always</p>
+      <h3 className="font-display text-4xl md:text-5xl font-bold text-foreground">{groomName} & {brideName}</h3>
+      <div className="flex items-center justify-center gap-4 my-6">
+        <div className="w-12 h-[1px]" style={{ backgroundColor: `${accentColor}40` }} />
+        <Heart className="w-4 h-4" fill={accentColor} style={{ color: accentColor }} />
+        <div className="w-12 h-[1px]" style={{ backgroundColor: `${accentColor}40` }} />
+      </div>
+      {date && (
+        <p className="font-body text-sm text-muted-foreground">
+          {new Date(date).toLocaleDateString("vi-VN", { year: "numeric", month: "long", day: "numeric" })}
+        </p>
+      )}
+      <p className="text-muted-foreground font-body text-xs mt-6 opacity-50">
+        Được tạo với 💕 bởi Wedding Cards Online
+      </p>
     </motion.div>
   </footer>
 );
@@ -830,11 +872,16 @@ const WeddingFullPage = ({
   templateId = "romantic",
 }: WeddingPageProps) => {
   const theme = getTheme(templateId);
-  // Always use the theme's accent color so each template has its unique palette
   const accentColor = theme.textAccent;
   const isDark = templateId === "modern" || templateId === "royal";
+  const [introComplete, setIntroComplete] = useState(false);
 
-  // Build sections based on theme's section order
+  // Divider variants per theme style
+  const dividerVariant = theme.fontStyle === "modern" ? "line" as const
+    : theme.fontStyle === "playful" ? "dots" as const
+    : theme.fontStyle === "elegant" ? "wave" as const
+    : "ornament" as const;
+
   const sectionComponents: Record<string, JSX.Element> = {
     countdown: <CountdownSection key="countdown" date={date} accentColor={accentColor} sectionBg={theme.sectionBg1} theme={theme} />,
     couple: <CoupleSection key="couple" groomName={groomName} brideName={brideName} accentColor={accentColor} theme={theme} />,
@@ -845,17 +892,47 @@ const WeddingFullPage = ({
     rsvp: <RSVPSection key="rsvp" accentColor={accentColor} sectionBg={theme.sectionBg1} theme={theme} />,
   };
 
+  const orderedSections = theme.sectionOrder.map((key) => sectionComponents[key]);
+
   return (
-    <div className={`min-h-screen relative overflow-x-hidden ${isDark ? "dark" : ""}`} style={{ background: theme.bgGradient }}>
-      <SpecialEffects effect={theme.specialEffect} accentColor={accentColor} />
-      <FallingPetals emojis={theme.petalEmojis} />
-      <NavBar accentColor={accentColor} theme={theme} />
-      <LiveWishToast accentColor={accentColor} />
-      <HeroSection groomName={groomName} brideName={brideName} date={date} accentColor={accentColor} heroOverlay={theme.heroOverlay} style={theme.heroStyle} />
-      {theme.sectionOrder.map((key) => sectionComponents[key])}
-      <WeddingFooter groomName={groomName} brideName={brideName} accentColor={accentColor} decorEmoji={theme.decorEmoji} />
-      <MusicPlayer accentColor={accentColor} />
-    </div>
+    <>
+      {/* Envelope intro overlay */}
+      <AnimatePresence>
+        {!introComplete && (
+          <EnvelopeIntro
+            groomName={groomName}
+            brideName={brideName}
+            accentColor={accentColor}
+            decorEmoji={theme.decorEmoji}
+            onComplete={() => setIntroComplete(true)}
+          />
+        )}
+      </AnimatePresence>
+
+      <div className={`min-h-screen relative overflow-x-hidden ${isDark ? "dark" : ""}`} style={{ background: theme.bgGradient }}>
+        <ScrollProgress accentColor={accentColor} />
+        <SpecialEffects effect={theme.specialEffect} accentColor={accentColor} />
+        <FallingPetals emojis={theme.petalEmojis} />
+        <NavBar accentColor={accentColor} theme={theme} />
+        <LiveWishToast accentColor={accentColor} />
+        <HeroSection groomName={groomName} brideName={brideName} date={date} accentColor={accentColor} heroOverlay={theme.heroOverlay} style={theme.heroStyle} />
+
+        {/* Love quote after hero */}
+        <LoveQuote accentColor={accentColor} />
+
+        {/* Sections with dividers between them */}
+        {orderedSections.map((section, i) => (
+          <div key={i}>
+            {i > 0 && <SectionDivider accentColor={accentColor} variant={dividerVariant} />}
+            {section}
+          </div>
+        ))}
+
+        <WeddingFooter groomName={groomName} brideName={brideName} accentColor={accentColor} decorEmoji={theme.decorEmoji} date={date} />
+        <MusicPlayer accentColor={accentColor} />
+        <ScrollToTop accentColor={accentColor} />
+      </div>
+    </>
   );
 };
 
