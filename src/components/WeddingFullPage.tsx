@@ -937,8 +937,8 @@ const WeddingFullPage = ({
         <WeddingFooter groomName={groomName} brideName={brideName} accentColor={accentColor} decorEmoji={theme.decorEmoji} date={date} />
         <MusicPlayer accentColor={accentColor} />
         <ScrollToTop accentColor={accentColor} />
-      </div>
-    </>
+      </motion.div>
+      )}
   );
 };
 
