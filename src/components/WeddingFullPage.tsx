@@ -896,42 +896,47 @@ const WeddingFullPage = ({
 
   return (
     <>
-      {/* Envelope intro overlay */}
-      <AnimatePresence>
-        {!introComplete && (
-          <EnvelopeIntro
-            groomName={groomName}
-            brideName={brideName}
-            accentColor={accentColor}
-            decorEmoji={theme.decorEmoji}
-            onComplete={() => setIntroComplete(true)}
-          />
-        )}
-      </AnimatePresence>
+      {/* Envelope intro - hides everything behind it */}
+      {!introComplete && (
+        <EnvelopeIntro
+          groomName={groomName}
+          brideName={brideName}
+          accentColor={accentColor}
+          decorEmoji={theme.decorEmoji}
+          onComplete={() => setIntroComplete(true)}
+        />
+      )}
 
-      <div className={`min-h-screen relative overflow-x-hidden ${isDark ? "dark" : ""}`} style={{ background: theme.bgGradient }}>
-        <ScrollProgress accentColor={accentColor} />
-        <SpecialEffects effect={theme.specialEffect} accentColor={accentColor} />
-        <FallingPetals emojis={theme.petalEmojis} />
-        <NavBar accentColor={accentColor} theme={theme} />
-        <LiveWishToast accentColor={accentColor} />
-        <HeroSection groomName={groomName} brideName={brideName} date={date} accentColor={accentColor} heroOverlay={theme.heroOverlay} style={theme.heroStyle} />
+      {/* Main content only renders after envelope is opened */}
+      {introComplete && (
+        <motion.div
+          className={`min-h-screen relative overflow-x-hidden ${isDark ? "dark" : ""}`}
+          style={{ background: theme.bgGradient }}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 1.2, ease: "easeOut" }}
+        >
+          <ScrollProgress accentColor={accentColor} />
+          <SpecialEffects effect={theme.specialEffect} accentColor={accentColor} />
+          <FallingPetals emojis={theme.petalEmojis} />
+          <NavBar accentColor={accentColor} theme={theme} />
+          <LiveWishToast accentColor={accentColor} />
+          <HeroSection groomName={groomName} brideName={brideName} date={date} accentColor={accentColor} heroOverlay={theme.heroOverlay} style={theme.heroStyle} />
 
-        {/* Love quote after hero */}
-        <LoveQuote accentColor={accentColor} />
+          <LoveQuote accentColor={accentColor} />
 
-        {/* Sections with dividers between them */}
-        {orderedSections.map((section, i) => (
-          <div key={i}>
-            {i > 0 && <SectionDivider accentColor={accentColor} variant={dividerVariant} />}
-            {section}
-          </div>
-        ))}
+          {orderedSections.map((section, i) => (
+            <div key={i}>
+              {i > 0 && <SectionDivider accentColor={accentColor} variant={dividerVariant} />}
+              {section}
+            </div>
+          ))}
 
-        <WeddingFooter groomName={groomName} brideName={brideName} accentColor={accentColor} decorEmoji={theme.decorEmoji} date={date} />
-        <MusicPlayer accentColor={accentColor} />
-        <ScrollToTop accentColor={accentColor} />
-      </div>
+          <WeddingFooter groomName={groomName} brideName={brideName} accentColor={accentColor} decorEmoji={theme.decorEmoji} date={date} />
+          <MusicPlayer accentColor={accentColor} />
+          <ScrollToTop accentColor={accentColor} />
+        </motion.div>
+      )}
     </>
   );
 };
