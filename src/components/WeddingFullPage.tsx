@@ -896,20 +896,26 @@ const WeddingFullPage = ({
 
   return (
     <>
-      {/* Envelope intro overlay */}
-      <AnimatePresence>
-        {!introComplete && (
-          <EnvelopeIntro
-            groomName={groomName}
-            brideName={brideName}
-            accentColor={accentColor}
-            decorEmoji={theme.decorEmoji}
-            onComplete={() => setIntroComplete(true)}
-          />
-        )}
-      </AnimatePresence>
+      {/* Envelope intro - hides everything behind it */}
+      {!introComplete && (
+        <EnvelopeIntro
+          groomName={groomName}
+          brideName={brideName}
+          accentColor={accentColor}
+          decorEmoji={theme.decorEmoji}
+          onComplete={() => setIntroComplete(true)}
+        />
+      )}
 
-      <div className={`min-h-screen relative overflow-x-hidden ${isDark ? "dark" : ""}`} style={{ background: theme.bgGradient }}>
+      {/* Main content only renders after envelope is opened */}
+      {introComplete && (
+      <motion.div
+        className={`min-h-screen relative overflow-x-hidden ${isDark ? "dark" : ""}`}
+        style={{ background: theme.bgGradient }}
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 1.2, ease: "easeOut" }}
+      >
         <ScrollProgress accentColor={accentColor} />
         <SpecialEffects effect={theme.specialEffect} accentColor={accentColor} />
         <FallingPetals emojis={theme.petalEmojis} />
