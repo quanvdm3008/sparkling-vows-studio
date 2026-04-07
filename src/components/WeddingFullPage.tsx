@@ -10,6 +10,7 @@ import SectionDivider from "@/components/SectionDivider";
 import ScrollProgress from "@/components/ScrollProgress";
 import LoveQuote from "@/components/LoveQuote";
 import ScrollToTop from "@/components/ScrollToTop";
+import WeddingServices from "@/components/WeddingServices";
 import { getTheme, type WeddingTheme } from "@/data/themes";
 
 import couple1 from "@/assets/couple-1.jpg";
@@ -54,6 +55,7 @@ const NavBar = ({ accentColor, theme }: { accentColor: string; theme: WeddingThe
     { label: "Trang chủ", href: "#hero" },
     { label: "Câu chuyện", href: "#story" },
     { label: "Album", href: "#gallery" },
+    { label: "Dịch vụ", href: "#services" },
     { label: "Sự kiện", href: "#events" },
     { label: "RSVP", href: "#rsvp" },
   ];
@@ -887,6 +889,7 @@ const WeddingFullPage = ({
     couple: <CoupleSection key="couple" groomName={groomName} brideName={brideName} accentColor={accentColor} theme={theme} />,
     story: <StorySection key="story" accentColor={accentColor} sectionBg={theme.sectionBg2} theme={theme} />,
     gallery: <GallerySection key="gallery" accentColor={accentColor} theme={theme} />,
+    services: <WeddingServices key="services" accentColor={accentColor} cardRadius={theme.cardRadius} />,
     events: <EventsSection key="events" date={date} time={time} venue={venue} address={address} accentColor={accentColor} theme={theme} />,
     wishes: <WishesWall key="wishes" accentColor={accentColor} />,
     rsvp: <RSVPSection key="rsvp" accentColor={accentColor} sectionBg={theme.sectionBg1} theme={theme} />,
