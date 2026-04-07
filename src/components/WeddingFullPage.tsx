@@ -55,6 +55,7 @@ const NavBar = ({ accentColor, theme }: { accentColor: string; theme: WeddingThe
     { label: "Trang chủ", href: "#hero" },
     { label: "Câu chuyện", href: "#story" },
     { label: "Album", href: "#gallery" },
+    { label: "Dịch vụ", href: "#services" },
     { label: "Sự kiện", href: "#events" },
     { label: "RSVP", href: "#rsvp" },
   ];
