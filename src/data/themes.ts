@@ -253,7 +253,7 @@ export const themes: Record<string, WeddingTheme> = {
     galleryStyle: "masonry",
     countdownStyle: "cards",
     animationIntensity: "moderate",
-    sectionOrder: ["couple", "countdown", "story", "gallery", "wishes", "events", "rsvp"],
+    sectionOrder: ["couple", "countdown", "story", "gallery", "services", "wishes", "events", "rsvp"],
     borderStyle: "border-green-300/20",
     cardRadius: "rounded-3xl",
     specialEffect: "butterfly-trail",
