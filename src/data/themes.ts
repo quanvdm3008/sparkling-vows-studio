@@ -162,7 +162,7 @@ export const themes: Record<string, WeddingTheme> = {
     galleryStyle: "grid-overlap",
     countdownStyle: "minimal-line",
     animationIntensity: "subtle",
-    sectionOrder: ["countdown", "couple", "story", "gallery", "events", "wishes", "rsvp"],
+    sectionOrder: ["countdown", "couple", "story", "gallery", "services", "events", "wishes", "rsvp"],
     borderStyle: "border-stone-200/50",
     cardRadius: "rounded-lg",
   },
