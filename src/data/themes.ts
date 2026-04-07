@@ -49,7 +49,7 @@ export const themes: Record<string, WeddingTheme> = {
     galleryStyle: "masonry",
     countdownStyle: "cards",
     animationIntensity: "moderate",
-    sectionOrder: ["countdown", "couple", "story", "gallery", "events", "wishes", "rsvp"],
+    sectionOrder: ["countdown", "couple", "story", "gallery", "services", "events", "wishes", "rsvp"],
     borderStyle: "border-pink-200/30",
     cardRadius: "rounded-2xl",
   },
