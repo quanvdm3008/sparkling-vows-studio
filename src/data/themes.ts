@@ -94,7 +94,7 @@ export const themes: Record<string, WeddingTheme> = {
     galleryStyle: "polaroid",
     countdownStyle: "circles",
     animationIntensity: "dramatic",
-    sectionOrder: ["couple", "countdown", "gallery", "story", "events", "wishes", "rsvp"],
+    sectionOrder: ["couple", "countdown", "gallery", "story", "services", "events", "wishes", "rsvp"],
     borderStyle: "border-orange-300/30",
     cardRadius: "rounded-3xl",
     specialEffect: "tropical-leaves",
