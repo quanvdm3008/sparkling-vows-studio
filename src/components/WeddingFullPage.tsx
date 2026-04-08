@@ -10,7 +10,7 @@ import SectionDivider from "@/components/SectionDivider";
 import ScrollProgress from "@/components/ScrollProgress";
 import LoveQuote from "@/components/LoveQuote";
 import ScrollToTop from "@/components/ScrollToTop";
-import WeddingServices from "@/components/WeddingServices";
+
 import { getTheme, type WeddingTheme } from "@/data/themes";
 
 import couple1 from "@/assets/couple-1.jpg";
