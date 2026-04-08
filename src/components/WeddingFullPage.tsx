@@ -889,7 +889,7 @@ const WeddingFullPage = ({
     couple: <CoupleSection key="couple" groomName={groomName} brideName={brideName} accentColor={accentColor} theme={theme} />,
     story: <StorySection key="story" accentColor={accentColor} sectionBg={theme.sectionBg2} theme={theme} />,
     gallery: <GallerySection key="gallery" accentColor={accentColor} theme={theme} />,
-    services: <WeddingServices key="services" accentColor={accentColor} cardRadius={theme.cardRadius} />,
+    
     events: <EventsSection key="events" date={date} time={time} venue={venue} address={address} accentColor={accentColor} theme={theme} />,
     wishes: <WishesWall key="wishes" accentColor={accentColor} />,
     rsvp: <RSVPSection key="rsvp" accentColor={accentColor} sectionBg={theme.sectionBg1} theme={theme} />,
