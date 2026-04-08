@@ -2,6 +2,7 @@ import FallingPetals from "@/components/FallingPetals";
 import HeroSection from "@/components/HeroSection";
 import TemplateGallery from "@/components/TemplateGallery";
 import HowItWorks from "@/components/HowItWorks";
+import WeddingServices from "@/components/WeddingServices";
 import { Heart } from "lucide-react";
 
 const Index = () => {
@@ -10,6 +11,7 @@ const Index = () => {
       <FallingPetals />
       <HeroSection />
       <TemplateGallery />
+      <WeddingServices accentColor="#E8B4B8" />
       <HowItWorks />
 
       {/* Footer */}
