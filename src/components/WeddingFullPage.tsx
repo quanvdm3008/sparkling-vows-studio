@@ -865,7 +865,7 @@ interface WeddingPageProps {
 const WeddingFullPage = ({
   groomName = "Minh Anh",
   brideName = "Thanh Hà",
-  date = "2025-12-20",
+  date = "2027-02-14",
   time = "17:30",
   venue = "White Palace Convention Center",
   address = "123 Đường Nguyễn Huệ, Quận 1, TP.HCM",
