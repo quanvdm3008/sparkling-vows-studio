@@ -24,6 +24,11 @@ export interface WeddingTheme {
   countdownStyle: "cards" | "circles" | "flip" | "minimal-line";
   wishesStyle: "bubble" | "luxury" | "polaroid" | "minimal" | "neon";
   animationIntensity: "subtle" | "moderate" | "dramatic";
+  // New per-theme layout variants
+  coupleLayout: "side-by-side" | "stacked-overlap" | "diagonal" | "circular-orbit" | "split-frame";
+  eventsLayout: "two-cards" | "timeline-strip" | "single-feature" | "split-image" | "stacked-bands";
+  rsvpLayout: "centered-form" | "split-image" | "minimal-inline" | "card-stack";
+  sectionAnimation: "fadeUp" | "slideAlt" | "zoomIn" | "maskReveal" | "tiltIn" | "blurIn";
   sectionOrder: string[];
   // Extra visual flair
   borderStyle: string;
