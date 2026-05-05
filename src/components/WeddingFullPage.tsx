@@ -348,10 +348,101 @@ const CountdownSection = ({ date, accentColor, sectionBg, theme }: { date: strin
   );
 };
 
-// ─── Couple Section ───────────────────────────────────
-const CoupleSection = ({ groomName, brideName, accentColor, theme }: { groomName: string; brideName: string; accentColor: string; theme: WeddingTheme }) => {
-  const isAsymmetric = theme.sectionVariant === "asymmetric";
-  
+// ─── Couple Variants ──────────────────────────────────
+interface CoupleProps { groomName: string; brideName: string; accentColor: string; theme: WeddingTheme }
+
+const PersonAvatar = ({ name, img, accentColor, rotate, theme, desc, animate }: { name: string; img: string; accentColor: string; rotate: number; theme: WeddingTheme; desc: string; animate?: boolean }) => (
+  <div className="text-center">
+    <div className="relative w-56 h-56 mx-auto mb-6">
+      <motion.div
+        className={`absolute inset-0 ${theme.cardRadius === "rounded-none" ? "" : "rounded-full"}`}
+        style={{ border: `3px solid ${accentColor}`, transform: `rotate(${rotate}deg)` }}
+        animate={animate ? { rotate: [rotate, -rotate, rotate] } : {}}
+        transition={{ duration: 8, repeat: Infinity }}
+      />
+      <img src={img} alt={name} loading="lazy" className={`w-full h-full object-cover shadow-xl ${theme.cardRadius === "rounded-none" ? "" : "rounded-full"}`} />
+    </div>
+    <h3 className="font-display text-2xl font-bold text-foreground">{name}</h3>
+    <p className="text-muted-foreground font-body text-sm mt-2 leading-relaxed max-w-xs mx-auto">{desc}</p>
+  </div>
+);
+
+const CoupleSideBySide = ({ groomName, brideName, accentColor, theme }: CoupleProps) => (
+  <div className="grid md:grid-cols-2 gap-16 items-center">
+    <motion.div initial={{ opacity: 0, x: -40 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} transition={{ duration: 0.7 }}>
+      <PersonAvatar name={groomName} img={couple1} accentColor={accentColor} rotate={6} theme={theme} desc="Một chàng trai lãng mạn, luôn mong muốn mang đến hạnh phúc cho người mình yêu thương." animate={theme.animationIntensity === "dramatic"} />
+    </motion.div>
+    <motion.div initial={{ opacity: 0, x: 40 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} transition={{ duration: 0.7 }}>
+      <PersonAvatar name={brideName} img={couple2} accentColor={accentColor} rotate={-6} theme={theme} desc="Một cô gái dịu dàng, luôn tỏa sáng với nụ cười ấm áp và trái tim nhân hậu." animate={theme.animationIntensity === "dramatic"} />
+    </motion.div>
+  </div>
+);
+
+const CoupleStackedOverlap = ({ groomName, brideName, accentColor, theme }: CoupleProps) => (
+  <div className="relative max-w-2xl mx-auto min-h-[560px] py-8">
+    <motion.div initial={{ opacity: 0, y: -30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="md:absolute md:left-0 md:top-0 z-10">
+      <PersonAvatar name={groomName} img={couple1} accentColor={accentColor} rotate={-4} theme={theme} desc="Chàng trai của em." />
+    </motion.div>
+    <motion.div initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: 0.2 }} className="md:absolute md:right-0 md:bottom-0 z-20 mt-8 md:mt-0">
+      <PersonAvatar name={brideName} img={couple2} accentColor={accentColor} rotate={4} theme={theme} desc="Cô gái của anh." />
+    </motion.div>
+    <div className="hidden md:flex absolute inset-0 items-center justify-center pointer-events-none">
+      <Heart className="w-20 h-20 animate-heartbeat" fill={accentColor} style={{ color: accentColor }} />
+    </div>
+  </div>
+);
+
+const CoupleDiagonal = ({ groomName, brideName, accentColor, theme }: CoupleProps) => (
+  <div className="grid md:grid-cols-5 gap-8 items-center">
+    <motion.div initial={{ opacity: 0, x: -60, rotate: -8 }} whileInView={{ opacity: 1, x: 0, rotate: 0 }} viewport={{ once: true }} className="md:col-span-2 md:translate-y-[-30px]">
+      <PersonAvatar name={groomName} img={couple1} accentColor={accentColor} rotate={-8} theme={theme} desc="Chú rể của ngày trọng đại." />
+    </motion.div>
+    <div className="hidden md:flex items-center justify-center md:col-span-1">
+      <motion.div animate={{ rotate: 360 }} transition={{ duration: 30, repeat: Infinity, ease: "linear" }} className="text-5xl" style={{ color: accentColor }}>✦</motion.div>
+    </div>
+    <motion.div initial={{ opacity: 0, x: 60, rotate: 8 }} whileInView={{ opacity: 1, x: 0, rotate: 0 }} viewport={{ once: true }} className="md:col-span-2 md:translate-y-[30px]">
+      <PersonAvatar name={brideName} img={couple2} accentColor={accentColor} rotate={8} theme={theme} desc="Cô dâu xinh đẹp." />
+    </motion.div>
+  </div>
+);
+
+const CoupleCircularOrbit = ({ groomName, brideName, accentColor, theme }: CoupleProps) => (
+  <div className="relative max-w-3xl mx-auto min-h-[600px] flex items-center justify-center py-10">
+    <motion.div animate={{ rotate: 360 }} transition={{ duration: 60, repeat: Infinity, ease: "linear" }} className="absolute inset-0 rounded-full border-2 border-dashed pointer-events-none" style={{ borderColor: `${accentColor}40` }} />
+    <motion.div animate={{ rotate: -360 }} transition={{ duration: 80, repeat: Infinity, ease: "linear" }} className="absolute inset-12 rounded-full border pointer-events-none" style={{ borderColor: `${accentColor}20` }} />
+    <div className="grid grid-cols-1 md:grid-cols-2 gap-8 z-10">
+      <motion.div initial={{ opacity: 0, scale: 0.7 }} whileInView={{ opacity: 1, scale: 1 }} viewport={{ once: true }} transition={{ type: "spring", delay: 0.1 }}>
+        <PersonAvatar name={groomName} img={couple1} accentColor={accentColor} rotate={0} theme={theme} desc="Chú rể." />
+      </motion.div>
+      <motion.div initial={{ opacity: 0, scale: 0.7 }} whileInView={{ opacity: 1, scale: 1 }} viewport={{ once: true }} transition={{ type: "spring", delay: 0.3 }}>
+        <PersonAvatar name={brideName} img={couple2} accentColor={accentColor} rotate={0} theme={theme} desc="Cô dâu." />
+      </motion.div>
+    </div>
+  </div>
+);
+
+const CoupleSplitFrame = ({ groomName, brideName, accentColor, theme }: CoupleProps) => (
+  <div className="grid md:grid-cols-2 max-w-4xl mx-auto border" style={{ borderColor: `${accentColor}40` }}>
+    <motion.div initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }} className="p-10 border-b md:border-b-0 md:border-r" style={{ borderColor: `${accentColor}40` }}>
+      <PersonAvatar name={groomName} img={couple1} accentColor={accentColor} rotate={0} theme={theme} desc="Một nửa của em." />
+    </motion.div>
+    <motion.div initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }} transition={{ delay: 0.2 }} className="p-10">
+      <PersonAvatar name={brideName} img={couple2} accentColor={accentColor} rotate={0} theme={theme} desc="Một nửa của anh." />
+    </motion.div>
+  </div>
+);
+
+const CoupleSection = ({ groomName, brideName, accentColor, theme }: CoupleProps) => {
+  const renderLayout = () => {
+    switch (theme.coupleLayout) {
+      case "stacked-overlap": return <CoupleStackedOverlap groomName={groomName} brideName={brideName} accentColor={accentColor} theme={theme} />;
+      case "diagonal":        return <CoupleDiagonal groomName={groomName} brideName={brideName} accentColor={accentColor} theme={theme} />;
+      case "circular-orbit":  return <CoupleCircularOrbit groomName={groomName} brideName={brideName} accentColor={accentColor} theme={theme} />;
+      case "split-frame":     return <CoupleSplitFrame groomName={groomName} brideName={brideName} accentColor={accentColor} theme={theme} />;
+      default:                return <CoupleSideBySide groomName={groomName} brideName={brideName} accentColor={accentColor} theme={theme} />;
+    }
+  };
+
   return (
     <section className="py-24 px-4">
       <div className="max-w-5xl mx-auto">
@@ -359,50 +450,7 @@ const CoupleSection = ({ groomName, brideName, accentColor, theme }: { groomName
           <span className="text-xs tracking-[0.4em] uppercase font-body" style={{ color: accentColor }}>Giới thiệu</span>
           <h2 className="font-display text-4xl md:text-5xl font-bold text-foreground mt-3">Cô Dâu & Chú Rể</h2>
         </motion.div>
-        <div className={`grid md:grid-cols-2 gap-16 items-center ${isAsymmetric ? "md:gap-8" : ""}`}>
-          <motion.div
-            initial={{ opacity: 0, x: isAsymmetric ? 0 : -40, y: isAsymmetric ? 40 : 0 }}
-            whileInView={{ opacity: 1, x: 0, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.7 }}
-            className="text-center"
-          >
-            <div className="relative w-56 h-56 mx-auto mb-6">
-              <motion.div
-                className={`absolute inset-0 ${theme.cardRadius === "rounded-none" ? "" : "rounded-full"}`}
-                style={{ border: `3px solid ${accentColor}`, transform: "rotate(6deg)" }}
-                animate={theme.animationIntensity === "dramatic" ? { rotate: [6, -6, 6] } : {}}
-                transition={{ duration: 8, repeat: Infinity }}
-              />
-              <img src={couple1} alt="Chú rể" loading="lazy" className={`w-full h-full object-cover shadow-xl ${theme.cardRadius === "rounded-none" ? "" : "rounded-full"}`} />
-            </div>
-            <h3 className="font-display text-2xl font-bold text-foreground">{groomName}</h3>
-            <p className="text-muted-foreground font-body text-sm mt-2 leading-relaxed max-w-xs mx-auto">
-              Một chàng trai lãng mạn, luôn mong muốn mang đến hạnh phúc cho người mình yêu thương.
-            </p>
-          </motion.div>
-          <motion.div
-            initial={{ opacity: 0, x: isAsymmetric ? 0 : 40, y: isAsymmetric ? -40 : 0 }}
-            whileInView={{ opacity: 1, x: 0, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.7 }}
-            className="text-center"
-          >
-            <div className="relative w-56 h-56 mx-auto mb-6">
-              <motion.div
-                className={`absolute inset-0 ${theme.cardRadius === "rounded-none" ? "" : "rounded-full"}`}
-                style={{ border: `3px solid ${accentColor}`, transform: "rotate(-6deg)" }}
-                animate={theme.animationIntensity === "dramatic" ? { rotate: [-6, 6, -6] } : {}}
-                transition={{ duration: 8, repeat: Infinity }}
-              />
-              <img src={couple1} alt="Cô dâu" loading="lazy" className={`w-full h-full object-cover shadow-xl ${theme.cardRadius === "rounded-none" ? "" : "rounded-full"}`} />
-            </div>
-            <h3 className="font-display text-2xl font-bold text-foreground">{brideName}</h3>
-            <p className="text-muted-foreground font-body text-sm mt-2 leading-relaxed max-w-xs mx-auto">
-              Một cô gái dịu dàng, luôn tỏa sáng với nụ cười ấm áp và trái tim nhân hậu.
-            </p>
-          </motion.div>
-        </div>
+        {renderLayout()}
       </div>
     </section>
   );
