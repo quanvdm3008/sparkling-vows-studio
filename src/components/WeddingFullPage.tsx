@@ -348,10 +348,101 @@ const CountdownSection = ({ date, accentColor, sectionBg, theme }: { date: strin
   );
 };
 
-// ─── Couple Section ───────────────────────────────────
-const CoupleSection = ({ groomName, brideName, accentColor, theme }: { groomName: string; brideName: string; accentColor: string; theme: WeddingTheme }) => {
-  const isAsymmetric = theme.sectionVariant === "asymmetric";
-  
+// ─── Couple Variants ──────────────────────────────────
+interface CoupleProps { groomName: string; brideName: string; accentColor: string; theme: WeddingTheme }
+
+const PersonAvatar = ({ name, img, accentColor, rotate, theme, desc, animate }: { name: string; img: string; accentColor: string; rotate: number; theme: WeddingTheme; desc: string; animate?: boolean }) => (
+  <div className="text-center">
+    <div className="relative w-56 h-56 mx-auto mb-6">
+      <motion.div
+        className={`absolute inset-0 ${theme.cardRadius === "rounded-none" ? "" : "rounded-full"}`}
+        style={{ border: `3px solid ${accentColor}`, transform: `rotate(${rotate}deg)` }}
+        animate={animate ? { rotate: [rotate, -rotate, rotate] } : {}}
+        transition={{ duration: 8, repeat: Infinity }}
+      />
+      <img src={img} alt={name} loading="lazy" className={`w-full h-full object-cover shadow-xl ${theme.cardRadius === "rounded-none" ? "" : "rounded-full"}`} />
+    </div>
+    <h3 className="font-display text-2xl font-bold text-foreground">{name}</h3>
+    <p className="text-muted-foreground font-body text-sm mt-2 leading-relaxed max-w-xs mx-auto">{desc}</p>
+  </div>
+);
+
+const CoupleSideBySide = ({ groomName, brideName, accentColor, theme }: CoupleProps) => (
+  <div className="grid md:grid-cols-2 gap-16 items-center">
+    <motion.div initial={{ opacity: 0, x: -40 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} transition={{ duration: 0.7 }}>
+      <PersonAvatar name={groomName} img={couple1} accentColor={accentColor} rotate={6} theme={theme} desc="Một chàng trai lãng mạn, luôn mong muốn mang đến hạnh phúc cho người mình yêu thương." animate={theme.animationIntensity === "dramatic"} />
+    </motion.div>
+    <motion.div initial={{ opacity: 0, x: 40 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} transition={{ duration: 0.7 }}>
+      <PersonAvatar name={brideName} img={couple2} accentColor={accentColor} rotate={-6} theme={theme} desc="Một cô gái dịu dàng, luôn tỏa sáng với nụ cười ấm áp và trái tim nhân hậu." animate={theme.animationIntensity === "dramatic"} />
+    </motion.div>
+  </div>
+);
+
+const CoupleStackedOverlap = ({ groomName, brideName, accentColor, theme }: CoupleProps) => (
+  <div className="relative max-w-2xl mx-auto min-h-[560px] py-8">
+    <motion.div initial={{ opacity: 0, y: -30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="md:absolute md:left-0 md:top-0 z-10">
+      <PersonAvatar name={groomName} img={couple1} accentColor={accentColor} rotate={-4} theme={theme} desc="Chàng trai của em." />
+    </motion.div>
+    <motion.div initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: 0.2 }} className="md:absolute md:right-0 md:bottom-0 z-20 mt-8 md:mt-0">
+      <PersonAvatar name={brideName} img={couple2} accentColor={accentColor} rotate={4} theme={theme} desc="Cô gái của anh." />
+    </motion.div>
+    <div className="hidden md:flex absolute inset-0 items-center justify-center pointer-events-none">
+      <Heart className="w-20 h-20 animate-heartbeat" fill={accentColor} style={{ color: accentColor }} />
+    </div>
+  </div>
+);
+
+const CoupleDiagonal = ({ groomName, brideName, accentColor, theme }: CoupleProps) => (
+  <div className="grid md:grid-cols-5 gap-8 items-center">
+    <motion.div initial={{ opacity: 0, x: -60, rotate: -8 }} whileInView={{ opacity: 1, x: 0, rotate: 0 }} viewport={{ once: true }} className="md:col-span-2 md:translate-y-[-30px]">
+      <PersonAvatar name={groomName} img={couple1} accentColor={accentColor} rotate={-8} theme={theme} desc="Chú rể của ngày trọng đại." />
+    </motion.div>
+    <div className="hidden md:flex items-center justify-center md:col-span-1">
+      <motion.div animate={{ rotate: 360 }} transition={{ duration: 30, repeat: Infinity, ease: "linear" }} className="text-5xl" style={{ color: accentColor }}>✦</motion.div>
+    </div>
+    <motion.div initial={{ opacity: 0, x: 60, rotate: 8 }} whileInView={{ opacity: 1, x: 0, rotate: 0 }} viewport={{ once: true }} className="md:col-span-2 md:translate-y-[30px]">
+      <PersonAvatar name={brideName} img={couple2} accentColor={accentColor} rotate={8} theme={theme} desc="Cô dâu xinh đẹp." />
+    </motion.div>
+  </div>
+);
+
+const CoupleCircularOrbit = ({ groomName, brideName, accentColor, theme }: CoupleProps) => (
+  <div className="relative max-w-3xl mx-auto min-h-[600px] flex items-center justify-center py-10">
+    <motion.div animate={{ rotate: 360 }} transition={{ duration: 60, repeat: Infinity, ease: "linear" }} className="absolute inset-0 rounded-full border-2 border-dashed pointer-events-none" style={{ borderColor: `${accentColor}40` }} />
+    <motion.div animate={{ rotate: -360 }} transition={{ duration: 80, repeat: Infinity, ease: "linear" }} className="absolute inset-12 rounded-full border pointer-events-none" style={{ borderColor: `${accentColor}20` }} />
+    <div className="grid grid-cols-1 md:grid-cols-2 gap-8 z-10">
+      <motion.div initial={{ opacity: 0, scale: 0.7 }} whileInView={{ opacity: 1, scale: 1 }} viewport={{ once: true }} transition={{ type: "spring", delay: 0.1 }}>
+        <PersonAvatar name={groomName} img={couple1} accentColor={accentColor} rotate={0} theme={theme} desc="Chú rể." />
+      </motion.div>
+      <motion.div initial={{ opacity: 0, scale: 0.7 }} whileInView={{ opacity: 1, scale: 1 }} viewport={{ once: true }} transition={{ type: "spring", delay: 0.3 }}>
+        <PersonAvatar name={brideName} img={couple2} accentColor={accentColor} rotate={0} theme={theme} desc="Cô dâu." />
+      </motion.div>
+    </div>
+  </div>
+);
+
+const CoupleSplitFrame = ({ groomName, brideName, accentColor, theme }: CoupleProps) => (
+  <div className="grid md:grid-cols-2 max-w-4xl mx-auto border" style={{ borderColor: `${accentColor}40` }}>
+    <motion.div initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }} className="p-10 border-b md:border-b-0 md:border-r" style={{ borderColor: `${accentColor}40` }}>
+      <PersonAvatar name={groomName} img={couple1} accentColor={accentColor} rotate={0} theme={theme} desc="Một nửa của em." />
+    </motion.div>
+    <motion.div initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }} transition={{ delay: 0.2 }} className="p-10">
+      <PersonAvatar name={brideName} img={couple2} accentColor={accentColor} rotate={0} theme={theme} desc="Một nửa của anh." />
+    </motion.div>
+  </div>
+);
+
+const CoupleSection = ({ groomName, brideName, accentColor, theme }: CoupleProps) => {
+  const renderLayout = () => {
+    switch (theme.coupleLayout) {
+      case "stacked-overlap": return <CoupleStackedOverlap groomName={groomName} brideName={brideName} accentColor={accentColor} theme={theme} />;
+      case "diagonal":        return <CoupleDiagonal groomName={groomName} brideName={brideName} accentColor={accentColor} theme={theme} />;
+      case "circular-orbit":  return <CoupleCircularOrbit groomName={groomName} brideName={brideName} accentColor={accentColor} theme={theme} />;
+      case "split-frame":     return <CoupleSplitFrame groomName={groomName} brideName={brideName} accentColor={accentColor} theme={theme} />;
+      default:                return <CoupleSideBySide groomName={groomName} brideName={brideName} accentColor={accentColor} theme={theme} />;
+    }
+  };
+
   return (
     <section className="py-24 px-4">
       <div className="max-w-5xl mx-auto">
@@ -359,50 +450,7 @@ const CoupleSection = ({ groomName, brideName, accentColor, theme }: { groomName
           <span className="text-xs tracking-[0.4em] uppercase font-body" style={{ color: accentColor }}>Giới thiệu</span>
           <h2 className="font-display text-4xl md:text-5xl font-bold text-foreground mt-3">Cô Dâu & Chú Rể</h2>
         </motion.div>
-        <div className={`grid md:grid-cols-2 gap-16 items-center ${isAsymmetric ? "md:gap-8" : ""}`}>
-          <motion.div
-            initial={{ opacity: 0, x: isAsymmetric ? 0 : -40, y: isAsymmetric ? 40 : 0 }}
-            whileInView={{ opacity: 1, x: 0, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.7 }}
-            className="text-center"
-          >
-            <div className="relative w-56 h-56 mx-auto mb-6">
-              <motion.div
-                className={`absolute inset-0 ${theme.cardRadius === "rounded-none" ? "" : "rounded-full"}`}
-                style={{ border: `3px solid ${accentColor}`, transform: "rotate(6deg)" }}
-                animate={theme.animationIntensity === "dramatic" ? { rotate: [6, -6, 6] } : {}}
-                transition={{ duration: 8, repeat: Infinity }}
-              />
-              <img src={couple1} alt="Chú rể" loading="lazy" className={`w-full h-full object-cover shadow-xl ${theme.cardRadius === "rounded-none" ? "" : "rounded-full"}`} />
-            </div>
-            <h3 className="font-display text-2xl font-bold text-foreground">{groomName}</h3>
-            <p className="text-muted-foreground font-body text-sm mt-2 leading-relaxed max-w-xs mx-auto">
-              Một chàng trai lãng mạn, luôn mong muốn mang đến hạnh phúc cho người mình yêu thương.
-            </p>
-          </motion.div>
-          <motion.div
-            initial={{ opacity: 0, x: isAsymmetric ? 0 : 40, y: isAsymmetric ? -40 : 0 }}
-            whileInView={{ opacity: 1, x: 0, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.7 }}
-            className="text-center"
-          >
-            <div className="relative w-56 h-56 mx-auto mb-6">
-              <motion.div
-                className={`absolute inset-0 ${theme.cardRadius === "rounded-none" ? "" : "rounded-full"}`}
-                style={{ border: `3px solid ${accentColor}`, transform: "rotate(-6deg)" }}
-                animate={theme.animationIntensity === "dramatic" ? { rotate: [-6, 6, -6] } : {}}
-                transition={{ duration: 8, repeat: Infinity }}
-              />
-              <img src={couple1} alt="Cô dâu" loading="lazy" className={`w-full h-full object-cover shadow-xl ${theme.cardRadius === "rounded-none" ? "" : "rounded-full"}`} />
-            </div>
-            <h3 className="font-display text-2xl font-bold text-foreground">{brideName}</h3>
-            <p className="text-muted-foreground font-body text-sm mt-2 leading-relaxed max-w-xs mx-auto">
-              Một cô gái dịu dàng, luôn tỏa sáng với nụ cười ấm áp và trái tim nhân hậu.
-            </p>
-          </motion.div>
-        </div>
+        {renderLayout()}
       </div>
     </section>
   );
@@ -667,9 +715,102 @@ const GallerySection = ({ accentColor, theme }: GalleryProps) => {
 };
 
 // ─── Event Details ────────────────────────────────────
+interface EventInfo { icon: JSX.Element; title: string; date: string; time: string; venue: string; address: string }
+
+const EventCard = ({ ev, accentColor, theme, variant = "default" }: { ev: EventInfo; accentColor: string; theme: WeddingTheme; variant?: "default" | "compact" | "row" }) => {
+  if (variant === "row") {
+    return (
+      <div className={`flex items-center gap-5 bg-card/80 backdrop-blur-sm ${theme.cardRadius} p-5 border border-border shadow-md`}>
+        <div className="w-14 h-14 rounded-full flex items-center justify-center flex-shrink-0" style={{ backgroundColor: accentColor + "20" }}>{ev.icon}</div>
+        <div className="text-left flex-1">
+          <h3 className="font-display text-lg font-bold text-foreground">{ev.title}</h3>
+          <p className="text-muted-foreground font-body text-sm">{ev.date} · {ev.time} · {ev.venue}</p>
+        </div>
+      </div>
+    );
+  }
+  return (
+    <div className={`bg-card/80 backdrop-blur-sm ${theme.cardRadius} p-8 md:p-10 shadow-xl border border-border text-center`}>
+      <div className="w-16 h-16 mx-auto mb-6 rounded-full flex items-center justify-center" style={{ backgroundColor: accentColor + "20" }}>{ev.icon}</div>
+      <h3 className="font-display text-2xl font-bold text-foreground mb-4">{ev.title}</h3>
+      <div className="space-y-3 text-muted-foreground font-body">
+        <div className="flex items-center justify-center gap-2"><Calendar className="w-4 h-4" style={{ color: accentColor }} /><span>{ev.date}</span></div>
+        <div className="flex items-center justify-center gap-2"><Clock className="w-4 h-4" style={{ color: accentColor }} /><span>{ev.time}</span></div>
+        <div className="flex items-center justify-center gap-2"><MapPin className="w-4 h-4" style={{ color: accentColor }} /><span>{ev.venue}</span></div>
+        <p className="text-sm pt-2">{ev.address}</p>
+      </div>
+    </div>
+  );
+};
+
 const EventsSection = ({ date, time, venue, address, accentColor, theme }: { date: string; time: string; venue: string; address: string; accentColor: string; theme: WeddingTheme }) => {
   const formattedDate = date ? new Date(date).toLocaleDateString("vi-VN", { weekday: "long", year: "numeric", month: "long", day: "numeric" }) : "";
-  
+  const events: EventInfo[] = [
+    { icon: <Heart className="w-7 h-7" style={{ color: accentColor }} />, title: "Lễ Thành Hôn", date: formattedDate, time, venue, address },
+    { icon: <MusicIcon className="w-7 h-7" style={{ color: accentColor }} />, title: "Tiệc Cưới", date: formattedDate, time: "18:00", venue, address: "Cocktail, tiệc tối & nhảy cùng DJ" },
+  ];
+
+  const renderLayout = () => {
+    switch (theme.eventsLayout) {
+      case "split-image":
+        return (
+          <div className="grid md:grid-cols-2 gap-0 overflow-hidden shadow-2xl">
+            <motion.div initial={{ opacity: 0, x: -30 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} className="relative min-h-[300px]">
+              <img src={venueImg} alt="Venue" loading="lazy" className="w-full h-full object-cover absolute inset-0" />
+              <div className="absolute inset-0" style={{ background: `linear-gradient(135deg, ${accentColor}40, transparent)` }} />
+            </motion.div>
+            <motion.div initial={{ opacity: 0, x: 30 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} className="bg-card p-8 md:p-10 space-y-6">
+              {events.map((ev, i) => <EventCard key={i} ev={ev} accentColor={accentColor} theme={theme} variant="row" />)}
+            </motion.div>
+          </div>
+        );
+      case "stacked-bands":
+        return (
+          <div className="space-y-4">
+            {events.map((ev, i) => (
+              <motion.div key={i} initial={{ opacity: 0, x: i % 2 ? 40 : -40 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} transition={{ delay: i * 0.15 }}>
+                <EventCard ev={ev} accentColor={accentColor} theme={theme} variant="row" />
+              </motion.div>
+            ))}
+          </div>
+        );
+      case "single-feature":
+        return (
+          <motion.div initial={{ opacity: 0, scale: 0.95 }} whileInView={{ opacity: 1, scale: 1 }} viewport={{ once: true }} className="max-w-2xl mx-auto">
+            <EventCard ev={events[0]} accentColor={accentColor} theme={theme} />
+            <div className="mt-4">
+              <EventCard ev={events[1]} accentColor={accentColor} theme={theme} variant="row" />
+            </div>
+          </motion.div>
+        );
+      case "timeline-strip":
+        return (
+          <div className="relative">
+            <div className="absolute left-4 md:left-1/2 top-0 bottom-0 w-[2px]" style={{ backgroundColor: `${accentColor}40` }} />
+            <div className="space-y-10">
+              {events.map((ev, i) => (
+                <motion.div key={i} initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: i * 0.2 }}
+                  className={`relative pl-12 md:pl-0 md:grid md:grid-cols-2 md:gap-10 ${i % 2 ? "md:[&>*:first-child]:order-2" : ""}`}>
+                  <div className="absolute left-2.5 md:left-1/2 md:-translate-x-1/2 top-6 w-3 h-3 rounded-full ring-4 ring-background" style={{ backgroundColor: accentColor }} />
+                  <EventCard ev={ev} accentColor={accentColor} theme={theme} />
+                </motion.div>
+              ))}
+            </div>
+          </div>
+        );
+      default:
+        return (
+          <div className="grid md:grid-cols-2 gap-8">
+            {events.map((ev, i) => (
+              <motion.div key={i} initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: i * 0.15 }}>
+                <EventCard ev={ev} accentColor={accentColor} theme={theme} />
+              </motion.div>
+            ))}
+          </div>
+        );
+    }
+  };
+
   return (
     <section id="events" className="py-24 px-4 relative overflow-hidden">
       <div className="absolute inset-0 opacity-10">
@@ -680,51 +821,18 @@ const EventsSection = ({ date, time, venue, address, accentColor, theme }: { dat
           <span className="text-xs tracking-[0.4em] uppercase font-body" style={{ color: accentColor }}>Chi tiết</span>
           <h2 className="font-display text-4xl md:text-5xl font-bold text-foreground mt-3">Sự Kiện Cưới</h2>
         </motion.div>
-        <div className="grid md:grid-cols-2 gap-8">
-          <motion.div initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className={`bg-card/80 backdrop-blur-sm ${theme.cardRadius} p-8 md:p-10 shadow-xl border border-border text-center`}>
-            <div className="w-16 h-16 mx-auto mb-6 rounded-full flex items-center justify-center" style={{ backgroundColor: accentColor + "20" }}>
-              <Heart className="w-7 h-7" style={{ color: accentColor }} />
-            </div>
-            <h3 className="font-display text-2xl font-bold text-foreground mb-4">Lễ Thành Hôn</h3>
-            <div className="space-y-3 text-muted-foreground font-body">
-              <div className="flex items-center justify-center gap-2"><Calendar className="w-4 h-4" style={{ color: accentColor }} /><span>{formattedDate}</span></div>
-              <div className="flex items-center justify-center gap-2"><Clock className="w-4 h-4" style={{ color: accentColor }} /><span>{time}</span></div>
-              <div className="flex items-center justify-center gap-2"><MapPin className="w-4 h-4" style={{ color: accentColor }} /><span>{venue}</span></div>
-              <p className="text-sm pt-2">{address}</p>
-            </div>
-          </motion.div>
-          <motion.div initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: 0.15 }} className={`bg-card/80 backdrop-blur-sm ${theme.cardRadius} p-8 md:p-10 shadow-xl border border-border text-center`}>
-            <div className="w-16 h-16 mx-auto mb-6 rounded-full flex items-center justify-center" style={{ backgroundColor: accentColor + "20" }}>
-              <MusicIcon className="w-7 h-7" style={{ color: accentColor }} />
-            </div>
-            <h3 className="font-display text-2xl font-bold text-foreground mb-4">Tiệc Cưới</h3>
-            <div className="space-y-3 text-muted-foreground font-body">
-              <div className="flex items-center justify-center gap-2"><Calendar className="w-4 h-4" style={{ color: accentColor }} /><span>{formattedDate}</span></div>
-              <div className="flex items-center justify-center gap-2"><Clock className="w-4 h-4" style={{ color: accentColor }} /><span>18:00</span></div>
-              <div className="flex items-center justify-center gap-2"><MapPin className="w-4 h-4" style={{ color: accentColor }} /><span>{venue}</span></div>
-              <p className="text-sm pt-2">Cocktail, tiệc tối & nhảy cùng DJ</p>
-            </div>
-          </motion.div>
-        </div>
+        {renderLayout()}
 
         {/* Add to Calendar */}
         <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="mt-10 text-center">
           <motion.a
             href={`https://calendar.google.com/calendar/render?action=TEMPLATE&text=${encodeURIComponent(`Đám cưới tại ${venue}`)}&dates=${date.replace(/-/g, "")}T${time.replace(":", "")}00/${date.replace(/-/g, "")}T235900&location=${encodeURIComponent(address)}`}
-            target="_blank"
-            rel="noopener noreferrer"
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
+            target="_blank" rel="noopener noreferrer" whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}
             className="inline-flex items-center gap-2 px-6 py-3 rounded-full text-primary-foreground font-body font-semibold shadow-lg"
-            style={{ backgroundColor: accentColor }}
-          >
+            style={{ backgroundColor: accentColor }}>
             <CalendarPlus className="w-4 h-4" />
             Thêm vào Lịch Google
           </motion.a>
-        </motion.div>
-
-        <motion.div initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className={`mt-12 ${theme.cardRadius} overflow-hidden shadow-2xl`}>
-          <img src={venueImg} alt="Venue" loading="lazy" className="w-full h-64 md:h-80 object-cover" />
         </motion.div>
       </div>
     </section>
@@ -849,6 +957,24 @@ const SpecialEffects = ({ effect, accentColor }: { effect?: string; accentColor:
   return null;
 };
 
+// ─── Section Animation Wrapper ───────────────────────
+const SectionAnimation = ({ variant, index, children }: { variant: WeddingTheme["sectionAnimation"]; index: number; children: React.ReactNode }) => {
+  const variants = {
+    fadeUp:     { initial: { opacity: 0, y: 50 }, whileInView: { opacity: 1, y: 0 } },
+    slideAlt:   { initial: { opacity: 0, x: index % 2 === 0 ? -60 : 60 }, whileInView: { opacity: 1, x: 0 } },
+    zoomIn:     { initial: { opacity: 0, scale: 0.9 }, whileInView: { opacity: 1, scale: 1 } },
+    maskReveal: { initial: { opacity: 0, clipPath: "inset(0 0 100% 0)" }, whileInView: { opacity: 1, clipPath: "inset(0 0 0% 0)" } },
+    tiltIn:     { initial: { opacity: 0, rotate: index % 2 === 0 ? -3 : 3, y: 40 }, whileInView: { opacity: 1, rotate: 0, y: 0 } },
+    blurIn:     { initial: { opacity: 0, filter: "blur(12px)" }, whileInView: { opacity: 1, filter: "blur(0px)" } },
+  } as const;
+  const v = variants[variant] || variants.fadeUp;
+  return (
+    <motion.div initial={v.initial} whileInView={v.whileInView} viewport={{ once: true, margin: "-80px" }} transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1] }}>
+      {children}
+    </motion.div>
+  );
+};
+
 // ─── Main Component ───────────────────────────────────
 interface WeddingPageProps {
   groomName?: string;
@@ -931,7 +1057,7 @@ const WeddingFullPage = ({
           {orderedSections.map((section, i) => (
             <div key={i}>
               {i > 0 && <SectionDivider accentColor={accentColor} variant={dividerVariant} />}
-              {section}
+              <SectionAnimation variant={theme.sectionAnimation} index={i}>{section}</SectionAnimation>
             </div>
           ))}
 

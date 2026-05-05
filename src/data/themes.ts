@@ -24,6 +24,11 @@ export interface WeddingTheme {
   countdownStyle: "cards" | "circles" | "flip" | "minimal-line";
   wishesStyle: "bubble" | "luxury" | "polaroid" | "minimal" | "neon";
   animationIntensity: "subtle" | "moderate" | "dramatic";
+  // New per-theme layout variants
+  coupleLayout: "side-by-side" | "stacked-overlap" | "diagonal" | "circular-orbit" | "split-frame";
+  eventsLayout: "two-cards" | "timeline-strip" | "single-feature" | "split-image" | "stacked-bands";
+  rsvpLayout: "centered-form" | "split-image" | "minimal-inline" | "card-stack";
+  sectionAnimation: "fadeUp" | "slideAlt" | "zoomIn" | "maskReveal" | "tiltIn" | "blurIn";
   sectionOrder: string[];
   // Extra visual flair
   borderStyle: string;
@@ -34,6 +39,10 @@ export interface WeddingTheme {
 export const themes: Record<string, WeddingTheme> = {
   romantic: {
     id: "romantic",
+    coupleLayout: "side-by-side",
+    eventsLayout: "two-cards",
+    rsvpLayout: "centered-form",
+    sectionAnimation: "fadeUp",
     bgGradient: "linear-gradient(180deg, #FFF0F3 0%, #FFF5F7 30%, #FFFFFF 100%)",
     sectionBg1: "rgba(232,180,184,0.08)",
     sectionBg2: "rgba(163,177,138,0.06)",
@@ -57,6 +66,10 @@ export const themes: Record<string, WeddingTheme> = {
   },
   modern: {
     id: "modern",
+    coupleLayout: "diagonal",
+    eventsLayout: "split-image",
+    rsvpLayout: "split-image",
+    sectionAnimation: "blurIn",
     bgGradient: "linear-gradient(180deg, #0F1724 0%, #1B2838 30%, #0D1520 100%)",
     sectionBg1: "rgba(212,168,83,0.06)",
     sectionBg2: "rgba(27,40,56,0.9)",
@@ -81,6 +94,10 @@ export const themes: Record<string, WeddingTheme> = {
   },
   tropical: {
     id: "tropical",
+    coupleLayout: "stacked-overlap",
+    eventsLayout: "stacked-bands",
+    rsvpLayout: "card-stack",
+    sectionAnimation: "tiltIn",
     bgGradient: "linear-gradient(180deg, #FFF8F0 0%, #FEF3E2 30%, #FFFAF5 100%)",
     sectionBg1: "rgba(199,91,57,0.06)",
     sectionBg2: "rgba(45,80,22,0.05)",
@@ -105,6 +122,10 @@ export const themes: Record<string, WeddingTheme> = {
   },
   rustic: {
     id: "rustic",
+    coupleLayout: "split-frame",
+    eventsLayout: "timeline-strip",
+    rsvpLayout: "minimal-inline",
+    sectionAnimation: "slideAlt",
     bgGradient: "linear-gradient(180deg, #F5EDE3 0%, #EDE4D8 30%, #FAF6F1 100%)",
     sectionBg1: "rgba(155,124,181,0.06)",
     sectionBg2: "rgba(210,180,140,0.08)",
@@ -128,6 +149,10 @@ export const themes: Record<string, WeddingTheme> = {
   },
   sakura: {
     id: "sakura",
+    coupleLayout: "circular-orbit",
+    eventsLayout: "two-cards",
+    rsvpLayout: "centered-form",
+    sectionAnimation: "zoomIn",
     bgGradient: "linear-gradient(180deg, #FFF0F5 0%, #F8E8EE 30%, #FFF5F9 100%)",
     sectionBg1: "rgba(255,183,197,0.08)",
     sectionBg2: "rgba(248,232,238,0.5)",
@@ -152,6 +177,10 @@ export const themes: Record<string, WeddingTheme> = {
   },
   minimalist: {
     id: "minimalist",
+    coupleLayout: "split-frame",
+    eventsLayout: "single-feature",
+    rsvpLayout: "minimal-inline",
+    sectionAnimation: "maskReveal",
     bgGradient: "linear-gradient(180deg, #FAFAF8 0%, #F5F0E8 30%, #FFFFFF 100%)",
     sectionBg1: "rgba(201,169,110,0.04)",
     sectionBg2: "rgba(245,240,232,0.3)",
@@ -175,6 +204,10 @@ export const themes: Record<string, WeddingTheme> = {
   },
   vintage: {
     id: "vintage",
+    coupleLayout: "stacked-overlap",
+    eventsLayout: "timeline-strip",
+    rsvpLayout: "card-stack",
+    sectionAnimation: "fadeUp",
     bgGradient: "linear-gradient(180deg, #F5E6CC 0%, #EDDCC8 30%, #FAF3EA 100%)",
     sectionBg1: "rgba(139,105,20,0.06)",
     sectionBg2: "rgba(210,180,140,0.1)",
@@ -199,6 +232,10 @@ export const themes: Record<string, WeddingTheme> = {
   },
   boho: {
     id: "boho",
+    coupleLayout: "diagonal",
+    eventsLayout: "stacked-bands",
+    rsvpLayout: "split-image",
+    sectionAnimation: "tiltIn",
     bgGradient: "linear-gradient(180deg, #F8EDE3 0%, #E8D5C4 30%, #FDF6F0 100%)",
     sectionBg1: "rgba(198,123,92,0.06)",
     sectionBg2: "rgba(232,213,196,0.3)",
@@ -223,6 +260,10 @@ export const themes: Record<string, WeddingTheme> = {
   },
   royal: {
     id: "royal",
+    coupleLayout: "circular-orbit",
+    eventsLayout: "split-image",
+    rsvpLayout: "card-stack",
+    sectionAnimation: "zoomIn",
     bgGradient: "linear-gradient(180deg, #1A0A0A 0%, #2D0A0A 30%, #0D0505 100%)",
     sectionBg1: "rgba(212,168,83,0.08)",
     sectionBg2: "rgba(128,0,32,0.15)",
@@ -247,6 +288,10 @@ export const themes: Record<string, WeddingTheme> = {
   },
   garden: {
     id: "garden",
+    coupleLayout: "side-by-side",
+    eventsLayout: "two-cards",
+    rsvpLayout: "centered-form",
+    sectionAnimation: "slideAlt",
     bgGradient: "linear-gradient(180deg, #F0FFF0 0%, #F5F0FF 30%, #FFFFF5 100%)",
     sectionBg1: "rgba(232,160,191,0.06)",
     sectionBg2: "rgba(165,214,167,0.06)",
