@@ -1,7 +1,8 @@
 import { useState, useRef, useEffect } from "react";
-import { motion, AnimatePresence, useMotionValue, useTransform } from "framer-motion";
-import { Heart, MessageCircleHeart, Sparkles, Send, User, PenLine, ThumbsUp, Star, PartyPopper } from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
+import { Heart, MessageCircleHeart, Sparkles, Send, User, PenLine, Star, PartyPopper, Quote } from "lucide-react";
 import { emitWish } from "@/components/LiveWishToast";
+import type { WeddingTheme } from "@/data/themes";
 
 interface Wish {
   id: number;
