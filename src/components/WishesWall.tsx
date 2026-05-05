@@ -796,6 +796,7 @@ const WishesWall = ({ accentColor, theme }: { accentColor: string; theme?: Weddi
                 accentColor={accentColor}
                 onLike={handleLike}
                 animStyle={animStyle}
+                visualStyle={visualStyle}
               />
             ))}
           </AnimatePresence>
