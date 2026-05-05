@@ -891,7 +891,7 @@ const WeddingFullPage = ({
     gallery: <GallerySection key="gallery" accentColor={accentColor} theme={theme} />,
     
     events: <EventsSection key="events" date={date} time={time} venue={venue} address={address} accentColor={accentColor} theme={theme} />,
-    wishes: <WishesWall key="wishes" accentColor={accentColor} />,
+    wishes: <WishesWall key="wishes" accentColor={accentColor} theme={theme} />,
     rsvp: <RSVPSection key="rsvp" accentColor={accentColor} sectionBg={theme.sectionBg1} theme={theme} />,
   };
 
