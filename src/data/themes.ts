@@ -22,6 +22,7 @@ export interface WeddingTheme {
   timelineStyle: "alternating" | "left-aligned" | "center-cards" | "horizontal";
   galleryStyle: "masonry" | "carousel" | "grid-overlap" | "polaroid";
   countdownStyle: "cards" | "circles" | "flip" | "minimal-line";
+  wishesStyle: "bubble" | "luxury" | "polaroid" | "minimal" | "neon";
   animationIntensity: "subtle" | "moderate" | "dramatic";
   sectionOrder: string[];
   // Extra visual flair
