@@ -1057,7 +1057,7 @@ const WeddingFullPage = ({
           {orderedSections.map((section, i) => (
             <div key={i}>
               {i > 0 && <SectionDivider accentColor={accentColor} variant={dividerVariant} />}
-              {section}
+              <SectionAnimation variant={theme.sectionAnimation} index={i}>{section}</SectionAnimation>
             </div>
           ))}
 
