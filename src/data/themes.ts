@@ -22,6 +22,7 @@ export interface WeddingTheme {
   timelineStyle: "alternating" | "left-aligned" | "center-cards" | "horizontal";
   galleryStyle: "masonry" | "carousel" | "grid-overlap" | "polaroid";
   countdownStyle: "cards" | "circles" | "flip" | "minimal-line";
+  wishesStyle: "bubble" | "luxury" | "polaroid" | "minimal" | "neon";
   animationIntensity: "subtle" | "moderate" | "dramatic";
   sectionOrder: string[];
   // Extra visual flair
@@ -48,6 +49,7 @@ export const themes: Record<string, WeddingTheme> = {
     timelineStyle: "alternating",
     galleryStyle: "masonry",
     countdownStyle: "cards",
+    wishesStyle: "bubble",
     animationIntensity: "moderate",
     sectionOrder: ["countdown", "couple", "story", "gallery", "events", "wishes", "rsvp"],
     borderStyle: "border-pink-200/30",
@@ -70,6 +72,7 @@ export const themes: Record<string, WeddingTheme> = {
     timelineStyle: "center-cards",
     galleryStyle: "grid-overlap",
     countdownStyle: "flip",
+    wishesStyle: "neon",
     animationIntensity: "dramatic",
     sectionOrder: ["countdown", "couple", "story", "gallery", "events", "wishes", "rsvp"],
     borderStyle: "border-yellow-600/20",
@@ -93,6 +96,7 @@ export const themes: Record<string, WeddingTheme> = {
     timelineStyle: "left-aligned",
     galleryStyle: "polaroid",
     countdownStyle: "circles",
+    wishesStyle: "polaroid",
     animationIntensity: "dramatic",
     sectionOrder: ["couple", "countdown", "gallery", "story", "events", "wishes", "rsvp"],
     borderStyle: "border-orange-300/30",
@@ -116,6 +120,7 @@ export const themes: Record<string, WeddingTheme> = {
     timelineStyle: "left-aligned",
     galleryStyle: "polaroid",
     countdownStyle: "minimal-line",
+    wishesStyle: "polaroid",
     animationIntensity: "subtle",
     sectionOrder: ["countdown", "story", "couple", "gallery", "events", "wishes", "rsvp"],
     borderStyle: "border-purple-300/20",
@@ -138,6 +143,7 @@ export const themes: Record<string, WeddingTheme> = {
     timelineStyle: "alternating",
     galleryStyle: "masonry",
     countdownStyle: "circles",
+    wishesStyle: "bubble",
     animationIntensity: "moderate",
     sectionOrder: ["countdown", "couple", "story", "gallery", "wishes", "events", "rsvp"],
     borderStyle: "border-pink-300/30",
@@ -161,6 +167,7 @@ export const themes: Record<string, WeddingTheme> = {
     timelineStyle: "center-cards",
     galleryStyle: "grid-overlap",
     countdownStyle: "minimal-line",
+    wishesStyle: "minimal",
     animationIntensity: "subtle",
     sectionOrder: ["countdown", "couple", "story", "gallery", "events", "wishes", "rsvp"],
     borderStyle: "border-stone-200/50",
@@ -183,6 +190,7 @@ export const themes: Record<string, WeddingTheme> = {
     timelineStyle: "left-aligned",
     galleryStyle: "polaroid",
     countdownStyle: "flip",
+    wishesStyle: "polaroid",
     animationIntensity: "subtle",
     sectionOrder: ["couple", "countdown", "story", "gallery", "events", "wishes", "rsvp"],
     borderStyle: "border-amber-700/20",
@@ -206,6 +214,7 @@ export const themes: Record<string, WeddingTheme> = {
     timelineStyle: "horizontal",
     galleryStyle: "polaroid",
     countdownStyle: "circles",
+    wishesStyle: "polaroid",
     animationIntensity: "moderate",
     sectionOrder: ["countdown", "couple", "gallery", "story", "wishes", "events", "rsvp"],
     borderStyle: "border-orange-400/20",
@@ -229,6 +238,7 @@ export const themes: Record<string, WeddingTheme> = {
     timelineStyle: "center-cards",
     galleryStyle: "grid-overlap",
     countdownStyle: "flip",
+    wishesStyle: "luxury",
     animationIntensity: "dramatic",
     sectionOrder: ["countdown", "couple", "story", "gallery", "events", "wishes", "rsvp"],
     borderStyle: "border-yellow-600/30",
@@ -252,6 +262,7 @@ export const themes: Record<string, WeddingTheme> = {
     timelineStyle: "alternating",
     galleryStyle: "masonry",
     countdownStyle: "cards",
+    wishesStyle: "bubble",
     animationIntensity: "moderate",
     sectionOrder: ["couple", "countdown", "story", "gallery", "wishes", "events", "rsvp"],
     borderStyle: "border-green-300/20",

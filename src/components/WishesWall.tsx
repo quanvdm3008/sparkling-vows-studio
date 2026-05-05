@@ -1,7 +1,8 @@
 import { useState, useRef, useEffect } from "react";
-import { motion, AnimatePresence, useMotionValue, useTransform } from "framer-motion";
-import { Heart, MessageCircleHeart, Sparkles, Send, User, PenLine, ThumbsUp, Star, PartyPopper } from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
+import { Heart, MessageCircleHeart, Sparkles, Send, User, PenLine, Star, PartyPopper, Quote } from "lucide-react";
 import { emitWish } from "@/components/LiveWishToast";
+import type { WeddingTheme } from "@/data/themes";
 
 interface Wish {
   id: number;
@@ -55,23 +56,92 @@ const FloatingHearts = ({ accentColor }: { accentColor: string }) => (
   </div>
 );
 
-// ─── Chat Bubble Wish Card ───────────────────────
+// ─── Wish Bubble (5 visual styles) ───────────────
+type WishStyle = "bubble" | "luxury" | "polaroid" | "minimal" | "neon";
+
+const styleConfig: Record<WishStyle, {
+  cardClass: string;
+  cardBg: (c: string) => string;
+  textClass: string;
+  nameClass: string;
+  msgClass: string;
+  border: (c: string) => string;
+  topAccent?: (c: string) => string;
+  rotate?: number;
+  glow?: boolean;
+  decoration?: "quote" | "ribbon" | "tape" | "dot" | "spark";
+}> = {
+  bubble: {
+    cardClass: "rounded-2xl",
+    cardBg: () => "linear-gradient(145deg, rgba(255,255,255,0.95), rgba(255,255,255,0.85))",
+    textClass: "text-foreground",
+    nameClass: "text-foreground",
+    msgClass: "text-muted-foreground/80",
+    border: () => "border-border/60",
+    topAccent: (c) => `linear-gradient(90deg, transparent, ${c}, transparent)`,
+    decoration: "spark",
+  },
+  luxury: {
+    cardClass: "rounded-none",
+    cardBg: () => "linear-gradient(145deg, #1a0f0f 0%, #2d1810 60%, #1a0a0a 100%)",
+    textClass: "text-white",
+    nameClass: "text-white",
+    msgClass: "text-white/75",
+    border: (c) => "",
+    topAccent: (c) => `linear-gradient(90deg, transparent, ${c}, transparent)`,
+    glow: true,
+    decoration: "quote",
+  },
+  polaroid: {
+    cardClass: "rounded-sm",
+    cardBg: () => "#fdfcf7",
+    textClass: "text-stone-700",
+    nameClass: "text-stone-800",
+    msgClass: "text-stone-600",
+    border: () => "border-stone-200",
+    decoration: "tape",
+  },
+  minimal: {
+    cardClass: "rounded-none border-l-2",
+    cardBg: () => "transparent",
+    textClass: "text-foreground",
+    nameClass: "text-foreground tracking-wide",
+    msgClass: "text-muted-foreground",
+    border: (c) => "",
+    decoration: "dot",
+  },
+  neon: {
+    cardClass: "rounded-2xl",
+    cardBg: () => "linear-gradient(145deg, rgba(15,20,35,0.92), rgba(20,25,45,0.85))",
+    textClass: "text-white",
+    nameClass: "text-white",
+    msgClass: "text-white/70",
+    border: (c) => "",
+    topAccent: (c) => `linear-gradient(90deg, transparent, ${c}, transparent)`,
+    glow: true,
+    decoration: "spark",
+  },
+};
+
 const WishBubble = ({
   wish,
   index,
   accentColor,
   onLike,
   animStyle,
+  visualStyle,
 }: {
   wish: Wish;
   index: number;
   accentColor: string;
   onLike: (id: number) => void;
   animStyle: "slide" | "pop" | "flip" | "wave" | "float";
+  visualStyle: WishStyle;
 }) => {
   const isEven = index % 2 === 0;
   const [showReactions, setShowReactions] = useState(false);
   const [particles, setParticles] = useState<{ id: number; emoji: string }[]>([]);
+  const cfg = styleConfig[visualStyle];
 
   const variants = {
     slide: {
@@ -102,11 +172,11 @@ const WishBubble = ({
   };
 
   const v = variants[animStyle];
+  const polaroidRotate = visualStyle === "polaroid" ? (isEven ? -2 : 2) : 0;
 
   const handleLike = () => {
     onLike(wish.id);
-    // Burst particles
-    const newParticles = Array.from({ length: 5 }, (_, i) => ({
+    const newParticles = Array.from({ length: 6 }, (_, i) => ({
       id: Date.now() + i,
       emoji: reactionEmojis[Math.floor(Math.random() * reactionEmojis.length)],
     }));
@@ -121,7 +191,7 @@ const WishBubble = ({
       viewport={{ once: true, margin: "-30px" }}
       transition={v.transition}
       className="group relative"
-      style={{ perspective: 800 }}
+      style={{ perspective: 800, rotate: `${polaroidRotate}deg` }}
     >
       {/* Like particles */}
       <AnimatePresence>
@@ -146,69 +216,106 @@ const WishBubble = ({
       </AnimatePresence>
 
       <motion.div
-        whileHover={{ y: -3, scale: 1.01 }}
+        whileHover={{ y: -4, scale: visualStyle === "polaroid" ? 1.03 : 1.01, rotate: visualStyle === "polaroid" ? 0 : undefined }}
         transition={{ type: "spring", stiffness: 400 }}
-        className="relative overflow-hidden rounded-2xl border border-border/60 shadow-sm hover:shadow-xl transition-shadow duration-500"
+        className={`relative overflow-hidden ${cfg.cardClass} ${cfg.border(accentColor)} ${visualStyle === "polaroid" ? "shadow-lg pb-10" : "shadow-sm"} hover:shadow-2xl transition-shadow duration-500 ${visualStyle !== "minimal" ? "border" : ""}`}
         style={{
-          background: `linear-gradient(145deg, rgba(255,255,255,0.95), rgba(255,255,255,0.85))`,
+          background: cfg.cardBg(accentColor),
+          borderColor: visualStyle === "minimal" ? accentColor : visualStyle === "luxury" ? `${accentColor}40` : visualStyle === "neon" ? `${accentColor}30` : undefined,
+          boxShadow: cfg.glow ? `0 8px 40px -8px ${accentColor}40, inset 0 1px 0 ${accentColor}20` : undefined,
         }}
       >
-        {/* Accent gradient top */}
-        <motion.div
-          className="absolute top-0 left-0 right-0 h-[3px]"
-          style={{
-            background: `linear-gradient(90deg, transparent 0%, ${accentColor} 50%, transparent 100%)`,
-          }}
-          initial={{ scaleX: 0 }}
-          whileInView={{ scaleX: 1 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.8, delay: index * 0.08 + 0.3 }}
-        />
-
-        {/* Shimmer effect on hover */}
-        <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none">
-          <div
-            className="absolute inset-0"
-            style={{
-              background: `linear-gradient(105deg, transparent 40%, ${accentColor}08 45%, ${accentColor}12 50%, ${accentColor}08 55%, transparent 60%)`,
-            }}
+        {/* Top accent bar */}
+        {cfg.topAccent && (
+          <motion.div
+            className="absolute top-0 left-0 right-0 h-[2px]"
+            style={{ background: cfg.topAccent(accentColor) }}
+            initial={{ scaleX: 0 }}
+            whileInView={{ scaleX: 1 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.8, delay: index * 0.08 + 0.3 }}
           />
+        )}
+
+        {/* Luxury gold corner ornaments */}
+        {visualStyle === "luxury" && (
+          <>
+            <div className="absolute top-2 left-2 w-6 h-6 border-l border-t pointer-events-none" style={{ borderColor: `${accentColor}80` }} />
+            <div className="absolute top-2 right-2 w-6 h-6 border-r border-t pointer-events-none" style={{ borderColor: `${accentColor}80` }} />
+            <div className="absolute bottom-2 left-2 w-6 h-6 border-l border-b pointer-events-none" style={{ borderColor: `${accentColor}80` }} />
+            <div className="absolute bottom-2 right-2 w-6 h-6 border-r border-b pointer-events-none" style={{ borderColor: `${accentColor}80` }} />
+          </>
+        )}
+
+        {/* Polaroid tape */}
+        {visualStyle === "polaroid" && (
+          <div
+            className="absolute -top-2 left-1/2 -translate-x-1/2 w-16 h-5 opacity-70 z-10 rotate-1"
+            style={{ background: "linear-gradient(180deg, rgba(245,235,200,0.6), rgba(220,210,170,0.4))", boxShadow: "0 1px 2px rgba(0,0,0,0.1)" }}
+          />
+        )}
+
+        {/* Neon scanning line */}
+        {visualStyle === "neon" && (
+          <motion.div
+            className="absolute inset-x-0 h-12 pointer-events-none"
+            style={{ background: `linear-gradient(180deg, transparent, ${accentColor}10, transparent)` }}
+            animate={{ y: ["-100%", "400%"] }}
+            transition={{ duration: 4, repeat: Infinity, ease: "linear", delay: index * 0.3 }}
+          />
+        )}
+
+        {/* Shimmer */}
+        <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none">
+          <div className="absolute inset-0" style={{ background: `linear-gradient(105deg, transparent 40%, ${accentColor}10 50%, transparent 60%)` }} />
         </div>
 
-        <div className="relative p-4 md:p-5">
+        <div className={`relative ${visualStyle === "minimal" ? "p-5 pl-6" : "p-4 md:p-5"}`}>
+          {cfg.decoration === "quote" && (
+            <Quote className="absolute top-3 right-3 w-8 h-8 opacity-10" style={{ color: accentColor }} />
+          )}
+
           <div className="flex gap-3.5">
-            {/* Avatar with animated ring */}
-            <div className="relative flex-shrink-0">
-              <motion.div
-                className="w-11 h-11 rounded-full flex items-center justify-center text-lg shadow-sm border-2"
-                style={{
-                  backgroundColor: `${accentColor}10`,
-                  borderColor: `${accentColor}30`,
-                }}
-                whileHover={{ rotate: [0, -10, 10, 0], scale: 1.1 }}
-                transition={{ duration: 0.5 }}
-              >
-                {wish.emoji}
-              </motion.div>
-              {/* Online dot */}
-              <motion.div
-                className="absolute -bottom-0.5 -right-0.5 w-3.5 h-3.5 rounded-full border-2 border-white"
-                style={{ backgroundColor: "#4ade80" }}
-                animate={{ scale: [1, 1.2, 1] }}
-                transition={{ duration: 2, repeat: Infinity }}
-              />
-            </div>
+            {visualStyle !== "minimal" && (
+              <div className="relative flex-shrink-0">
+                <motion.div
+                  className={`w-11 h-11 ${visualStyle === "polaroid" ? "rounded-sm" : "rounded-full"} flex items-center justify-center text-lg shadow-sm border-2`}
+                  style={{
+                    backgroundColor: visualStyle === "luxury" || visualStyle === "neon" ? `${accentColor}15` : `${accentColor}10`,
+                    borderColor: `${accentColor}40`,
+                  }}
+                  whileHover={{ rotate: [0, -10, 10, 0], scale: 1.1 }}
+                  transition={{ duration: 0.5 }}
+                >
+                  {wish.emoji}
+                </motion.div>
+                {(visualStyle === "bubble" || visualStyle === "neon") && (
+                  <motion.div
+                    className="absolute -bottom-0.5 -right-0.5 w-3 h-3 rounded-full border-2"
+                    style={{ backgroundColor: "#4ade80", borderColor: visualStyle === "neon" ? "#0f1420" : "white" }}
+                    animate={{ scale: [1, 1.2, 1] }}
+                    transition={{ duration: 2, repeat: Infinity }}
+                  />
+                )}
+              </div>
+            )}
 
             <div className="flex-1 min-w-0">
               <div className="flex items-center gap-2 mb-1">
-                <span className="font-body text-sm font-bold text-foreground">{wish.name}</span>
-                <span className="font-body text-[10px] text-muted-foreground/50 bg-muted/30 px-1.5 py-0.5 rounded-full">
+                {visualStyle === "minimal" && (
+                  <span className="text-base">{wish.emoji}</span>
+                )}
+                <span className={`font-body text-sm font-bold ${cfg.nameClass} ${visualStyle === "luxury" ? "tracking-wider uppercase text-xs" : ""}`} style={visualStyle === "luxury" ? { color: accentColor } : {}}>
+                  {wish.name}
+                </span>
+                <span className={`font-body text-[10px] ${visualStyle === "luxury" || visualStyle === "neon" ? "text-white/40" : "text-muted-foreground/50"} ${visualStyle !== "minimal" ? "bg-white/5 px-1.5 py-0.5 rounded-full" : ""}`}>
                   {wish.timestamp}
                 </span>
               </div>
-              <p className="font-body text-sm text-muted-foreground/80 leading-relaxed">{wish.message}</p>
+              <p className={`font-body text-sm ${cfg.msgClass} leading-relaxed ${visualStyle === "luxury" ? "italic" : ""}`}>
+                {visualStyle === "luxury" && "“"}{wish.message}{visualStyle === "luxury" && "”"}
+              </p>
 
-              {/* Reactions row */}
               <div className="flex items-center gap-3 mt-3">
                 <motion.button
                   onClick={handleLike}
@@ -217,12 +324,12 @@ const WishBubble = ({
                   className={`flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium transition-all duration-300 border ${
                     wish.liked
                       ? "border-red-200 bg-red-50 text-red-500"
-                      : "border-transparent bg-muted/30 text-muted-foreground/60 hover:bg-muted/50"
+                      : visualStyle === "luxury" || visualStyle === "neon"
+                        ? "border-white/10 bg-white/5 text-white/60 hover:bg-white/10"
+                        : "border-transparent bg-muted/30 text-muted-foreground/60 hover:bg-muted/50"
                   }`}
                 >
-                  <Heart
-                    className={`w-3.5 h-3.5 transition-all ${wish.liked ? "fill-red-500 text-red-500" : ""}`}
-                  />
+                  <Heart className={`w-3.5 h-3.5 transition-all ${wish.liked ? "fill-red-500 text-red-500" : ""}`} />
                   {wish.likes > 0 && <span>{wish.likes}</span>}
                 </motion.button>
 
@@ -231,7 +338,7 @@ const WishBubble = ({
                     onClick={() => setShowReactions(!showReactions)}
                     whileHover={{ scale: 1.1 }}
                     whileTap={{ scale: 0.9 }}
-                    className="flex items-center gap-1 px-2 py-1 rounded-full text-xs bg-muted/30 text-muted-foreground/50 hover:bg-muted/50 transition-colors"
+                    className={`flex items-center gap-1 px-2 py-1 rounded-full text-xs ${visualStyle === "luxury" || visualStyle === "neon" ? "bg-white/5 text-white/50 hover:bg-white/10" : "bg-muted/30 text-muted-foreground/50 hover:bg-muted/50"} transition-colors`}
                   >
                     <Star className="w-3 h-3" />
                   </motion.button>
@@ -261,6 +368,13 @@ const WishBubble = ({
               </div>
             </div>
           </div>
+
+          {/* Polaroid handwritten signature */}
+          {visualStyle === "polaroid" && (
+            <p className="absolute bottom-2 left-0 right-0 text-center font-display text-xs italic text-stone-400">
+              — với yêu thương —
+            </p>
+          )}
         </div>
       </motion.div>
     </motion.div>
@@ -490,11 +604,16 @@ const WishForm = ({
 const animStyles: Array<"slide" | "pop" | "flip" | "wave" | "float"> = ["slide", "pop", "flip", "wave", "float"];
 
 // ─── Main Component ──────────────────────────────
-const WishesWall = ({ accentColor }: { accentColor: string }) => {
+const WishesWall = ({ accentColor, theme }: { accentColor: string; theme?: WeddingTheme }) => {
+  const visualStyle: WishStyle = (theme?.wishesStyle as WishStyle) || "bubble";
+  // Each visual theme has a default animation style that complements it
+  const defaultAnim: Record<WishStyle, (typeof animStyles)[number]> = {
+    bubble: "slide", luxury: "flip", polaroid: "pop", minimal: "wave", neon: "float",
+  };
   const [wishes, setWishes] = useState<Wish[]>(sampleWishes);
   const [showForm, setShowForm] = useState(false);
   const [showAll, setShowAll] = useState(false);
-  const [animStyle, setAnimStyle] = useState<(typeof animStyles)[number]>("slide");
+  const [animStyle, setAnimStyle] = useState<(typeof animStyles)[number]>(defaultAnim[visualStyle]);
 
   const visibleWishes = showAll ? wishes : wishes.slice(0, 6);
 
@@ -677,6 +796,7 @@ const WishesWall = ({ accentColor }: { accentColor: string }) => {
                 accentColor={accentColor}
                 onLike={handleLike}
                 animStyle={animStyle}
+                visualStyle={visualStyle}
               />
             ))}
           </AnimatePresence>
