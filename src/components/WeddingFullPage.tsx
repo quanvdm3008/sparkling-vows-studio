@@ -715,9 +715,102 @@ const GallerySection = ({ accentColor, theme }: GalleryProps) => {
 };
 
 // ─── Event Details ────────────────────────────────────
+interface EventInfo { icon: JSX.Element; title: string; date: string; time: string; venue: string; address: string }
+
+const EventCard = ({ ev, accentColor, theme, variant = "default" }: { ev: EventInfo; accentColor: string; theme: WeddingTheme; variant?: "default" | "compact" | "row" }) => {
+  if (variant === "row") {
+    return (
+      <div className={`flex items-center gap-5 bg-card/80 backdrop-blur-sm ${theme.cardRadius} p-5 border border-border shadow-md`}>
+        <div className="w-14 h-14 rounded-full flex items-center justify-center flex-shrink-0" style={{ backgroundColor: accentColor + "20" }}>{ev.icon}</div>
+        <div className="text-left flex-1">
+          <h3 className="font-display text-lg font-bold text-foreground">{ev.title}</h3>
+          <p className="text-muted-foreground font-body text-sm">{ev.date} · {ev.time} · {ev.venue}</p>
+        </div>
+      </div>
+    );
+  }
+  return (
+    <div className={`bg-card/80 backdrop-blur-sm ${theme.cardRadius} p-8 md:p-10 shadow-xl border border-border text-center`}>
+      <div className="w-16 h-16 mx-auto mb-6 rounded-full flex items-center justify-center" style={{ backgroundColor: accentColor + "20" }}>{ev.icon}</div>
+      <h3 className="font-display text-2xl font-bold text-foreground mb-4">{ev.title}</h3>
+      <div className="space-y-3 text-muted-foreground font-body">
+        <div className="flex items-center justify-center gap-2"><Calendar className="w-4 h-4" style={{ color: accentColor }} /><span>{ev.date}</span></div>
+        <div className="flex items-center justify-center gap-2"><Clock className="w-4 h-4" style={{ color: accentColor }} /><span>{ev.time}</span></div>
+        <div className="flex items-center justify-center gap-2"><MapPin className="w-4 h-4" style={{ color: accentColor }} /><span>{ev.venue}</span></div>
+        <p className="text-sm pt-2">{ev.address}</p>
+      </div>
+    </div>
+  );
+};
+
 const EventsSection = ({ date, time, venue, address, accentColor, theme }: { date: string; time: string; venue: string; address: string; accentColor: string; theme: WeddingTheme }) => {
   const formattedDate = date ? new Date(date).toLocaleDateString("vi-VN", { weekday: "long", year: "numeric", month: "long", day: "numeric" }) : "";
-  
+  const events: EventInfo[] = [
+    { icon: <Heart className="w-7 h-7" style={{ color: accentColor }} />, title: "Lễ Thành Hôn", date: formattedDate, time, venue, address },
+    { icon: <MusicIcon className="w-7 h-7" style={{ color: accentColor }} />, title: "Tiệc Cưới", date: formattedDate, time: "18:00", venue, address: "Cocktail, tiệc tối & nhảy cùng DJ" },
+  ];
+
+  const renderLayout = () => {
+    switch (theme.eventsLayout) {
+      case "split-image":
+        return (
+          <div className="grid md:grid-cols-2 gap-0 overflow-hidden shadow-2xl">
+            <motion.div initial={{ opacity: 0, x: -30 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} className="relative min-h-[300px]">
+              <img src={venueImg} alt="Venue" loading="lazy" className="w-full h-full object-cover absolute inset-0" />
+              <div className="absolute inset-0" style={{ background: `linear-gradient(135deg, ${accentColor}40, transparent)` }} />
+            </motion.div>
+            <motion.div initial={{ opacity: 0, x: 30 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} className="bg-card p-8 md:p-10 space-y-6">
+              {events.map((ev, i) => <EventCard key={i} ev={ev} accentColor={accentColor} theme={theme} variant="row" />)}
+            </motion.div>
+          </div>
+        );
+      case "stacked-bands":
+        return (
+          <div className="space-y-4">
+            {events.map((ev, i) => (
+              <motion.div key={i} initial={{ opacity: 0, x: i % 2 ? 40 : -40 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} transition={{ delay: i * 0.15 }}>
+                <EventCard ev={ev} accentColor={accentColor} theme={theme} variant="row" />
+              </motion.div>
+            ))}
+          </div>
+        );
+      case "single-feature":
+        return (
+          <motion.div initial={{ opacity: 0, scale: 0.95 }} whileInView={{ opacity: 1, scale: 1 }} viewport={{ once: true }} className="max-w-2xl mx-auto">
+            <EventCard ev={events[0]} accentColor={accentColor} theme={theme} />
+            <div className="mt-4">
+              <EventCard ev={events[1]} accentColor={accentColor} theme={theme} variant="row" />
+            </div>
+          </motion.div>
+        );
+      case "timeline-strip":
+        return (
+          <div className="relative">
+            <div className="absolute left-4 md:left-1/2 top-0 bottom-0 w-[2px]" style={{ backgroundColor: `${accentColor}40` }} />
+            <div className="space-y-10">
+              {events.map((ev, i) => (
+                <motion.div key={i} initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: i * 0.2 }}
+                  className={`relative pl-12 md:pl-0 md:grid md:grid-cols-2 md:gap-10 ${i % 2 ? "md:[&>*:first-child]:order-2" : ""}`}>
+                  <div className="absolute left-2.5 md:left-1/2 md:-translate-x-1/2 top-6 w-3 h-3 rounded-full ring-4 ring-background" style={{ backgroundColor: accentColor }} />
+                  <EventCard ev={ev} accentColor={accentColor} theme={theme} />
+                </motion.div>
+              ))}
+            </div>
+          </div>
+        );
+      default:
+        return (
+          <div className="grid md:grid-cols-2 gap-8">
+            {events.map((ev, i) => (
+              <motion.div key={i} initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: i * 0.15 }}>
+                <EventCard ev={ev} accentColor={accentColor} theme={theme} />
+              </motion.div>
+            ))}
+          </div>
+        );
+    }
+  };
+
   return (
     <section id="events" className="py-24 px-4 relative overflow-hidden">
       <div className="absolute inset-0 opacity-10">
@@ -728,51 +821,18 @@ const EventsSection = ({ date, time, venue, address, accentColor, theme }: { dat
           <span className="text-xs tracking-[0.4em] uppercase font-body" style={{ color: accentColor }}>Chi tiết</span>
           <h2 className="font-display text-4xl md:text-5xl font-bold text-foreground mt-3">Sự Kiện Cưới</h2>
         </motion.div>
-        <div className="grid md:grid-cols-2 gap-8">
-          <motion.div initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className={`bg-card/80 backdrop-blur-sm ${theme.cardRadius} p-8 md:p-10 shadow-xl border border-border text-center`}>
-            <div className="w-16 h-16 mx-auto mb-6 rounded-full flex items-center justify-center" style={{ backgroundColor: accentColor + "20" }}>
-              <Heart className="w-7 h-7" style={{ color: accentColor }} />
-            </div>
-            <h3 className="font-display text-2xl font-bold text-foreground mb-4">Lễ Thành Hôn</h3>
-            <div className="space-y-3 text-muted-foreground font-body">
-              <div className="flex items-center justify-center gap-2"><Calendar className="w-4 h-4" style={{ color: accentColor }} /><span>{formattedDate}</span></div>
-              <div className="flex items-center justify-center gap-2"><Clock className="w-4 h-4" style={{ color: accentColor }} /><span>{time}</span></div>
-              <div className="flex items-center justify-center gap-2"><MapPin className="w-4 h-4" style={{ color: accentColor }} /><span>{venue}</span></div>
-              <p className="text-sm pt-2">{address}</p>
-            </div>
-          </motion.div>
-          <motion.div initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: 0.15 }} className={`bg-card/80 backdrop-blur-sm ${theme.cardRadius} p-8 md:p-10 shadow-xl border border-border text-center`}>
-            <div className="w-16 h-16 mx-auto mb-6 rounded-full flex items-center justify-center" style={{ backgroundColor: accentColor + "20" }}>
-              <MusicIcon className="w-7 h-7" style={{ color: accentColor }} />
-            </div>
-            <h3 className="font-display text-2xl font-bold text-foreground mb-4">Tiệc Cưới</h3>
-            <div className="space-y-3 text-muted-foreground font-body">
-              <div className="flex items-center justify-center gap-2"><Calendar className="w-4 h-4" style={{ color: accentColor }} /><span>{formattedDate}</span></div>
-              <div className="flex items-center justify-center gap-2"><Clock className="w-4 h-4" style={{ color: accentColor }} /><span>18:00</span></div>
-              <div className="flex items-center justify-center gap-2"><MapPin className="w-4 h-4" style={{ color: accentColor }} /><span>{venue}</span></div>
-              <p className="text-sm pt-2">Cocktail, tiệc tối & nhảy cùng DJ</p>
-            </div>
-          </motion.div>
-        </div>
+        {renderLayout()}
 
         {/* Add to Calendar */}
         <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="mt-10 text-center">
           <motion.a
             href={`https://calendar.google.com/calendar/render?action=TEMPLATE&text=${encodeURIComponent(`Đám cưới tại ${venue}`)}&dates=${date.replace(/-/g, "")}T${time.replace(":", "")}00/${date.replace(/-/g, "")}T235900&location=${encodeURIComponent(address)}`}
-            target="_blank"
-            rel="noopener noreferrer"
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
+            target="_blank" rel="noopener noreferrer" whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}
             className="inline-flex items-center gap-2 px-6 py-3 rounded-full text-primary-foreground font-body font-semibold shadow-lg"
-            style={{ backgroundColor: accentColor }}
-          >
+            style={{ backgroundColor: accentColor }}>
             <CalendarPlus className="w-4 h-4" />
             Thêm vào Lịch Google
           </motion.a>
-        </motion.div>
-
-        <motion.div initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className={`mt-12 ${theme.cardRadius} overflow-hidden shadow-2xl`}>
-          <img src={venueImg} alt="Venue" loading="lazy" className="w-full h-64 md:h-80 object-cover" />
         </motion.div>
       </div>
     </section>
