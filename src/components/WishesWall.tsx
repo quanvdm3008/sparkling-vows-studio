@@ -604,11 +604,16 @@ const WishForm = ({
 const animStyles: Array<"slide" | "pop" | "flip" | "wave" | "float"> = ["slide", "pop", "flip", "wave", "float"];
 
 // ─── Main Component ──────────────────────────────
-const WishesWall = ({ accentColor }: { accentColor: string }) => {
+const WishesWall = ({ accentColor, theme }: { accentColor: string; theme?: WeddingTheme }) => {
+  const visualStyle: WishStyle = (theme?.wishesStyle as WishStyle) || "bubble";
+  // Each visual theme has a default animation style that complements it
+  const defaultAnim: Record<WishStyle, (typeof animStyles)[number]> = {
+    bubble: "slide", luxury: "flip", polaroid: "pop", minimal: "wave", neon: "float",
+  };
   const [wishes, setWishes] = useState<Wish[]>(sampleWishes);
   const [showForm, setShowForm] = useState(false);
   const [showAll, setShowAll] = useState(false);
-  const [animStyle, setAnimStyle] = useState<(typeof animStyles)[number]>("slide");
+  const [animStyle, setAnimStyle] = useState<(typeof animStyles)[number]>(defaultAnim[visualStyle]);
 
   const visibleWishes = showAll ? wishes : wishes.slice(0, 6);
 
