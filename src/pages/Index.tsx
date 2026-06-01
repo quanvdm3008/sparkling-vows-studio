@@ -3,25 +3,27 @@ import HeroSection from "@/components/HeroSection";
 import TemplateGallery from "@/components/TemplateGallery";
 import HowItWorks from "@/components/HowItWorks";
 import WeddingServices from "@/components/WeddingServices";
-import { Heart } from "lucide-react";
+import Navbar from "@/components/landing/Navbar";
+import PremiumFeatures from "@/components/landing/PremiumFeatures";
+import Pricing from "@/components/landing/Pricing";
+import Testimonials from "@/components/landing/Testimonials";
+import CTASection from "@/components/landing/CTASection";
+import Footer from "@/components/landing/Footer";
 
 const Index = () => {
   return (
-    <div className="min-h-screen bg-background relative">
+    <div className="min-h-screen bg-background relative overflow-x-hidden">
       <FallingPetals />
+      <Navbar />
       <HeroSection />
+      <PremiumFeatures />
       <TemplateGallery />
-      <WeddingServices accentColor="#E8B4B8" />
       <HowItWorks />
-
-      {/* Footer */}
-      <footer className="py-12 px-4 text-center relative z-10 border-t border-border">
-        <div className="flex items-center justify-center gap-2 text-muted-foreground font-body text-sm">
-          <span>Được tạo với</span>
-          <Heart className="w-4 h-4 text-primary fill-primary" />
-          <span>bởi Wedding Cards Online</span>
-        </div>
-      </footer>
+      <WeddingServices accentColor="hsl(38 47% 50%)" />
+      <Testimonials />
+      <Pricing />
+      <CTASection />
+      <Footer />
     </div>
   );
 };
