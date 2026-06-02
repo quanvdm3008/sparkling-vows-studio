@@ -10,6 +10,14 @@ import SectionDivider from "@/components/SectionDivider";
 import ScrollProgress from "@/components/ScrollProgress";
 import LoveQuote from "@/components/LoveQuote";
 import ScrollToTop from "@/components/ScrollToTop";
+import CinematicLightBG from "@/components/cinematic/CinematicLightBG";
+import GlassCountdown from "@/components/cinematic/GlassCountdown";
+import ScrollStoryTimeline from "@/components/cinematic/ScrollStoryTimeline";
+import MagazineGallery from "@/components/cinematic/MagazineGallery";
+import TravelMap from "@/components/cinematic/TravelMap";
+import WeatherWidget from "@/components/cinematic/WeatherWidget";
+import MemoriesSection from "@/components/cinematic/MemoriesSection";
+import ChapterTransition from "@/components/cinematic/ChapterTransition";
 
 import { getTheme, type WeddingTheme } from "@/data/themes";
 
@@ -1011,17 +1019,32 @@ const WeddingFullPage = ({
     : "ornament" as const;
 
   const sectionComponents: Record<string, JSX.Element> = {
-    countdown: <CountdownSection key="countdown" date={date} accentColor={accentColor} sectionBg={theme.sectionBg1} theme={theme} />,
+    countdown: <GlassCountdown key="countdown" date={date} accentColor={accentColor} />,
     couple: <CoupleSection key="couple" groomName={groomName} brideName={brideName} accentColor={accentColor} theme={theme} />,
-    story: <StorySection key="story" accentColor={accentColor} sectionBg={theme.sectionBg2} theme={theme} />,
-    gallery: <GallerySection key="gallery" accentColor={accentColor} theme={theme} />,
-    
+    story: <ScrollStoryTimeline key="story" accentColor={accentColor} />,
+    gallery: <MagazineGallery key="gallery" accentColor={accentColor} />,
+
     events: <EventsSection key="events" date={date} time={time} venue={venue} address={address} accentColor={accentColor} theme={theme} />,
     wishes: <WishesWall key="wishes" accentColor={accentColor} theme={theme} />,
     rsvp: <RSVPSection key="rsvp" accentColor={accentColor} sectionBg={theme.sectionBg1} theme={theme} />,
   };
 
-  const orderedSections = theme.sectionOrder.map((key) => sectionComponents[key]);
+  // Chapter labels for cinematic transitions
+  const chapterLabels: Record<string, string> = {
+    countdown: "Save the Date",
+    couple: "The Two of Us",
+    story: "Our Journey",
+    gallery: "Editorial Album",
+    events: "The Celebration",
+    wishes: "Voices of Love",
+    rsvp: "Be With Us",
+  };
+
+  const orderedSections = theme.sectionOrder.map((key) => ({
+    key,
+    node: sectionComponents[key],
+    label: chapterLabels[key] || "",
+  }));
 
   return (
     <>
@@ -1046,6 +1069,7 @@ const WeddingFullPage = ({
           transition={{ duration: 1.2, ease: "easeOut" }}
         >
           <ScrollProgress accentColor={accentColor} />
+          <CinematicLightBG accentColor={accentColor} />
           <SpecialEffects effect={theme.specialEffect} accentColor={accentColor} />
           <FallingPetals emojis={theme.petalEmojis} />
           <NavBar accentColor={accentColor} theme={theme} />
@@ -1054,12 +1078,21 @@ const WeddingFullPage = ({
 
           <LoveQuote accentColor={accentColor} />
 
-          {orderedSections.map((section, i) => (
-            <div key={i}>
-              {i > 0 && <SectionDivider accentColor={accentColor} variant={dividerVariant} />}
-              <SectionAnimation variant={theme.sectionAnimation} index={i}>{section}</SectionAnimation>
+          {orderedSections.map((s, i) => (
+            <div key={s.key} className="relative">
+              <ChapterTransition chapter={i + 1} label={s.label} accentColor={accentColor} />
+              <SectionAnimation variant={theme.sectionAnimation} index={i}>{s.node}</SectionAnimation>
             </div>
           ))}
+
+          {/* Bonus cinematic chapters */}
+          <ChapterTransition chapter={orderedSections.length + 1} label="Memories" accentColor={accentColor} />
+          <MemoriesSection accentColor={accentColor} />
+
+          <WeatherWidget date={date} accentColor={accentColor} />
+
+          <ChapterTransition chapter={orderedSections.length + 2} label="Travel Experience" accentColor={accentColor} />
+          <TravelMap venue={venue} address={address} accentColor={accentColor} />
 
           <WeddingFooter groomName={groomName} brideName={brideName} accentColor={accentColor} decorEmoji={theme.decorEmoji} date={date} />
           <MusicPlayer accentColor={accentColor} />
