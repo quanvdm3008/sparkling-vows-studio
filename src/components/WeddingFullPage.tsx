@@ -10,6 +10,14 @@ import SectionDivider from "@/components/SectionDivider";
 import ScrollProgress from "@/components/ScrollProgress";
 import LoveQuote from "@/components/LoveQuote";
 import ScrollToTop from "@/components/ScrollToTop";
+import CinematicLightBG from "@/components/cinematic/CinematicLightBG";
+import GlassCountdown from "@/components/cinematic/GlassCountdown";
+import ScrollStoryTimeline from "@/components/cinematic/ScrollStoryTimeline";
+import MagazineGallery from "@/components/cinematic/MagazineGallery";
+import TravelMap from "@/components/cinematic/TravelMap";
+import WeatherWidget from "@/components/cinematic/WeatherWidget";
+import MemoriesSection from "@/components/cinematic/MemoriesSection";
+import ChapterTransition from "@/components/cinematic/ChapterTransition";
 
 import { getTheme, type WeddingTheme } from "@/data/themes";
 
