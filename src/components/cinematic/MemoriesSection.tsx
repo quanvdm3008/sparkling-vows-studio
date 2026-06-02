@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { Heart, Sparkles, Coffee, Plane, Ring, Gift, Camera, Star } from "lucide-react";
+import { Heart, Sparkles, Coffee, Plane, Gem, Gift, Camera, Star } from "lucide-react";
 
 const milestones = [
   { icon: Coffee, label: "Lần đầu hẹn hò", date: "10/2019" },
@@ -9,7 +9,7 @@ const milestones = [
   { icon: Gift, label: "Sống chung", date: "08/2023" },
   { icon: Sparkles, label: "Gặp gia đình", date: "01/2024" },
   { icon: Star, label: "Cầu hôn", date: "10/2025" },
-  { icon: Ring, label: "Ngày trọng đại", date: "02/2027" },
+  { icon: Gem, label: "Ngày trọng đại", date: "02/2027" },
 ];
 
 const MemoriesSection = ({ accentColor }: { accentColor: string }) => {
