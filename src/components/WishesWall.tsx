@@ -643,7 +643,7 @@ const WishesWall = ({ accentColor, theme }: { accentColor: string; theme?: Weddi
   };
 
   return (
-    <section className="py-24 px-4 relative overflow-hidden">
+    <section className="py-16 px-4 relative overflow-hidden">
       <FloatingHearts accentColor={accentColor} />
 
       {/* Ambient blobs */}
@@ -662,128 +662,47 @@ const WishesWall = ({ accentColor, theme }: { accentColor: string; theme?: Weddi
         />
       </div>
 
-      <div className="relative z-10 max-w-4xl mx-auto">
-        {/* Header */}
+      <div className="relative z-10 max-w-5xl mx-auto">
+        {/* Compact header */}
         <motion.div
-          initial={{ opacity: 0, y: 30 }}
+          initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          transition={{ duration: 0.8 }}
-          className="text-center mb-16"
+          transition={{ duration: 0.7 }}
+          className="text-center mb-10"
         >
-          <motion.div
-            initial={{ scale: 0, rotate: -180 }}
-            whileInView={{ scale: 1, rotate: 0 }}
-            viewport={{ once: true }}
-            transition={{ type: "spring", delay: 0.2, damping: 12 }}
-            className="w-18 h-18 mx-auto mb-5 rounded-full flex items-center justify-center relative"
-            style={{ backgroundColor: `${accentColor}10` }}
-          >
-            <MessageCircleHeart className="w-8 h-8" style={{ color: accentColor }} />
-            {/* Ripple rings */}
-            <motion.div
-              className="absolute inset-0 rounded-full border-2"
-              style={{ borderColor: `${accentColor}20` }}
-              animate={{ scale: [1, 1.8], opacity: [0.5, 0] }}
-              transition={{ duration: 2, repeat: Infinity }}
-            />
-            <motion.div
-              className="absolute inset-0 rounded-full border"
-              style={{ borderColor: `${accentColor}15` }}
-              animate={{ scale: [1, 2.2], opacity: [0.3, 0] }}
-              transition={{ duration: 2, repeat: Infinity, delay: 0.5 }}
-            />
-          </motion.div>
+          <div className="inline-flex items-center gap-2.5 mb-3">
+            <span className="h-[1px] w-8" style={{ background: `linear-gradient(to right, transparent, ${accentColor})` }} />
+            <MessageCircleHeart className="w-4 h-4" style={{ color: accentColor }} />
+            <span className="text-[10px] tracking-[0.5em] uppercase font-body" style={{ color: accentColor }}>
+              Gửi gắm yêu thương
+            </span>
+            <MessageCircleHeart className="w-4 h-4" style={{ color: accentColor }} />
+            <span className="h-[1px] w-8" style={{ background: `linear-gradient(to left, transparent, ${accentColor})` }} />
+          </div>
 
-          <motion.span
-            initial={{ opacity: 0, letterSpacing: "0.2em" }}
-            whileInView={{ opacity: 1, letterSpacing: "0.4em" }}
-            viewport={{ once: true }}
-            transition={{ duration: 1, delay: 0.3 }}
-            className="text-xs uppercase font-body block mb-3"
-            style={{ color: accentColor }}
-          >
-            Gửi gắm yêu thương
-          </motion.span>
-
-          <motion.h2
-            initial={{ opacity: 0, y: 15 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ delay: 0.4 }}
-            className="font-display text-4xl md:text-5xl font-bold text-foreground"
-          >
+          <h2 className="font-display text-3xl md:text-4xl font-bold text-foreground">
             Lời Chúc Phúc
-          </motion.h2>
+          </h2>
 
-          <motion.div
-            initial={{ scaleX: 0 }}
-            whileInView={{ scaleX: 1 }}
-            viewport={{ once: true }}
-            transition={{ delay: 0.6, duration: 0.8 }}
-            className="w-20 h-[2px] mx-auto mt-4 rounded-full"
-            style={{ backgroundColor: accentColor }}
-          />
-
-          <motion.p
-            initial={{ opacity: 0 }}
-            whileInView={{ opacity: 1 }}
-            viewport={{ once: true }}
-            transition={{ delay: 0.7 }}
-            className="text-muted-foreground font-body mt-4 max-w-md mx-auto text-sm"
-          >
-            Những lời yêu thương gửi đến cô dâu và chú rể trong ngày hạnh phúc
-          </motion.p>
-
-          {/* Stats bar */}
-          <motion.div
-            initial={{ opacity: 0, y: 10 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ delay: 0.8 }}
-            className="flex items-center justify-center gap-6 mt-6"
-          >
-            <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-muted/30">
-              <Heart className="w-3.5 h-3.5" style={{ color: accentColor }} />
-              <span className="font-body text-xs font-semibold text-foreground">{wishes.length}</span>
+          <div className="flex items-center justify-center gap-4 mt-4">
+            <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-muted/30 border border-border/40">
+              <Heart className="w-3 h-3" style={{ color: accentColor }} />
+              <span className="font-body text-[11px] font-semibold text-foreground">{wishes.length}</span>
               <span className="font-body text-[10px] text-muted-foreground">lời chúc</span>
             </div>
-            <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-muted/30">
+            <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-muted/30 border border-border/40">
               <motion.div
-                className="w-2 h-2 rounded-full"
+                className="w-1.5 h-1.5 rounded-full"
                 style={{ backgroundColor: "#4ade80" }}
-                animate={{ scale: [1, 1.3, 1] }}
+                animate={{ scale: [1, 1.4, 1], opacity: [0.6, 1, 0.6] }}
                 transition={{ duration: 1.5, repeat: Infinity }}
               />
-              <span className="font-body text-[10px] text-muted-foreground">Đang online</span>
+              <span className="font-body text-[10px] text-muted-foreground">live</span>
             </div>
-          </motion.div>
-
-          {/* Animation style picker */}
-          <motion.div
-            initial={{ opacity: 0 }}
-            whileInView={{ opacity: 1 }}
-            viewport={{ once: true }}
-            transition={{ delay: 1 }}
-            className="flex items-center justify-center gap-2 mt-5"
-          >
-            <span className="font-body text-[10px] text-muted-foreground/50 mr-1">Hiệu ứng:</span>
-            {animStyles.map((style) => (
-              <button
-                key={style}
-                onClick={() => setAnimStyle(style)}
-                className={`font-body text-[10px] px-2.5 py-1 rounded-full capitalize transition-all ${
-                  animStyle === style
-                    ? "text-white shadow-sm"
-                    : "text-muted-foreground/50 hover:text-foreground bg-muted/20 hover:bg-muted/40"
-                }`}
-                style={animStyle === style ? { backgroundColor: accentColor } : {}}
-              >
-                {style}
-              </button>
-            ))}
-          </motion.div>
+          </div>
         </motion.div>
+
 
         {/* Wishes Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
