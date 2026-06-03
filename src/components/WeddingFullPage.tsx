@@ -847,59 +847,146 @@ const EventsSection = ({ date, time, venue, address, accentColor, theme }: { dat
   );
 };
 
-// ─── RSVP Section ─────────────────────────────────────
+// ─── RSVP Section (Compact Premium) ───────────────────
 const RSVPSection = ({ accentColor, sectionBg, theme }: { accentColor: string; sectionBg?: string; theme: WeddingTheme }) => {
   const [submitted, setSubmitted] = useState(false);
   const [form, setForm] = useState({ name: "", guests: "1", attending: "yes", message: "" });
   const handleSubmit = (e: React.FormEvent) => { e.preventDefault(); setSubmitted(true); };
 
   return (
-    <section id="rsvp" className="py-24 px-4" style={{ backgroundColor: sectionBg }}>
-      <div className="max-w-lg mx-auto">
-        <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="text-center mb-12">
-          <span className="text-xs tracking-[0.4em] uppercase font-body" style={{ color: accentColor }}>Xác nhận tham dự</span>
-          <h2 className="font-display text-4xl md:text-5xl font-bold text-foreground mt-3">RSVP</h2>
-          <p className="text-muted-foreground font-body mt-3">Vui lòng xác nhận sự hiện diện của bạn</p>
+    <section id="rsvp" className="py-20 px-4 relative overflow-hidden" style={{ backgroundColor: sectionBg }}>
+      <div className="absolute inset-0 pointer-events-none">
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[520px] h-[520px] rounded-full opacity-[0.05]"
+          style={{ background: `radial-gradient(circle, ${accentColor}, transparent 65%)` }} />
+      </div>
+
+      <div className="max-w-md mx-auto relative z-10">
+        <motion.div initial={{ opacity: 0, y: 16 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="text-center mb-8">
+          <div className="inline-flex items-center gap-2 mb-3">
+            <span className="h-[1px] w-8" style={{ background: `linear-gradient(to right, transparent, ${accentColor})` }} />
+            <span className="text-[10px] tracking-[0.5em] uppercase font-body" style={{ color: accentColor }}>R · S · V · P</span>
+            <span className="h-[1px] w-8" style={{ background: `linear-gradient(to left, transparent, ${accentColor})` }} />
+          </div>
+          <h2 className="font-display text-3xl md:text-4xl font-bold text-foreground">Xác Nhận Tham Dự</h2>
+          <p className="text-muted-foreground font-body text-sm mt-2">Sự hiện diện của bạn là món quà quý giá nhất</p>
         </motion.div>
+
+        <AnimatePresence mode="wait">
         {submitted ? (
-          <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} className={`text-center bg-card ${theme.cardRadius} p-10 shadow-xl border border-border`}>
-            <Heart className="w-16 h-16 mx-auto mb-4 animate-heartbeat" fill={accentColor} style={{ color: accentColor }} />
+          <motion.div
+            key="thanks"
+            initial={{ opacity: 0, scale: 0.92, y: 20 }}
+            animate={{ opacity: 1, scale: 1, y: 0 }}
+            exit={{ opacity: 0, scale: 0.95 }}
+            transition={{ type: "spring", damping: 18 }}
+            className="relative overflow-hidden text-center bg-card/80 backdrop-blur-xl rounded-3xl p-10 border border-border/60"
+            style={{ boxShadow: `0 24px 60px -20px ${accentColor}40` }}
+          >
+            <div className="absolute top-0 left-0 right-0 h-[2px]" style={{ background: `linear-gradient(90deg, transparent, ${accentColor}, transparent)` }} />
+            <motion.div
+              animate={{ scale: [1, 1.15, 1] }}
+              transition={{ duration: 1.4, repeat: Infinity }}
+              className="w-16 h-16 mx-auto mb-4 rounded-full flex items-center justify-center"
+              style={{ backgroundColor: `${accentColor}15`, boxShadow: `0 0 32px ${accentColor}40` }}
+            >
+              <Heart className="w-7 h-7" fill={accentColor} style={{ color: accentColor }} />
+            </motion.div>
             <h3 className="font-display text-2xl font-bold text-foreground mb-2">Cảm Ơn Bạn!</h3>
-            <p className="text-muted-foreground font-body">Chúng tôi rất vui khi nhận được phản hồi của bạn. Hẹn gặp bạn tại ngày trọng đại! 💕</p>
+            <p className="text-muted-foreground font-body text-sm">Hẹn gặp bạn tại ngày trọng đại 💕</p>
           </motion.div>
         ) : (
-          <motion.form initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} onSubmit={handleSubmit} className={`bg-card ${theme.cardRadius} p-8 shadow-xl border border-border space-y-5`}>
+          <motion.form
+            key="form"
+            initial={{ opacity: 0, y: 24 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            onSubmit={handleSubmit}
+            className="relative bg-card/80 backdrop-blur-xl rounded-3xl p-6 md:p-7 border border-border/60 space-y-4"
+            style={{ boxShadow: `0 24px 60px -24px ${accentColor}30` }}
+          >
+            <div className="absolute top-0 left-6 right-6 h-[2px] rounded-full" style={{ background: `linear-gradient(90deg, transparent, ${accentColor}, transparent)` }} />
+
             <div>
-              <label className="block font-body text-sm font-semibold text-foreground mb-1.5">Họ và Tên</label>
-              <input type="text" required value={form.name} onChange={(e) => setForm((f) => ({ ...f, name: e.target.value }))} className={`w-full px-4 py-3 ${theme.cardRadius} border border-border bg-background font-body text-sm focus:outline-none focus:ring-2 focus:ring-primary`} placeholder="Nhập tên của bạn" />
-            </div>
-            <div>
-              <label className="block font-body text-sm font-semibold text-foreground mb-1.5">Bạn sẽ tham dự?</label>
-              <div className="flex gap-3">
-                {[{ value: "yes", label: "Có, tôi sẽ đến! 🎉" }, { value: "no", label: "Rất tiếc, tôi không thể 😢" }].map((opt) => (
-                  <button key={opt.value} type="button" onClick={() => setForm((f) => ({ ...f, attending: opt.value }))}
-                    className={`flex-1 px-4 py-3 ${theme.cardRadius} font-body text-sm transition-all border ${form.attending === opt.value ? "border-transparent text-primary-foreground shadow-md" : "border-border text-foreground hover:border-primary"}`}
-                    style={form.attending === opt.value ? { backgroundColor: accentColor } : {}}>
-                    {opt.label}
+              <label className="block font-body text-[11px] uppercase tracking-[0.2em] text-muted-foreground mb-2">Tham dự</label>
+              <div className="relative grid grid-cols-2 gap-1 p-1 rounded-2xl bg-muted/40 border border-border/40">
+                {[{ value: "yes", label: "Sẽ đến 🎉" }, { value: "no", label: "Không thể 😢" }].map((opt) => (
+                  <button
+                    key={opt.value}
+                    type="button"
+                    onClick={() => setForm((f) => ({ ...f, attending: opt.value }))}
+                    className={`relative py-2.5 rounded-xl font-body text-sm font-medium transition-all ${form.attending === opt.value ? "text-white" : "text-muted-foreground hover:text-foreground"}`}
+                  >
+                    {form.attending === opt.value && (
+                      <motion.div
+                        layoutId="rsvp-pill"
+                        className="absolute inset-0 rounded-xl"
+                        style={{ backgroundColor: accentColor, boxShadow: `0 4px 16px ${accentColor}50` }}
+                        transition={{ type: "spring", damping: 22, stiffness: 280 }}
+                      />
+                    )}
+                    <span className="relative z-10">{opt.label}</span>
                   </button>
                 ))}
               </div>
             </div>
-            <div>
-              <label className="block font-body text-sm font-semibold text-foreground mb-1.5">Số khách</label>
-              <select value={form.guests} onChange={(e) => setForm((f) => ({ ...f, guests: e.target.value }))} className={`w-full px-4 py-3 ${theme.cardRadius} border border-border bg-background font-body text-sm focus:outline-none focus:ring-2 focus:ring-primary`}>
-                {[1, 2, 3, 4, 5].map((n) => <option key={n} value={n}>{n} người</option>)}
-              </select>
+
+            <div className="grid grid-cols-[1fr_auto] gap-3">
+              <div>
+                <label className="block font-body text-[11px] uppercase tracking-[0.2em] text-muted-foreground mb-1.5">Họ tên</label>
+                <input
+                  type="text"
+                  required
+                  value={form.name}
+                  onChange={(e) => setForm((f) => ({ ...f, name: e.target.value }))}
+                  className="w-full px-3.5 py-2.5 rounded-xl border border-border/60 bg-background/60 font-body text-sm focus:outline-none focus:ring-2 transition-all"
+                  style={{ "--tw-ring-color": `${accentColor}60` } as React.CSSProperties}
+                  placeholder="Tên của bạn"
+                />
+              </div>
+              <div>
+                <label className="block font-body text-[11px] uppercase tracking-[0.2em] text-muted-foreground mb-1.5">Khách</label>
+                <select
+                  value={form.guests}
+                  onChange={(e) => setForm((f) => ({ ...f, guests: e.target.value }))}
+                  className="w-20 px-3 py-2.5 rounded-xl border border-border/60 bg-background/60 font-body text-sm focus:outline-none focus:ring-2 transition-all"
+                  style={{ "--tw-ring-color": `${accentColor}60` } as React.CSSProperties}
+                >
+                  {[1, 2, 3, 4, 5].map((n) => <option key={n} value={n}>{n}</option>)}
+                </select>
+              </div>
             </div>
+
             <div>
-              <label className="block font-body text-sm font-semibold text-foreground mb-1.5">Lời nhắn</label>
-              <textarea value={form.message} onChange={(e) => setForm((f) => ({ ...f, message: e.target.value }))} className={`w-full px-4 py-3 ${theme.cardRadius} border border-border bg-background font-body text-sm focus:outline-none focus:ring-2 focus:ring-primary min-h-[80px] resize-none`} placeholder="Gửi lời chúc đến cô dâu & chú rể..." />
+              <label className="block font-body text-[11px] uppercase tracking-[0.2em] text-muted-foreground mb-1.5">Lời nhắn (tuỳ chọn)</label>
+              <textarea
+                value={form.message}
+                onChange={(e) => setForm((f) => ({ ...f, message: e.target.value }))}
+                rows={2}
+                className="w-full px-3.5 py-2.5 rounded-xl border border-border/60 bg-background/60 font-body text-sm focus:outline-none focus:ring-2 resize-none transition-all"
+                style={{ "--tw-ring-color": `${accentColor}60` } as React.CSSProperties}
+                placeholder="Gửi lời chúc tới cô dâu & chú rể..."
+              />
             </div>
-            <motion.button type="submit" whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }} className={`w-full flex items-center justify-center gap-2 py-4 ${theme.cardRadius} text-primary-foreground font-body font-semibold text-base shadow-lg`} style={{ backgroundColor: accentColor }}>
-              <Send className="w-4 h-4" />Gửi Xác Nhận
+
+            <motion.button
+              type="submit"
+              whileHover={{ scale: 1.02, y: -1 }}
+              whileTap={{ scale: 0.98 }}
+              className="relative w-full flex items-center justify-center gap-2 py-3.5 rounded-xl text-white font-body font-semibold text-sm overflow-hidden group"
+              style={{ backgroundColor: accentColor, boxShadow: `0 8px 28px ${accentColor}40` }}
+            >
+              <motion.span
+                className="absolute inset-0 opacity-0 group-hover:opacity-100"
+                style={{ background: `linear-gradient(105deg, transparent 40%, rgba(255,255,255,0.25) 50%, transparent 60%)` }}
+                animate={{ x: ["-100%", "200%"] }}
+                transition={{ duration: 1.6, repeat: Infinity, repeatDelay: 0.8 }}
+              />
+              <Send className="w-4 h-4 relative z-10" />
+              <span className="relative z-10">Gửi xác nhận</span>
             </motion.button>
           </motion.form>
         )}
+        </AnimatePresence>
       </div>
     </section>
   );
