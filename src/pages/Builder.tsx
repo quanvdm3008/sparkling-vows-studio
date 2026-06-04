@@ -1,11 +1,15 @@
+import { useState } from "react";
 import { Link } from "react-router-dom";
 import { Heart, LogOut, ArrowLeft } from "lucide-react";
 import InvitationEditor from "@/components/InvitationEditor";
+import TemplateCard from "@/components/TemplateCard";
+import { templates, WeddingTemplate } from "@/data/templates";
 import { useAuthStore } from "@/store/authStore";
 import { toast } from "sonner";
 
 const Builder = () => {
   const { user, signOut } = useAuthStore();
+  const [selected, setSelected] = useState<WeddingTemplate | null>(null);
 
   return (
     <div className="min-h-screen bg-background">
@@ -23,15 +27,13 @@ const Builder = () => {
             </span>
           </Link>
           <div className="flex items-center gap-3">
-            <Link
-              to="/"
-              className="hidden sm:inline-flex items-center gap-1.5 font-body text-sm text-muted-foreground hover:text-foreground"
-            >
+            <Link to="/services" className="hidden md:inline-flex font-body text-sm font-semibold text-foreground/80 hover:text-foreground">
+              Dịch vụ cưới
+            </Link>
+            <Link to="/" className="hidden sm:inline-flex items-center gap-1.5 font-body text-sm text-muted-foreground hover:text-foreground">
               <ArrowLeft className="w-4 h-4" /> Trang chủ
             </Link>
-            <span className="hidden md:block font-body text-sm text-muted-foreground">
-              {user?.email}
-            </span>
+            <span className="hidden md:block font-body text-sm text-muted-foreground">{user?.email}</span>
             <button
               onClick={async () => {
                 await signOut();
@@ -46,7 +48,27 @@ const Builder = () => {
       </header>
 
       <main>
-        <InvitationEditor />
+        {selected ? (
+          <InvitationEditor template={selected} onBack={() => setSelected(null)} />
+        ) : (
+          <section className="max-w-7xl mx-auto px-5 sm:px-8 py-10">
+            <div className="mb-8">
+              <h1 className="font-display text-4xl sm:text-5xl text-foreground">
+                Chọn <span className="text-accent">mẫu thiệp</span>
+              </h1>
+              <p className="font-body text-base text-muted-foreground mt-2 max-w-2xl">
+                Lựa chọn một mẫu để bắt đầu — bạn có thể tùy chỉnh nội dung, ảnh và nhạc nền sau đó.
+              </p>
+            </div>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+              {templates.map((t) => (
+                <div key={t.id} onClick={() => setSelected(t)} className="cursor-pointer">
+                  <TemplateCard template={t} onClick={() => setSelected(t)} />
+                </div>
+              ))}
+            </div>
+          </section>
+        )}
       </main>
     </div>
   );
