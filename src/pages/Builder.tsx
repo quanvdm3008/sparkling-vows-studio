@@ -61,10 +61,8 @@ const Builder = () => {
               </p>
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-              {templates.map((t) => (
-                <div key={t.id} onClick={() => setSelected(t)} className="cursor-pointer">
-                  <TemplateCard template={t} onClick={() => setSelected(t)} />
-                </div>
+              {templates.map((t, i) => (
+                <TemplateCard key={t.id} template={t} index={i} onSelect={setSelected} />
               ))}
             </div>
           </section>
