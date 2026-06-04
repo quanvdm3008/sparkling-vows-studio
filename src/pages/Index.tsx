@@ -2,7 +2,6 @@ import FallingPetals from "@/components/FallingPetals";
 import HeroSection from "@/components/HeroSection";
 import TemplateGallery from "@/components/TemplateGallery";
 import HowItWorks from "@/components/HowItWorks";
-import WeddingServices from "@/components/WeddingServices";
 import Navbar from "@/components/landing/Navbar";
 import PremiumFeatures from "@/components/landing/PremiumFeatures";
 import Pricing from "@/components/landing/Pricing";
@@ -19,7 +18,6 @@ const Index = () => {
       <PremiumFeatures />
       <TemplateGallery />
       <HowItWorks />
-      <WeddingServices accentColor="hsl(38 47% 50%)" />
       <Testimonials />
       <Pricing />
       <CTASection />
