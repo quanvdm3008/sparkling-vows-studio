@@ -1082,6 +1082,7 @@ interface WeddingPageProps {
   message?: string;
   accentColor?: string;
   templateId?: string;
+  skipIntro?: boolean;
 }
 
 const WeddingFullPage = ({
@@ -1094,11 +1095,12 @@ const WeddingFullPage = ({
   message = "",
   accentColor: accentColorProp = "#E8B4B8",
   templateId = "romantic",
+  skipIntro = false,
 }: WeddingPageProps) => {
   const theme = getTheme(templateId);
   const accentColor = theme.textAccent;
   const isDark = templateId === "modern" || templateId === "royal";
-  const [introComplete, setIntroComplete] = useState(false);
+  const [introComplete, setIntroComplete] = useState(skipIntro);
 
   // Divider variants per theme style
   const dividerVariant = theme.fontStyle === "modern" ? "line" as const
