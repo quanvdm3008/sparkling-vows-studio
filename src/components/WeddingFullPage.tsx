@@ -14,6 +14,7 @@ import CinematicLightBG from "@/components/cinematic/CinematicLightBG";
 import GlassCountdown from "@/components/cinematic/GlassCountdown";
 import ScrollStoryTimeline from "@/components/cinematic/ScrollStoryTimeline";
 import MagazineGallery from "@/components/cinematic/MagazineGallery";
+import GalleryDispatcher from "@/components/galleries/GalleryDispatcher";
 import TravelMap from "@/components/cinematic/TravelMap";
 import WeatherWidget from "@/components/cinematic/WeatherWidget";
 import MemoriesSection from "@/components/cinematic/MemoriesSection";
@@ -1109,7 +1110,7 @@ const WeddingFullPage = ({
     countdown: <GlassCountdown key="countdown" date={date} accentColor={accentColor} />,
     couple: <CoupleSection key="couple" groomName={groomName} brideName={brideName} accentColor={accentColor} theme={theme} />,
     story: <ScrollStoryTimeline key="story" accentColor={accentColor} />,
-    gallery: <MagazineGallery key="gallery" accentColor={accentColor} />,
+    gallery: <GalleryDispatcher key="gallery" theme={theme} accentColor={accentColor} />,
 
     events: <EventsSection key="events" date={date} time={time} venue={venue} address={address} accentColor={accentColor} theme={theme} />,
     wishes: <WishesWall key="wishes" accentColor={accentColor} theme={theme} />,
