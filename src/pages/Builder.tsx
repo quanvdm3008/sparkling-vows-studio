@@ -1,20 +1,30 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import { Heart, LogOut, ArrowLeft } from "lucide-react";
-import InvitationEditor from "@/components/InvitationEditor";
+import { Heart, LogOut } from "lucide-react";
 import TemplateCard from "@/components/TemplateCard";
+import BuilderShell from "@/components/builder/BuilderShell";
 import { templates, WeddingTemplate } from "@/data/templates";
 import { useAuthStore } from "@/store/authStore";
+import { useWeddingConfig } from "@/store/weddingConfigStore";
 import { toast } from "sonner";
 
 const Builder = () => {
   const { user, signOut } = useAuthStore();
-  const [selected, setSelected] = useState<WeddingTemplate | null>(null);
+  const { templateId, setTemplate } = useWeddingConfig();
+  const [pickerOpen, setPickerOpen] = useState(false);
+
+  // Open template picker if no template yet selected this session
+  useEffect(() => {
+    if (!sessionStorage.getItem("builder-entered")) {
+      setPickerOpen(true);
+      sessionStorage.setItem("builder-entered", "1");
+    }
+  }, []);
 
   return (
-    <div className="min-h-screen bg-background">
-      <header className="sticky top-0 z-40 glass-nav border-b border-border">
-        <div className="max-w-7xl mx-auto px-5 sm:px-8 py-3 flex items-center justify-between">
+    <div className="min-h-screen bg-background flex flex-col">
+      <header className="h-[60px] flex-none glass-nav border-b border-border">
+        <div className="h-full max-w-full mx-auto px-5 flex items-center justify-between">
           <Link to="/" className="flex items-center gap-2">
             <span className="w-8 h-8 rounded-full bg-gradient-rose-gold flex items-center justify-center shadow-gold">
               <Heart className="w-3.5 h-3.5 text-primary-foreground fill-primary-foreground" />
@@ -30,9 +40,6 @@ const Builder = () => {
             <Link to="/services" className="hidden md:inline-flex font-body text-sm font-semibold text-foreground/80 hover:text-foreground">
               Dịch vụ cưới
             </Link>
-            <Link to="/" className="hidden sm:inline-flex items-center gap-1.5 font-body text-sm text-muted-foreground hover:text-foreground">
-              <ArrowLeft className="w-4 h-4" /> Trang chủ
-            </Link>
             <span className="hidden md:block font-body text-sm text-muted-foreground">{user?.email}</span>
             <button
               onClick={async () => {
@@ -47,25 +54,33 @@ const Builder = () => {
         </div>
       </header>
 
-      <main>
-        {selected ? (
-          <InvitationEditor template={selected} onBack={() => setSelected(null)} />
-        ) : (
+      <main className="flex-1 min-h-0">
+        {pickerOpen ? (
           <section className="max-w-7xl mx-auto px-5 sm:px-8 py-10">
             <div className="mb-8">
               <h1 className="font-display text-4xl sm:text-5xl text-foreground">
                 Chọn <span className="text-accent">mẫu thiệp</span>
               </h1>
               <p className="font-body text-base text-muted-foreground mt-2 max-w-2xl">
-                Lựa chọn một mẫu để bắt đầu — bạn có thể tùy chỉnh nội dung, ảnh và nhạc nền sau đó.
+                Lựa chọn một mẫu để bắt đầu — bạn có thể tùy chỉnh mọi thứ trong Builder.
               </p>
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
               {templates.map((t, i) => (
-                <TemplateCard key={t.id} template={t} index={i} onSelect={setSelected} />
+                <TemplateCard
+                  key={t.id}
+                  template={t}
+                  index={i}
+                  onSelect={(tpl: WeddingTemplate) => {
+                    setTemplate(tpl.id);
+                    setPickerOpen(false);
+                  }}
+                />
               ))}
             </div>
           </section>
+        ) : (
+          <BuilderShell onBack={() => setPickerOpen(true)} />
         )}
       </main>
     </div>
