@@ -39,9 +39,11 @@ interface Props {
 
 const BuilderShell = ({ onBack }: Props) => {
   const cfg = useWeddingConfig();
+  const isMobile = useIsMobile();
   const [active, setActive] = useState<SectionKey>("couple");
   const [device, setDevice] = useState<Device>("desktop");
   const [fullPreview, setFullPreview] = useState(false);
+  const [sidebarOpen, setSidebarOpen] = useState(false);
 
   const renderPanel = () => {
     switch (active) {
