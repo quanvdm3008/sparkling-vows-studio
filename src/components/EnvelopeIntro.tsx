@@ -114,7 +114,12 @@ const EnvelopeIntro = ({ groomName, brideName, accentColor, decorEmoji, onComple
         <motion.div
           className="fixed inset-0 z-[9999] flex items-center justify-center overflow-hidden"
           style={{
-            background: `radial-gradient(ellipse at 50% 38%, ${accentColor}22 0%, rgba(20,12,8,0.95) 65%, rgba(5,2,2,0.98) 100%)`,
+            background: `
+              radial-gradient(ellipse at 20% 25%, ${accentColor}26 0%, transparent 55%),
+              radial-gradient(ellipse at 80% 30%, ${accentColor}1f 0%, transparent 55%),
+              radial-gradient(ellipse at 50% 80%, ${accentColor}1a 0%, transparent 60%),
+              radial-gradient(ellipse at 50% 38%, ${accentColor}33 0%, rgba(20,12,8,0.96) 65%, rgba(4,2,2,0.99) 100%)
+            `,
           }}
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
