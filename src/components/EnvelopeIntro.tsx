@@ -65,6 +65,39 @@ const EnvelopeIntro = ({ groomName, brideName, accentColor, decorEmoji, onComple
     })), []
   );
 
+  // Twinkling background stars (always on)
+  const twinklingStars = useMemo(() =>
+    [...Array(80)].map(() => ({
+      left: `${Math.random() * 100}%`,
+      top: `${Math.random() * 100}%`,
+      size: 1 + Math.random() * 2.2,
+      dur: 1.5 + Math.random() * 3,
+      delay: Math.random() * 4,
+      color: Math.random() > 0.6 ? "#fff" : "#FFE9B0",
+    })), []
+  );
+
+  // Drifting aurora orbs in background
+  const auroraOrbs = useMemo(() =>
+    [
+      { left: "15%", top: "20%", size: 360, dur: 18, delay: 0 },
+      { left: "70%", top: "30%", size: 420, dur: 22, delay: 3 },
+      { left: "40%", top: "75%", size: 480, dur: 26, delay: 1.5 },
+      { left: "82%", top: "72%", size: 320, dur: 20, delay: 2 },
+    ], []
+  );
+
+  // Decorative sparkle stars scattered (always twinkling)
+  const cornerSparkles = useMemo(() =>
+    [...Array(18)].map(() => ({
+      left: `${Math.random() * 100}%`,
+      top: `${Math.random() * 100}%`,
+      size: 12 + Math.random() * 14,
+      dur: 2 + Math.random() * 2.5,
+      delay: Math.random() * 3,
+    })), []
+  );
+
   const handleOpen = () => {
     if (phase !== "sealed") return;
     setPhase("opening");
@@ -81,18 +114,93 @@ const EnvelopeIntro = ({ groomName, brideName, accentColor, decorEmoji, onComple
         <motion.div
           className="fixed inset-0 z-[9999] flex items-center justify-center overflow-hidden"
           style={{
-            background: `radial-gradient(ellipse at 50% 38%, ${accentColor}22 0%, rgba(20,12,8,0.95) 65%, rgba(5,2,2,0.98) 100%)`,
+            background: `
+              radial-gradient(ellipse at 20% 25%, ${accentColor}26 0%, transparent 55%),
+              radial-gradient(ellipse at 80% 30%, ${accentColor}1f 0%, transparent 55%),
+              radial-gradient(ellipse at 50% 80%, ${accentColor}1a 0%, transparent 60%),
+              radial-gradient(ellipse at 50% 38%, ${accentColor}33 0%, rgba(20,12,8,0.96) 65%, rgba(4,2,2,0.99) 100%)
+            `,
           }}
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0, transition: { duration: 1.2, ease: "easeInOut" } }}
           transition={{ duration: 0.8 }}
         >
+          {/* ── Layer 0a: Drifting aurora orbs ── */}
+          <div className="absolute inset-0 pointer-events-none overflow-hidden">
+            {auroraOrbs.map((o, i) => (
+              <motion.div
+                key={`orb-${i}`}
+                className="absolute rounded-full"
+                style={{
+                  left: o.left,
+                  top: o.top,
+                  width: o.size,
+                  height: o.size,
+                  marginLeft: -o.size / 2,
+                  marginTop: -o.size / 2,
+                  background: `radial-gradient(circle, ${accentColor}55 0%, ${accentColor}15 45%, transparent 70%)`,
+                  filter: "blur(40px)",
+                  mixBlendMode: "screen",
+                }}
+                animate={{
+                  x: [0, 40, -30, 0],
+                  y: [0, -25, 30, 0],
+                  scale: [1, 1.15, 0.95, 1],
+                  opacity: [0.5, 0.85, 0.5],
+                }}
+                transition={{ duration: o.dur, repeat: Infinity, delay: o.delay, ease: "easeInOut" }}
+              />
+            ))}
+          </div>
+
+          {/* ── Layer 0b: Twinkling stars ── */}
+          <div className="absolute inset-0 pointer-events-none">
+            {twinklingStars.map((s, i) => (
+              <motion.div
+                key={`star-${i}`}
+                className="absolute rounded-full"
+                style={{
+                  left: s.left,
+                  top: s.top,
+                  width: s.size,
+                  height: s.size,
+                  backgroundColor: s.color,
+                  boxShadow: `0 0 ${s.size * 4}px ${s.color}`,
+                }}
+                animate={{ opacity: [0, 1, 0.3, 1, 0], scale: [0.6, 1.4, 1, 1.6, 0.6] }}
+                transition={{ duration: s.dur, repeat: Infinity, delay: s.delay, ease: "easeInOut" }}
+              />
+            ))}
+          </div>
+
+          {/* ── Layer 0c: Scattered sparkle icons (always) ── */}
+          <div className="absolute inset-0 pointer-events-none">
+            {cornerSparkles.map((c, i) => (
+              <motion.div
+                key={`csp-${i}`}
+                className="absolute"
+                style={{ left: c.left, top: c.top }}
+                animate={{ opacity: [0, 0.9, 0], rotate: [0, 180], scale: [0.4, 1.2, 0.4] }}
+                transition={{ duration: c.dur, repeat: Infinity, delay: c.delay }}
+              >
+                <Sparkles
+                  style={{
+                    width: c.size,
+                    height: c.size,
+                    color: accentColor,
+                    filter: `drop-shadow(0 0 8px ${accentColor})`,
+                  }}
+                />
+              </motion.div>
+            ))}
+          </div>
+
           {/* ── Layer 1: Rotating conic light ── */}
           <motion.div
             className="absolute inset-0 pointer-events-none"
             style={{
-              background: `conic-gradient(from 0deg at 50% 45%, transparent 0deg, ${accentColor}08 50deg, transparent 110deg, ${accentColor}05 180deg, transparent 240deg, ${accentColor}08 300deg, transparent 360deg)`,
+              background: `conic-gradient(from 0deg at 50% 45%, transparent 0deg, ${accentColor}10 50deg, transparent 110deg, ${accentColor}08 180deg, transparent 240deg, ${accentColor}10 300deg, transparent 360deg)`,
             }}
             animate={{ rotate: 360 }}
             transition={{ duration: 40, repeat: Infinity, ease: "linear" }}
