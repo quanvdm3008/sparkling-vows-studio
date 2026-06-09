@@ -65,6 +65,39 @@ const EnvelopeIntro = ({ groomName, brideName, accentColor, decorEmoji, onComple
     })), []
   );
 
+  // Twinkling background stars (always on)
+  const twinklingStars = useMemo(() =>
+    [...Array(80)].map(() => ({
+      left: `${Math.random() * 100}%`,
+      top: `${Math.random() * 100}%`,
+      size: 1 + Math.random() * 2.2,
+      dur: 1.5 + Math.random() * 3,
+      delay: Math.random() * 4,
+      color: Math.random() > 0.6 ? "#fff" : "#FFE9B0",
+    })), []
+  );
+
+  // Drifting aurora orbs in background
+  const auroraOrbs = useMemo(() =>
+    [
+      { left: "15%", top: "20%", size: 360, dur: 18, delay: 0 },
+      { left: "70%", top: "30%", size: 420, dur: 22, delay: 3 },
+      { left: "40%", top: "75%", size: 480, dur: 26, delay: 1.5 },
+      { left: "82%", top: "72%", size: 320, dur: 20, delay: 2 },
+    ], []
+  );
+
+  // Decorative sparkle stars scattered (always twinkling)
+  const cornerSparkles = useMemo(() =>
+    [...Array(18)].map(() => ({
+      left: `${Math.random() * 100}%`,
+      top: `${Math.random() * 100}%`,
+      size: 12 + Math.random() * 14,
+      dur: 2 + Math.random() * 2.5,
+      delay: Math.random() * 3,
+    })), []
+  );
+
   const handleOpen = () => {
     if (phase !== "sealed") return;
     setPhase("opening");
