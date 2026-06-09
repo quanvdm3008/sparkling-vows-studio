@@ -99,9 +99,25 @@ const BuilderShell = ({ onBack }: Props) => {
   }
 
   return (
-    <div className="h-[calc(100vh-60px)] flex bg-muted/30">
+    <div className="h-[calc(100vh-60px)] flex bg-muted/30 relative">
+      {/* Mobile overlay */}
+      {isMobile && sidebarOpen && (
+        <div
+          className="fixed inset-0 z-30 bg-black/40 backdrop-blur-sm lg:hidden"
+          onClick={() => setSidebarOpen(false)}
+        />
+      )}
+
       {/* LEFT SIDEBAR */}
-      <aside className="w-[340px] flex-none bg-card border-r border-border flex flex-col">
+      <aside
+        className={`bg-card border-r border-border flex flex-col transition-transform duration-300 ${
+          isMobile
+            ? `fixed top-[60px] bottom-0 left-0 z-40 w-[88vw] max-w-[340px] shadow-2xl ${
+                sidebarOpen ? "translate-x-0" : "-translate-x-full"
+              }`
+            : "w-[340px] flex-none relative"
+        }`}
+      >
         <div className="px-5 py-4 border-b border-border flex items-center justify-between">
           <button
             onClick={onBack}
@@ -109,9 +125,19 @@ const BuilderShell = ({ onBack }: Props) => {
           >
             <ChevronLeft className="w-4 h-4" /> Đổi mẫu
           </button>
-          <span className="font-body text-[11px] tracking-widest uppercase text-muted-foreground">
-            Builder
-          </span>
+          {isMobile ? (
+            <button
+              onClick={() => setSidebarOpen(false)}
+              className="p-1 rounded-md hover:bg-muted text-muted-foreground"
+              aria-label="Đóng"
+            >
+              <X className="w-4 h-4" />
+            </button>
+          ) : (
+            <span className="font-body text-[11px] tracking-widest uppercase text-muted-foreground">
+              Builder
+            </span>
+          )}
         </div>
 
         {/* Nav */}
@@ -146,35 +172,46 @@ const BuilderShell = ({ onBack }: Props) => {
       {/* RIGHT: CANVAS */}
       <main className="flex-1 flex flex-col min-w-0">
         {/* Top toolbar */}
-        <div className="h-14 px-5 border-b border-border bg-card flex items-center justify-between flex-none">
-          <div className="flex items-center gap-1 p-1 bg-muted rounded-lg">
-            {(["desktop", "tablet", "mobile"] as Device[]).map((d) => {
-              const Icon = d === "desktop" ? Monitor : d === "tablet" ? Tablet : Smartphone;
-              return (
-                <button
-                  key={d}
-                  onClick={() => setDevice(d)}
-                  className={`px-3 py-1.5 rounded-md transition-all ${
-                    device === d ? "bg-card shadow-sm text-foreground" : "text-muted-foreground hover:text-foreground"
-                  }`}
-                  title={d}
-                >
-                  <Icon className="w-4 h-4" />
-                </button>
-              );
-            })}
+        <div className="h-14 px-3 sm:px-5 border-b border-border bg-card flex items-center justify-between flex-none gap-2">
+          <div className="flex items-center gap-2">
+            {isMobile && (
+              <button
+                onClick={() => setSidebarOpen(true)}
+                className="p-2 rounded-md border border-border bg-card hover:bg-muted"
+                aria-label="Mở menu"
+              >
+                <Menu className="w-4 h-4" />
+              </button>
+            )}
+            <div className="hidden sm:flex items-center gap-1 p-1 bg-muted rounded-lg">
+              {(["desktop", "tablet", "mobile"] as Device[]).map((d) => {
+                const Icon = d === "desktop" ? Monitor : d === "tablet" ? Tablet : Smartphone;
+                return (
+                  <button
+                    key={d}
+                    onClick={() => setDevice(d)}
+                    className={`px-3 py-1.5 rounded-md transition-all ${
+                      device === d ? "bg-card shadow-sm text-foreground" : "text-muted-foreground hover:text-foreground"
+                    }`}
+                    title={d}
+                  >
+                    <Icon className="w-4 h-4" />
+                  </button>
+                );
+              })}
+            </div>
           </div>
 
           <div className="flex items-center gap-2">
             <button
               onClick={() => setFullPreview(true)}
-              className="flex items-center gap-1.5 px-3.5 py-2 rounded-lg border border-border bg-card font-body text-sm font-medium hover:bg-muted transition"
+              className="flex items-center gap-1.5 px-3 sm:px-3.5 py-2 rounded-lg border border-border bg-card font-body text-sm font-medium hover:bg-muted transition"
             >
-              <Eye className="w-4 h-4" /> Preview
+              <Eye className="w-4 h-4" /> <span className="hidden sm:inline">Preview</span>
             </button>
             <button
               onClick={handlePublish}
-              className="flex items-center gap-1.5 px-4 py-2 rounded-lg font-body text-sm font-semibold text-white shadow-md transition hover:opacity-90"
+              className="flex items-center gap-1.5 px-3 sm:px-4 py-2 rounded-lg font-body text-sm font-semibold text-white shadow-md transition hover:opacity-90"
               style={{ backgroundColor: cfg.accentColor }}
             >
               <Share2 className="w-4 h-4" /> Publish
