@@ -1,7 +1,7 @@
 import { useState } from "react";
 import {
   User, Calendar, MessageSquare, Palette, Music, Layers, Share2,
-  ChevronLeft, Eye, Monitor, Smartphone, Tablet, X
+  ChevronLeft, Eye, Monitor, Smartphone, Tablet, X, Menu
 } from "lucide-react";
 import { Link } from "react-router-dom";
 import { toast } from "sonner";
@@ -13,6 +13,7 @@ import MessagePanel from "./panels/MessagePanel";
 import AppearancePanel from "./panels/AppearancePanel";
 import MusicPanel from "./panels/MusicPanel";
 import TemplatePanel from "./panels/TemplatePanel";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 type SectionKey = "template" | "couple" | "datetime" | "message" | "appearance" | "music";
 type Device = "desktop" | "tablet" | "mobile";
