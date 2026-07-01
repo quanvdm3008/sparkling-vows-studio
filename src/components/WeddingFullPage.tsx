@@ -19,8 +19,10 @@ import TravelMap from "@/components/cinematic/TravelMap";
 import WeatherWidget from "@/components/cinematic/WeatherWidget";
 import MemoriesSection from "@/components/cinematic/MemoriesSection";
 import ChapterTransition from "@/components/cinematic/ChapterTransition";
+import { templateRegistry } from "@/templates/registry";
 
 import { getTheme, type WeddingTheme } from "@/data/themes";
+
 
 import couple1 from "@/assets/couple-1.jpg";
 import couple2 from "@/assets/couple-2.jpg";
