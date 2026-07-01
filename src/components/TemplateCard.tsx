@@ -79,6 +79,16 @@ const TemplateCard = ({ template, index, onSelect }: TemplateCardProps) => {
           <div className="absolute top-3 left-3 px-3 py-1 rounded-full bg-primary-foreground/90 text-foreground text-xs font-body font-semibold">
             {template.category}
           </div>
+          {template.isNew && (
+            <div className="absolute top-3 right-3 px-3 py-1 rounded-full bg-gradient-gold text-primary-foreground text-[10px] font-bold uppercase tracking-widest shadow-lg">
+              ✨ Mới
+            </div>
+          )}
+          {template.archetype && (
+            <div className="absolute bottom-3 left-3 px-2.5 py-1 rounded-md bg-foreground/70 backdrop-blur text-primary-foreground text-[10px] font-body uppercase tracking-wider">
+              {template.archetype}
+            </div>
+          )}
         </div>
 
         {/* Info */}
@@ -86,6 +96,7 @@ const TemplateCard = ({ template, index, onSelect }: TemplateCardProps) => {
           <h3 className="font-display text-xl font-semibold text-foreground mb-1">
             {template.nameVi}
           </h3>
+
           <p className="text-sm text-muted-foreground font-body leading-relaxed">
             {template.description}
           </p>
