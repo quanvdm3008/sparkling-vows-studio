@@ -18,6 +18,9 @@ import vintageImg from "@/assets/template-vintage.jpg";
 import bohoImg from "@/assets/template-boho.jpg";
 import royalImg from "@/assets/template-royal.jpg";
 import gardenImg from "@/assets/template-garden.jpg";
+import luxuryGoldImg from "@/assets/template-luxury-gold.jpg";
+import polaroidScrapbookImg from "@/assets/template-polaroid-scrapbook.jpg";
+import glassAuroraImg from "@/assets/template-glassmorphism-aurora.jpg";
 
 const imageMap: Record<string, string> = {
   romantic: romanticImg,
@@ -30,7 +33,11 @@ const imageMap: Record<string, string> = {
   boho: bohoImg,
   royal: royalImg,
   garden: gardenImg,
+  "luxury-gold": luxuryGoldImg,
+  "polaroid-scrapbook": polaroidScrapbookImg,
+  "glassmorphism-aurora": glassAuroraImg,
 };
+
 
 const TemplateCard = ({ template, index, onSelect }: TemplateCardProps) => {
   return (
