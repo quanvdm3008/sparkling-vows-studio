@@ -1097,7 +1097,23 @@ const WeddingFullPage = ({
   templateId = "romantic",
   skipIntro = false,
 }: WeddingPageProps) => {
+  // ─── New bespoke templates: bypass legacy layout and render fully custom experience ───
+  const registryEntry = templateRegistry[templateId];
+  if (registryEntry) {
+    const RegistryComponent = registryEntry.Component;
+    const bespokeProps = { groomName, brideName, date, time, venue, address, message, accentColor: registryEntry.accent };
+    if (skipIntro) return <RegistryComponent {...bespokeProps} />;
+    return (
+      <BespokeWithIntro
+        {...bespokeProps}
+        decorEmoji={"✦"}
+        Component={RegistryComponent}
+      />
+    );
+  }
+
   const theme = getTheme(templateId);
+
   const accentColor = theme.textAccent;
   const isDark = templateId === "modern" || templateId === "royal";
   const [introComplete, setIntroComplete] = useState(skipIntro);
