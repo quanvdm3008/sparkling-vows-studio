@@ -1073,6 +1073,25 @@ const SectionAnimation = ({ variant, index, children }: { variant: WeddingTheme[
   );
 };
 
+// ─── Wrapper: envelope intro → bespoke registry template ─────────────
+const BespokeWithIntro = ({ Component, decorEmoji, ...props }: any) => {
+  const [open, setOpen] = useState(false);
+  return (
+    <>
+      {!open && (
+        <EnvelopeIntro
+          groomName={props.groomName}
+          brideName={props.brideName}
+          accentColor={props.accentColor}
+          decorEmoji={decorEmoji}
+          onComplete={() => setOpen(true)}
+        />
+      )}
+      {open && <Component {...props} />}
+    </>
+  );
+};
+
 // ─── Main Component ───────────────────────────────────
 interface WeddingPageProps {
   groomName?: string;
@@ -1086,6 +1105,7 @@ interface WeddingPageProps {
   templateId?: string;
   skipIntro?: boolean;
 }
+
 
 const WeddingFullPage = ({
   groomName = "Minh Anh",
