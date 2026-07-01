@@ -6,9 +6,45 @@ export interface WeddingTemplate {
   image: string;
   colors: string[];
   category: string;
+  archetype?: string;
+  isNew?: boolean;
 }
 
 export const templates: WeddingTemplate[] = [
+  {
+    id: "luxury-gold",
+    name: "Luxury Gold",
+    nameVi: "Vàng Xa Hoa",
+    description: "Bố cục tạp chí biên tập với chữ vàng cổ điển, drop-cap lớn, khung ornate và magazine spread.",
+    image: "/template-luxury-gold",
+    colors: ["#0a0604", "#D4AF37", "#f5e9c8"],
+    category: "Hoàng gia",
+    archetype: "Magazine Editorial",
+    isNew: true,
+  },
+  {
+    id: "polaroid-scrapbook",
+    name: "Polaroid Scrapbook",
+    nameVi: "Sổ Kỷ Niệm Polaroid",
+    description: "Sổ tay handmade với polaroid xoay nghiêng, washi tape, chữ viết tay và các mảnh ghép rải rác đầy cảm xúc.",
+    image: "/template-polaroid-scrapbook",
+    colors: ["#f4e9d4", "#d97757", "#3a2617"],
+    category: "Boho",
+    archetype: "Scrapbook Collage",
+    isNew: true,
+  },
+  {
+    id: "glassmorphism-aurora",
+    name: "Glass Aurora",
+    nameVi: "Kính Aurora",
+    description: "Kính mờ hiện đại nổi trên nền aurora chuyển động, ảnh quỹ đạo, carousel full-bleed và sans điện tử.",
+    image: "/template-glassmorphism-aurora",
+    colors: ["#0a0a1a", "#ff6ec7", "#6ec7ff"],
+    category: "Hiện đại",
+    archetype: "Glass + Circular",
+    isNew: true,
+  },
+
   {
     id: "romantic",
     name: "Romantic Garden",

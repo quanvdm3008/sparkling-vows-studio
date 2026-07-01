@@ -19,8 +19,10 @@ import TravelMap from "@/components/cinematic/TravelMap";
 import WeatherWidget from "@/components/cinematic/WeatherWidget";
 import MemoriesSection from "@/components/cinematic/MemoriesSection";
 import ChapterTransition from "@/components/cinematic/ChapterTransition";
+import { templateRegistry } from "@/templates/registry";
 
 import { getTheme, type WeddingTheme } from "@/data/themes";
+
 
 import couple1 from "@/assets/couple-1.jpg";
 import couple2 from "@/assets/couple-2.jpg";
@@ -1071,6 +1073,25 @@ const SectionAnimation = ({ variant, index, children }: { variant: WeddingTheme[
   );
 };
 
+// ─── Wrapper: envelope intro → bespoke registry template ─────────────
+const BespokeWithIntro = ({ Component, decorEmoji, ...props }: any) => {
+  const [open, setOpen] = useState(false);
+  return (
+    <>
+      {!open && (
+        <EnvelopeIntro
+          groomName={props.groomName}
+          brideName={props.brideName}
+          accentColor={props.accentColor}
+          decorEmoji={decorEmoji}
+          onComplete={() => setOpen(true)}
+        />
+      )}
+      {open && <Component {...props} />}
+    </>
+  );
+};
+
 // ─── Main Component ───────────────────────────────────
 interface WeddingPageProps {
   groomName?: string;
@@ -1085,6 +1106,7 @@ interface WeddingPageProps {
   skipIntro?: boolean;
 }
 
+
 const WeddingFullPage = ({
   groomName = "Minh Anh",
   brideName = "Thanh Hà",
@@ -1097,7 +1119,23 @@ const WeddingFullPage = ({
   templateId = "romantic",
   skipIntro = false,
 }: WeddingPageProps) => {
+  // ─── New bespoke templates: bypass legacy layout and render fully custom experience ───
+  const registryEntry = templateRegistry[templateId];
+  if (registryEntry) {
+    const RegistryComponent = registryEntry.Component;
+    const bespokeProps = { groomName, brideName, date, time, venue, address, message, accentColor: registryEntry.accent };
+    if (skipIntro) return <RegistryComponent {...bespokeProps} />;
+    return (
+      <BespokeWithIntro
+        {...bespokeProps}
+        decorEmoji={"✦"}
+        Component={RegistryComponent}
+      />
+    );
+  }
+
   const theme = getTheme(templateId);
+
   const accentColor = theme.textAccent;
   const isDark = templateId === "modern" || templateId === "royal";
   const [introComplete, setIntroComplete] = useState(skipIntro);
